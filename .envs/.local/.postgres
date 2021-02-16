@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=brivo
+POSTGRES_USER=zQJQpnFovoaxUoPqwOwcnSgdJBnyafAp
+POSTGRES_PASSWORD=i0qo3w91MPY0NIqqOhrjXDg1ZVqMppcx7pFWPqjkqw7lKyoKKw6pI8svmaRR6jnL
