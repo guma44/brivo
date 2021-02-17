@@ -14,11 +14,11 @@ class UserAdmin(BaseUserAdmin):
 
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ('email', 'is_staff')
+    list_display = ('email', 'username', 'is_staff')
     list_filter = ('is_staff',)
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("Personal info"), {"fields": ("name",)}),
+        (_("Personal info"), {"fields": ("username",)}),
         (
             _("Permissions"),
             {
@@ -30,12 +30,12 @@ class UserAdmin(BaseUserAdmin):
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
-    search_fields = ("email",)
+    search_fields = ("email", "username")
     ordering = ("email",)
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("email", "password1", "password2")
+            "fields": ("username", "email", "password1", "password2")
         }),
     )
     filter_horizontal = ()

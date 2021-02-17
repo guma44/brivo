@@ -14,6 +14,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("brivo.users.urls", namespace="users")),
+    path("accounts/email/", default_views.page_not_found, name="account_email", kwargs={"exception": Exception("Page not Found")},),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

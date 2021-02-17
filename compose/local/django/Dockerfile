@@ -10,17 +10,46 @@ RUN apt-get update \
   && apt-get install -y libpq-dev \
   # Translations dependencies
   && apt-get install -y gettext \
+  && apt-get install -y golang-go \
+  && apt-get install -y git \
+  && apt-get install -y wget \
+  && apt-get install -y tar \
+  && apt-get install -y vim \
+  && apt-get install -y supervisor \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
+
+# RUN mkdir /gocode && \
+#     export GOPATH=/gocode && \
+#     go get github.com/mailhog/MailHog && \
+#     mv /gocode/bin/MailHog /usr/local/bin/mailhog && \
+#     rm -rf /gocode
+
+# EXPOSE 1025 8025
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt
 
+# RUN \
+#   cd /tmp && \
+#   wget http://download.redis.io/redis-stable.tar.gz && \
+#   tar xvzf redis-stable.tar.gz && \
+#   cd redis-stable && \
+#   make && \
+#   make install && \
+#   cp -f src/redis-sentinel /usr/local/bin && \
+#   mkdir -p /etc/redis && \
+#   cp -f *.conf /etc/redis && \
+#   rm -rf /tmp/redis-stable* && \
+#   sed -i 's/^\(dir .*\)$/# \1\ndir \/vol\/web\/redis-data/' /etc/redis/redis.conf
+
 COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
 RUN chmod +x /entrypoint
+
+# COPY ./compose/local/django/supervisord.conf /etc/supervisord.conf
 
 COPY ./compose/local/django/start /start
 RUN sed -i 's/\r$//g' /start
@@ -39,5 +68,9 @@ RUN sed -i 's/\r$//g' /start-flower
 RUN chmod +x /start-flower
 
 WORKDIR /app
-
+RUN mkdir -p /vol/web/media
+RUN mkdir -p /vol/web/data
+# RUN mkdir -p /var/www/html
+# RUN mkdir -p /var/log/redis
+# RUN mkdir -p /vol/web/redis-data
 ENTRYPOINT ["/entrypoint"]

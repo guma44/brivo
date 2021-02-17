@@ -4,7 +4,11 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-
+# echo "Running supervisor"
+# supervisord -c /etc/supervisord.conf
+# ln -sf /proc/1/fd/1 /var/log/whatever.log
 python manage.py migrate
+# echo "Checking mail: sudo docker-compose -f ./local.yml exec django tail -f /var/log/mailhog.log"
+echo "Running django"
 python manage.py runserver_plus 0.0.0.0:8000
 

@@ -16,9 +16,10 @@ class UserCreationForm(admin_forms.UserCreationForm):
 
     class Meta(admin_forms.UserCreationForm.Meta):
         model = User
-        fields = ('email',)
+        fields = ('email', 'username')
         error_messages = {
-            "email": {"unique": _("This username has already been taken.")}
+            "email": {"unique": _("This email has already been registered.")},
+            "username": {"unique": _("This username has already been taken.")},
         }
 
     def clean_password2(self):
@@ -47,7 +48,7 @@ class UserChangeForm(admin_forms.UserChangeForm):
 
     class Meta(admin_forms.UserChangeForm.Meta):
         model = User
-        fields = ('email', 'password', 'is_active', 'is_staff')
+        fields = ('username', 'email', 'password', 'is_active', 'is_staff')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
