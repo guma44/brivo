@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
-from brivo.users.forms import UserChangeForm, UserCreationForm
+from brivo.users.forms import AdminUserChangeForm, AdminUserCreationForm
 
 User = get_user_model()
 
@@ -12,8 +12,8 @@ User = get_user_model()
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
 
-    form = UserChangeForm
-    add_form = UserCreationForm
+    form = AdminUserChangeForm
+    add_form = AdminUserCreationForm
     list_display = ('email', 'username', 'is_staff')
     list_filter = ('is_staff',)
     fieldsets = (

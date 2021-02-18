@@ -1,36 +1,38 @@
+import os
+import uuid
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-FERMENTABLE_CHOICES = [(s.upper(), s) for s in ['Adjunct', 'Base malt', 'Crystal malt', 'Dry extract', 'Liquid extract', 'Roasted malt', 'Sugar']]
 
 
 GENERAL_UNITS = (
-    ('METRIC', 'metric'),
-    ('IMPERIAL', 'imperial')
+    ('METRIC', 'Metric'),
+    ('IMPERIAL', 'Imperial')
 )
 
 TEMPERATURE_UNITS = (
-    ('CELSIUS', 'celsius'),
-    ('KELVIN', 'kelvin'),
-    ('FAHRENHEIT', 'fahrenheit')
+    ('CELSIUS', 'Celsius'),
+    ('KELVIN', 'Kelvin'),
+    ('FAHRENHEIT', 'Fahrenheit')
 )
 
 GRAVITY_UNITS = (
-    ('BLG', 'blg'),
-    ('SG', 'sg')
+    ('BLG', 'BLG'),
+    ('SG', 'SG')
 )
 
 COLOR_UNITS = (
-    ('SRM', 'srm'),
-    ('EBC', 'ebc')
+    ('SRM', 'SRM'),
+    ('EBC', 'EBC')
 )
 
-IBU_TYPE = (
-    ('TINSETH', 'tinseth'),
-    ('RAGER', 'rager')
+IBU_FORMULA = (
+    ('TINSETH', 'Tinseth'),
+    ('RAGER', 'Rager')
 )
 
 
@@ -91,18 +93,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField("User", verbose_name=_("User"), on_delete=models.CASCADE)
-    image = models.ImageField(null=True, upload_to=user_profile_image_file_path)
-    general_units = models.CharField(_("General Units"), max_length=255, choices=GENERAL_UNITS)
-    temperature_units = models.CharField(_("Temperature Units"), max_length=255, choices=TEMPERATURE_UNITS)
-    gravity_units = models.CharField(_("Gravity Units"), max_length=255, choices=GRAVITY_UNITS)
-    color_units = models.CharField(_("Color Units"), max_length=255, choices=COLOR_UNITS)
-    ibu_type = models.CharField(_("IBU type"), max_length=255, choices=IBU_TYPE)
+    user = models.OneToOneField("User", verbose_name=_("User"), on_delete=models.CASCADE, related_name="profile")
+    image = models.ImageField(null=True, upload_to=user_profile_image_file_path, blank=True)
+    general_units = models.CharField(_("General Units"), max_length=255, choices=GENERAL_UNITS, default="METRIC")
+    temperature_units = models.CharField(_("Temperature Units"), max_length=255, choices=TEMPERATURE_UNITS, default="CELSIUS")
+    gravity_units = models.CharField(_("Gravity Units"), max_length=255, choices=GRAVITY_UNITS, default="BLG")
+    color_units = models.CharField(_("Color Units"), max_length=255, choices=COLOR_UNITS, default="SRM")
+    ibu_type = models.CharField(_("IBU type"), max_length=255, choices=IBU_FORMULA, default="TINSETH")
 
 
 class BreweryProfile(models.Model):
-    user = models.OneToOneField("User", verbose_name=_("User"), on_delete=models.CASCADE)
-    image = models.ImageField(null=True, upload_to=brewery_profile_image_file_path)
-    name = models.CharField(_("Brewery Name"), max_length=50)
-    external_link = models.URLField(_("External URL"), max_length=200)
-    number_of_batches = models.IntegerField(_("Number of Batches"))
+    user = models.OneToOneField("User", verbose_name=_("User"), on_delete=models.CASCADE, related_name="brewery_profile")
+    image = models.ImageField(null=True, upload_to=brewery_profile_image_file_path, blank=True)
+    name = models.CharField(_("Brewery Name"), max_length=50, blank=True)
+    external_link = models.URLField(_("External URL"), max_length=200, blank=True)
+    number_of_batches = models.IntegerField(_("Number of Batches"), default=0)

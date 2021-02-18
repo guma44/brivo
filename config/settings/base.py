@@ -73,13 +73,13 @@ THIRD_PARTY_APPS = [
     "crispy_forms",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
     "django_celery_beat",
 ]
 
 LOCAL_APPS = [
     "brivo.users.apps.UsersConfig",
     # Your stuff: custom apps go here
+    # "brivo.brew"
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -291,7 +291,12 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_ADAPTER = "brivo.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-SOCIALACCOUNT_ADAPTER = "brivo.users.adapters.SocialAccountAdapter"
+# SOCIALACCOUNT_ADAPTER = "brivo.users.adapters.SocialAccountAdapter"
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
+ACCOUNT_FORMS = {
+    # Use our custom signup form
+    "signup": "brivo.users.forms.BrivoSignupForm",
+}
 
 
 # Your stuff...

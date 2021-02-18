@@ -3,11 +3,19 @@ from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from allauth.account.forms import SignupForm
+
+from brivo.users.models import (
+    GENERAL_UNITS,
+    GRAVITY_UNITS,
+    UserProfile,
+    BreweryProfile)
+
 
 User = get_user_model()
 
 
-class UserCreationForm(admin_forms.UserCreationForm):
+class AdminUserCreationForm(admin_forms.UserCreationForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -34,12 +42,14 @@ class UserCreationForm(admin_forms.UserCreationForm):
         # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        profile = UserProfile.objects.create(user=user).save()
+        brewery_profile = BreweryProfile.objects.create(user=user).save()
         if commit:
             user.save()
         return user
 
 
-class UserChangeForm(admin_forms.UserChangeForm):
+class AdminUserChangeForm(admin_forms.UserChangeForm):
     """A form for updating users. Includes all the fields on
     the user, but replaces the password field with admin's
     password hash display field.
@@ -55,3 +65,62 @@ class UserChangeForm(admin_forms.UserChangeForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+
+class BrivoSignupForm(SignupForm):
+
+    general_units = forms.ChoiceField(choices=GENERAL_UNITS, required=False)
+    gravity_units = forms.ChoiceField(choices=GRAVITY_UNITS, required=False)
+
+    # Override the init method
+    def __init__(self, *args, **kwargs):
+        # Call the init of the parent class
+        super().__init__(*args, **kwargs)
+
+    # Put in custom signup logic
+    def custom_signup(self, request, user):
+        print("Setting data")
+        user.profile = UserProfile.objects.create(user=user)
+        user.profile.general_units = self.cleaned_data["general_units"]
+        user.profile.gravity_units = self.cleaned_data["gravity_units"]
+        user.brewery_profile = BreweryProfile.objects.create(user=user)
+        user.brewery_profile.save()
+        user.profile.save()
+        user.save()
+
+
+# class UserForm(forms.ModelForm):
+#     """A form for updating users. Includes all the fields on
+#     the user, but replaces the password field with admin's
+#     password hash display field.
+#     """
+
+#     class Meta:
+#         model = User
+#         fields = ('username', 'email',)
+
+
+# class UserProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = UserProfile
+#         fields = (
+#             "image",
+#             "general_units",
+#             "temperature_units",
+#             "gravity_units",
+#             "color_units",
+#             "ibu_type"
+#         )
+
+
+# class BreweryProfileForm(forms.ModelForm):
+    
+#     class Meta:
+#         model = BreweryProfile
+#         fields = (
+#             "image",
+#             "name",
+#             "external_link",
+#             "number_of_batches"
+#         )
+
