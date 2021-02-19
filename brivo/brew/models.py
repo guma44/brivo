@@ -5,7 +5,17 @@ from django.utils.translation import gettext_lazy as _
 
 
 
-FERMENTABLE_CHOICES = [(s.upper(), s) for s in ['Adjunct', 'Base malt', 'Crystal malt', 'Dry extract', 'Liquid extract', 'Roasted malt', 'Sugar']]
+FERMENTABLE_TYPE = (
+    ('ADJUNCT', 'Adjunct'),
+    ('BASE MALT', 'Base malt'),
+    ('CRYSTAL MALT', 'Crystal malt'),
+    ('DRY EXTRACT', 'Dry extract'),
+    ('LIQUID EXTRACT', 'Liquid extract'),
+    ('ROASTED MALT', 'Roasted malt'),
+    ('SUGAR', 'Sugar')
+)
+
+
 BATCH_STAGES = (
     ("MASHING", "Mashing"),
     ("BOILING", "Boiling"),
@@ -15,10 +25,86 @@ BATCH_STAGES = (
     ("FINISHED", "Finished")
 )
 
+BATCH_STAGE_ORDER = [bs[0] for bs in BATCH_STAGES]
+
 CARBONATION_TYPE = (
     ("FORCED", "forced"),
     ("REFERMENTATION", "refermentation")
 )
+
+
+EXTRA_TYPE = [
+    ('ANY', 'Any'),
+    ('SPICE', 'Spice'),
+    ('FLAVOR', 'Flavor'),
+    ('FINING', 'Fining'),
+    ('HERB', 'Herb'),
+    ('WATER AGENT', 'Water agent'),
+    ('OTHER', 'Other')
+]
+
+EXTRA_USE = [
+    ('BOIL', 'Boil'),
+    ('MASH', 'Mash'),
+    ('PRIMARY', 'Primary'),
+    ('SECONDARY', 'Secondary'),
+    ('KEGING', 'Keging'),
+    ('BOTTLING', 'Bottling'),
+    ('OTHER', 'Other')
+]
+
+
+FERMENTABLE_USE = [('MASHING', 'Mashing'),
+ ('BOILING', 'Boiling'),
+ ('LATE BOILING', 'Late boiling'),
+ ('STEEP', 'Steep')]
+
+
+HOP_USE = [('BOILING', 'Boiling'),
+ ('DRY HOP', 'Dry hop'),
+ ('MASHING', 'Mashing'),
+ ('FIRST WORT', 'First wort'),
+ ('WHIRPOOL', 'Whirpool')]
+
+
+HOP_FORM = [
+    ('HOP PELLETS', 'Hop pellets'),
+    ('WHOLE HOPS', 'Whole hops'),
+    ('EXTRACT', 'Extract')
+]
+
+
+YEAST_TYPE = [
+    ('ALE', 'Ale'),
+    ('LAGER', 'Lager'),
+    ('WILD', 'Wild'),
+    ('CHAMPAGNE', 'Champagne'),
+    ('BACTERIA', 'Bacteria'),
+    ('MIX', 'Mix')
+]
+
+
+YEAST_FORM = [
+    ('DRY', 'Dry'),
+    ('LIQUID', 'Liquid'),
+    ('SLURRY', 'Slurry'),
+    ('CULTURE', 'Culture')
+]
+
+TIME_CHOICE = [('MINUTE', 'minute'),
+ ('HOUR', 'hour'),
+ ('DAY', 'day'),
+ ('WEEK', 'week'),
+ ('MONTH', 'month'),
+ ('YEAR', 'year')
+ ]
+
+
+RECIPE_TYPE = [('GRAIN', 'Grain'),
+ ('EXTRACT', 'Extract'),
+ ('PARTIAL_MASH', 'Partial Mash')
+]
+
 
 
 class Yeast(models.Model):
@@ -44,7 +130,7 @@ class Style(models.Model):
     category_id = models.CharField(_(""), max_length=255)
     category = models.CharField(_(""), max_length=255)
     short_link = models.CharField(_(""), max_length=255)
-    name = models.CharField(_(""), max_length=255)
+    name = models.CharField(_("Name"), max_length=255)
     og_min = models.DecimalField(_(""), max_digits=5, decimal_places=2)
     og_max = models.DecimalField(_(""), max_digits=5, decimal_places=2)
     fg_min = models.DecimalField(_(""), max_digits=5, decimal_places=2)
@@ -71,10 +157,10 @@ class Style(models.Model):
 
 
 class Fermentable(models.Model):
-    name = models.CharField(_(""), max_length=255)
+    name = models.CharField(_("Name"), max_length=255)
     short_link = models.CharField(_(""), max_length=255)
     country = models.CharField(_(""), max_length=255)
-    type = models.CharField(_(""), max_length=255, choices=FERMENTABLE_CHOICES)
+    type = models.CharField(_(""), max_length=255, choices=FERMENTABLE_TYPE)
     color = models.DecimalField(_(""), max_digits=5, decimal_places=2)
     extraction = models.DecimalField(_(""), max_digits=5, decimal_places=2)
     max_use = models.DecimalField(_(""), max_digits=5, decimal_places=2)
@@ -90,8 +176,8 @@ class Country(models.Model):
 class Batch(models.Model):
     # Operational fields
     stage = models.CharField(_("Stage"), max_length=50, choices=BATCH_STAGES, default="MASHING")
-    recipe = models.ForeignKey("brivo.brew.models.Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE)
-    user = models.ForeignKey("brivo.users.models.User", verbose_name=_("User"), on_delete=models.CASCADE)
+    recipe = models.ForeignKey("brew.Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE)
+    user = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
     # Stage 1 fields: mashing
     name = models.CharField(_("Name"), max_length=255)
     batch_number = models.IntegerField(_("Batch Number"))
@@ -157,360 +243,109 @@ class Batch(models.Model):
         return fields
 
 
+class Extra(models.Model):
+    name = models.CharField(_("Name"), max_length=255)
+    short_link = models.CharField(_("Short Link"), max_length=255)
+    type = models.CharField(_("Type"), max_length=255, choices=EXTRA_TYPE)
+    desc = models.CharField(_("Description"), max_length=255)
+    active = models.DecimalField(_("Active"), max_digits=5, decimal_places=2)
 
 
-# class Extra(models.Model):
-#         name = models.CharField(_(""), max_length=255)
-#         short_link = models.CharField(_(""), max_length=255)
-#         type = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Any', 'Spice', 'Flavor', 'Fining', 'Herb', 'Water additive', 'Other']
-#                 }
-#             ]
-#         use = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Boil', 'Mash', 'Primary', 'Secondary', 'Keging', 'Bottling', 'Other']
-#                 }
-#             ]
-#         desc = models.CharField(_(""), max_length=255)
-#         active = models.DecimalField(_(""), max_digits=5, decimal_places=2)
+class Fermentable(models.Model):
+    name = models.CharField(_("Name"), max_length=255)
+    type = models.CharField(_("Type"), max_length=255, choices=FERMENTABLE_TYPE)
+    color = models.DecimalField(_("Color"), max_digits=5, decimal_places=2)
+    fermentable_yield = models.DecimalField(_("Yield"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
 
-# class FermentableInventory = BaseFermentable.inherit({
-#         user_id = models.CharField(_(""), max_length=255)
+class Hop(models.Model):
+    name = models.CharField(_("Name"), max_length=255)
+    alpha_acids = models.DecimalField(_("Alpha Acids"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
 
-
-# class HopInventory = BaseHop.inherit({
-#         user_id = models.CharField(_(""), max_length=255)
-
-
-
-# class YeastInventory = BaseYeast.inherit({
-#         user_id = models.CharField(_(""), max_length=255)
+class Extra(models.Model):
+    name = models.CharField(_("Name"), max_length=255)
+    type = models.CharField(_("Type"), max_length=255, choices=EXTRA_TYPE)
 
 
-
-# class ExtraInventory = BaseExtra.inherit({
-#         user_id = models.CharField(_(""), max_length=255)
-
-
-
-# class BaseFermentable(models.Model):
-#         name = models.CharField(_(""), max_length=255)
-#         type = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Adjunct', 'Base malt', 'Crystal malt', 'Dry extract', 'Liquid extract', 'Roasted malt', 'Sugar']
-#                 }
-#             ]
-#         amount = models.DecimalField(_(""), max_digits=5, decimal_places=2),
-#             validators: [
-#                 {
-#                     type: 'gt',
-#                     param: 0
-#                 }
-#             ]
-#         color = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         extraction = models.DecimalField(_(""), max_digits=5, decimal_places=2),
-#             validators: [
-#                 {
-#                     type: 'range',
-#                     param: [0, 100]
-#                 }
-#             ]
+class Yeast(models.Model):
+    name = models.CharField(_("Name"), max_length=255)
+    lab = models.CharField(_(""), max_length=255)
+    lab_id = models.CharField(_(""), max_length=255)
+    type = models.CharField(_(""), max_length=255, choices=YEAST_TYPE)
+    attenuation = models.DecimalField(_(""), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
 
-# class BaseHop(models.Model):
-#         name = models.CharField(_(""), max_length=255)
-#         form = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Hop pellets', 'Whole hops', 'Extract']
-#                 }
-#             ]
-#         amount = models.DecimalField(_(""), max_digits=5, decimal_places=2),
-#             validators: [
-#                 {
-#                     type: 'gt',
-#                     param: 0
-#                 }
-#             ]
-#         alpha = models.DecimalField(_(""), max_digits=5, decimal_places=2)
+class Inventory(models.Model):
+    user = models.OneToOneField("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
+    inventory_fermentable = models.ForeignKey("InventoryFermentable", verbose_name=_("Fermentable"), on_delete=models.CASCADE)
+    inventory_yeast = models.ForeignKey("InventoryYeast", verbose_name=_("Yeast"), on_delete=models.CASCADE)
+    inventory_hop = models.ForeignKey("InventoryHop", verbose_name=_("Hop"), on_delete=models.CASCADE)
+    inventory_extra = models.ForeignKey("InventoryExtra", verbose_name=_("Extra"), on_delete=models.CASCADE)
 
 
-# class BaseExtra(models.Model):
-#         name = models.CharField(_(""), max_length=255)
-#         type = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Any', 'Spice', 'Flavor', 'Fining', 'Herb', 'Water additive']
-#                 }
-#             ]
-#         amount = models.DecimalField(_(""), max_digits=5, decimal_places=2),
-#             validators: [
-#                 {
-#                     type: 'gt',
-#                     param: 0
-#                 }
-#             ]
-#         amount_unit = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['mg', 'g', 'kg', 'oz', 'lb', 'tsp', 'tbsp', 'gal', 'l', 'ml', 'pt', 'qt', 'floz', 'pcs']
-#                 }
-#             ]
+class InventoryFermentable(Fermentable):
+    amount = models.DecimalField(_(""), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
+
+class InventoryHop(Hop):
+    amount = models.DecimalField(_("Amount"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)]),
+    form = models.CharField(_("Form"), max_length=255, choices=HOP_FORM)
+    year = models.IntegerField(_("Year"), validators=[MinValueValidator(0)])
 
 
-# class BaseYeast(models.Model):
-#         name = models.CharField(_(""), max_length=255)
-#         lab = models.CharField(_(""), max_length=255)
-#         lab_id = models.CharField(_(""), max_length=255)
-#         type = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Ale', 'Lager', 'Wild', 'Bacteria', 'Mix']
-#                 }
-#             ]
-#         form = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Dry', 'Liquid', 'Slurry', 'Culture']
-#                 }
-#             ]
-#         attenuation = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         amount = models.DecimalField(_(""), max_digits=5, decimal_places=2),
-#             validators: [
-#                 {
-#                     type: 'gt',
-#                     param: 0
-#                 }
-#             ]
-#         amount_unit = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['mg', 'g', 'kg', 'oz', 'lb', 'tsp', 'tbsp', 'gal', 'l', 'ml', 'pt', 'qt', 'floz', 'pcs']
-#                 }
-#             ]
+class InventoryYeast(Yeast):
+    amount = models.DecimalField(_("Amount"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)]),
+    expiration_date = models.DateField(_("Expiration Date"), auto_now=False, auto_now_add=False)
+    collected_at = models.DateField(_("Collected At"), auto_now=False, auto_now_add=False, blank=True)
+    generation = models.CharField(_("Generation"), max_length=50, blank=True)
+    form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
+
+class InventoryExtra(Extra):
+    amount = models.DecimalField(_("Amount"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
 
 
-# class FermentableIngredient = BaseFermentable.inherit({
-#         inventory_id = models.CharField(_(""), max_length=255)
-#             optional: true
-#         use = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Mashing', 'Boiling', 'Late boiling', 'Steep']
-#                 }
-#             ]
-#     }
+class FermentableIngredient(Fermentable):
+    amount = models.DecimalField(_("Amount"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
+    use = models.CharField(_("Fermentable Use"), max_length=255, choices=FERMENTABLE_USE)
 
 
-# class HopIngredient = BaseHop.inherit({
-#         inventory_id = models.CharField(_(""), max_length=255)
-#             optional: true
-#         use = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Boiling', 'Dry hop', 'Mashing', 'First wort', 'Whirpool']
-#                 }
-#             ]
-#         time = models.DecimalField(_(""), max_digits=5, decimal_places=2),
-#             validators: [
-#                 {
-#                     type: 'gt',
-#                     param: 0
-#                 }
-#             ]
+class HopIngredient(Hop):
+    use = models.CharField(_("Use"), max_length=255, choices=HOP_USE)
+    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
+    time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
 
 
-# class YeastIngredient = BaseYeast.inherit({
-#         inventory_id = models.CharField(_(""), max_length=255)
-#             optional: true
+class YeastIngredient(Yeast):
+    amount = models.DecimalField(_("Amount"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)]),
+    form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
 
 
-# class ExtraIngredient = BaseExtra.inherit({
-#         inventory_id = models.CharField(_(""), max_length=255)
-#             optional: true
-#         use = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['Boiling', 'Mashing', 'Primary fermentation', 'Secondary fermentation', 'Keg', 'Bottling']
-#                 }
-#             ]
-#         time = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         time_unit = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['minute', 'hour', 'day', 'week', 'month', 'year']
-#                 }
-#             ]
+class ExtraIngredient(Extra):
+    use = models.CharField(_("Use"), max_length=255, choices=EXTRA_USE)
+    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2)
+    time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
 
 
-# class Fermentation(models.Model):
-#         yeast_temperature = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=22)
-#         yeast_type = models.CharField(_(""), max_length=255, default='Yeast rehydratation')
-#         fermentation_days_warm = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=7)
-#         fermentation_warm_min_temp = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=18)
-#         fermentation_warm_max_temp = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=21)
-#         fermentation_days_cool = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=10)
-#         fermentation_cool_min_temp = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=17)
-#         fermentation_cool_max_temp = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=20)
-#     },
+class Fermentation(models.Model):
+    primary_fermentation_temperature = models.DecimalField(_("Primary Ferementation Temperature"), max_digits=5, decimal_places=2, default=17)
+    secondary_fermentation_temperature = models.DecimalField(_("Secondary Fermentation Temperature"), max_digits=5, decimal_places=2, default=20)
 
 
-# class DisplayInfo(models.Model):
-#         og = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         fg = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         bitt_min = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         bitt_max = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         percentage_og = models.DecimalField(_(""), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-#         percentage_fg = models.DecimalField(_(""), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-#         percentage_color = models.DecimalField(_(""), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-#         percentage_ibu = models.DecimalField(_(""), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-#         percentage_bitterness = models.DecimalField(_(""), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-#         percentage_alcohol = models.DecimalField(_(""), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)]),
-#     resolveError({nestedName, validator}) {
-#         if (validator == 'required') {
-#             return `Please provide ${nestedName} for recipe DisplayInfo`;,
-
-# class StyleInfo(models.Model):
-#         name = models.CharField(_(""), max_length=255)
-#         short_link = models.CharField(_(""), max_length=255)
-#         alcohol_max = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         alcohol_min = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         color_max = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         color_min = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         fg_max = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         fg_min = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         ibu_max = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         ibu_min = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         og_max = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         og_min = models.DecimalField(_(""), max_digits=5, decimal_places=2)
+class MashStep(models.Model):
+    temperature = models.DecimalField(_("Temperature"), max_digits=5, decimal_places=2)
+    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2, default=0)
+    note = models.TextField(_("Note"), default="-")
 
 
-# class MashStep(models.Model):
-#         step = models.CharField(_(""), max_length=255)
-#         note = models.TextField(_(""), default="-")
-#         temperature = models.DecimalField(_(""), max_digits=5, decimal_places=2)
-#         time = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=0)
-#         type = models.CharField(_(""), max_length=255)
-
-# class Mash(models.Model):
-#         water_ratio = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=2.5)
-#         boling_time = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=60)
-#         steps = 
-#             type: [MashStep],
-#             default() {
-#                 return [];
-#             }
-
-
-# class ERROR_MESSAGES = {
-#     Name: 'Fill title',
-#     StyleName: 'Choose a style of beer',
-#     Type: 'Choose a brewing method from: All grain, All extract or Partial mash',
-#     BatchVolume: 'Fill batch volume',
-#     BatchVolumeUnit: 'Choose unit of batch volume',
-#     Efficiency: 'Fill efficiency',
-#     Bitterness: 'Wrong bitterness',
-#     Alcohol: 'Wrong alcohol',
-# }
-
-
-# class BaseRecipe(models.Model):
-#         name = models.CharField(_(""), max_length=255)
-#         type = models.CharField(_(""), max_length=255)
-#             validators: [
-#                 {
-#                     type: 'choice',
-#                     param: ['All grain', 'All extract', 'Partial mash'],
-#                     message: 'Available brewing methods are: All grain, All extract and Partial mash'
-#                 }
-#             ]
-#         batch_volume = models.DecimalField(_(""), max_digits=5, decimal_places=2),
-#             validators: [
-#                 {
-#                     type: 'gt',
-#                     param: 0,
-#                     message: 'Volume has to be a positive number'
-#                 }
-#             ]
-#         efficiency = models.DecimalField(_(""), max_digits=5, decimal_places=2, default=75)
-#             validators: [
-#                 {
-#                     type: 'range',
-#                     param: [0, 100]
-#                 }
-#             ]
-#         notes = models.CharField(_(""), max_length=255, default="-")
-#         style_info = 
-#             type: StyleInfo
-#         fermentables = 
-#             type: [FermentableIngredient],
-#             validators: [
-#                 {
-#                     type: 'minLength',
-#                     param: 1,
-#                     message: 'Choose at least one fermentable'
-#                 }
-#             ],
-#             default() {
-#                 return [];
-#             }
-#         hops = 
-#             type: [HopIngredient],
-#             validators: [
-#                 {
-#                     type: 'minLength',
-#                     param: 1,
-#                     message: 'Choose at least one hop'
-#                 }
-#             ],
-#             default() {
-#                 return [];
-#             }
-#         yeasts = 
-#             type: [YeastIngredient],
-#             validators: [
-#                 {
-#                     type: 'minLength',
-#                     param: 1,
-#                     message: 'Choose at least one yeast'
-#                 }
-#             ],
-#             default() {
-#                 return [];
-#             }
-#         extras = 
-#             type: [ExtraIngredient],
-#             default() {
-#                 return [];
-#             }
-#         mashing = 
-#             type: Mash,
-#             default() {
-#                 return new Mash();
-#             }
-#         suggested_fermentation = 
-#             type: Fermentation,
-#             default() {
-#                 return new Fermentation();
-#             }
-#         public = models.BooleanField(_(""), default=false)
-#         user_id = models.CharField(_(""), max_length=255)
+class Recipe(models.Model):
+    # user = 
+    name = models.CharField(_("Name"), max_length=255)
+    type = models.CharField(_("Type"), max_length=255, choices=RECIPE_TYPE)
+    batch_volume = models.DecimalField(_("Batch Size"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)]),
+    mash_efficiency = models.DecimalField(_("Mash Efficiency"), max_digits=5, decimal_places=2, default=75)
+    notes = models.CharField(_(""), max_length=255, default="-")
+    fermentables = models.ForeignKey("FermentableIngredient", verbose_name=_(""), on_delete=models.CASCADE)
+    hops = models.ForeignKey("HopIngredient", verbose_name=_(""), on_delete=models.CASCADE)
+    yeasts = models.ForeignKey("YeastIngredient", verbose_name=_(""), on_delete=models.CASCADE)
+    extras = models.ForeignKey("ExtraIngredient", verbose_name=_(""), on_delete=models.CASCADE)
+    mashing = models.ForeignKey("MashStep", verbose_name=_(""), on_delete=models.CASCADE)

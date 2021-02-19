@@ -3,7 +3,7 @@ from django.forms import HiddenInput
 from django.forms.models import ModelForm
 
 
-class BaseApplicationForm(ModelForm):
+class BaseBatchForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
