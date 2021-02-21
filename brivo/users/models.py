@@ -21,18 +21,13 @@ TEMPERATURE_UNITS = (
 )
 
 GRAVITY_UNITS = (
-    ('BLG', 'BLG'),
+    ('PLATO', 'Plato'),
     ('SG', 'SG')
 )
 
 COLOR_UNITS = (
     ('SRM', 'SRM'),
     ('EBC', 'EBC')
-)
-
-IBU_FORMULA = (
-    ('TINSETH', 'Tinseth'),
-    ('RAGER', 'Rager')
 )
 
 
@@ -97,9 +92,8 @@ class UserProfile(models.Model):
     image = models.ImageField(null=True, upload_to=user_profile_image_file_path, blank=True)
     general_units = models.CharField(_("General Units"), max_length=255, choices=GENERAL_UNITS, default="METRIC")
     temperature_units = models.CharField(_("Temperature Units"), max_length=255, choices=TEMPERATURE_UNITS, default="CELSIUS")
-    gravity_units = models.CharField(_("Gravity Units"), max_length=255, choices=GRAVITY_UNITS, default="BLG")
+    gravity_units = models.CharField(_("Gravity Units"), max_length=255, choices=GRAVITY_UNITS, default="Plato")
     color_units = models.CharField(_("Color Units"), max_length=255, choices=COLOR_UNITS, default="SRM")
-    ibu_type = models.CharField(_("IBU type"), max_length=255, choices=IBU_FORMULA, default="TINSETH")
 
 
 class BreweryProfile(models.Model):
