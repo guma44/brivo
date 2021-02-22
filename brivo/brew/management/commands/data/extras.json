@@ -1,0 +1,1628 @@
+[
+    {
+        "name": "Acid",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Agave",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Allspice",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Allspice Powder",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Almond",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Amber",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "American Oak Chips",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "American Oak Cubes",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "American Oak Spiral",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Amylase",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Ananas",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Anice",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Apple",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Applebutter",
+        "type": "Flavor",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Apricot",
+        "type": "Flavor",
+        "use": "Bottling",
+        "active": true
+    },
+    {
+        "name": "Bacon",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Bamboo",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Banana",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Banana Extract",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Barley",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Basil",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Beetroot",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Berries",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Birch",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Birsalma",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Bitter",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Bitter Orange Peel",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Black Currant Extract",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Black Pepper",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Black Pepper (Ground)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Black Pepper (Whole)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Blackberries (Fresh)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Blackberries (Frozen)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Blackberry Extract",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Blackberry Puree",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Blackcurrant",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Blueberries (Fresh)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Blueberries (Frozen)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Bourbon",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Bourbon Soaked French Oak Chips",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Boysenberries",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Brambles",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Brandy",
+        "type": "Flavor",
+        "use": "Bottling",
+        "active": true
+    },
+    {
+        "name": "Bread",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "BrewVint",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Broccoli",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Buckwheat",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Burton Water Salts",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Cabernet",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "CaCa",
+        "type": "Water additive",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cacao",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "CaCl",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "CaCo",
+        "type": "Water additive",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cacoa",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "CacoaNibs",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "CacoaPowder",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "CalcCl",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "CalChl",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Calcium",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Calcium Carbonate",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Calcium Chloride",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Camomile",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "CaOH",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Caramel",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Caraway",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Cardamom (Ground)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cardamom (Whole)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cardamom Seed",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Carob",
+        "type": "Other",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Carrot",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cashews",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Catnip",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cayenne",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cedar",
+        "type": "Other",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Chamomile (Dried)",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Chamomile (Fresh)",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cherries",
+        "type": "Flavor",
+        "use": "Bottling",
+        "active": true
+    },
+    {
+        "name": "Cherry",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cherry Extract",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cherry Puree",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Chestnut",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Chia",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Chicory",
+        "type": "Herb",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Chicory Root",
+        "type": "Herb",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Chilli",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Chives",
+        "type": "Other",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Chloride",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Chocolate",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Chocolate (Dark)",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Chocolate (Milk)",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Chocolate Extract",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cider",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cilantro",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cinnamon",
+        "type": "Spice",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Cinnamon (Ground)",
+        "type": "Spice",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Cinnamon Sticks",
+        "type": "Spice",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Clementines",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Cloudberries",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Clover",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cloves",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Cochineal",
+        "type": "Other",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Cocoa",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cocoa Nibs",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cocoa Powder",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Coconut",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Coffee",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Coffee (Brewed)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Coffee (Ground)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Cognac",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Coriander",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Coriander Seed",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cowberries",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Cranberry",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Cranberry Extract",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Cubeb",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Cucumber",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Cumin",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Curacao",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Currant",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Curry",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Dandelion",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Dextrine",
+        "type": "Fining",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Dextrose",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Dill",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Dried Woodruff",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Echinacea",
+        "type": "Herb",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Eggnog",
+        "type": "Spice",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Elderberry",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Elderflowers",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Epazote",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Epsom Salt (MgSO4)",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Espresso",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Eucalyptus",
+        "type": "Herb",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Fennel",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Figs",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Flour",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Framboise",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "French Oak Chips",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "French Oak Cubes",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "French Oak Spiral",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Fructose",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Gelatin",
+        "type": "Fining",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Gin",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Ginger Extract",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Ginger Root (Dried)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Ginger Root (Fresh)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Gingerbread",
+        "type": "Flavor",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Ginseng",
+        "type": "Flavor",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Glucose",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Gluten",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Gooseberries",
+        "type": "Flavor",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Grape",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Grape Extract",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Grapefruit",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Gypsum",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Habanero",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Hazelnuts",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Heather",
+        "type": "Herb",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Heathertips",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Hibiscus",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Horseradish",
+        "type": "Herb",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Huckleberry",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Irish Moss",
+        "type": "Fining",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Jalapeno",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Jasmine",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Juniper Berries (Dried)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Juniper Berries (Fresh)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Kale",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Kelp",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Kiwi",
+        "type": "Other",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Lactobacillus",
+        "type": "Other",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Lactose",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Lavender",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Lemon Peel",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Lemon Peel (Dried)",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Lemon Zest",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Lemongrass",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Lentils",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Licorice Root",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Licorice Stick",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Lime",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Loganberries",
+        "type": "Other",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Magnesium",
+        "type": "Water additive",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Maltodextrin",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Maltose",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Mandarin",
+        "type": "Flavor",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Mango (Fresh)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Mango (Frozen)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Maple",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Marjoram",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Marshmallow",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Mead",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "NaCl",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "NaHCO",
+        "type": "Water additive",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Nectarines",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Nettle",
+        "type": "Herb",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Nutmeg",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Oak Chips",
+        "type": "Spice",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Oat",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Oatmeal",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Oil",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Olives",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Orange",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Orange Juice",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Orange Peel",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Orange Zest",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Oregano",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Oysters",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Papaya",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Parsley",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Passionfruit",
+        "type": "Other",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Peaches (Fresh)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Peaches (Frozen)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Peanuts",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Pear",
+        "type": "Flavor",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Peat",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Pepper",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Peppermint",
+        "type": "Herb",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Pineapple",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Pistachio",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Plum",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Pomegranate",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Potatoes",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Prunes",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Pumpkin",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Pumpkin Pie Spice",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Pumpkin Puree",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Quinoa",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Raisins",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Raspberry (Whole)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Raspberry Extract",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Raspberry Puree",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Rose",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Rosehip",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Rosemary (Dried)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Rosemary (Fresh)",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Sage (Dried)",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Sage (Fresh)",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Salvia",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Seaweed",
+        "type": "Fining",
+        "use": "Other",
+        "active": true
+    },
+    {
+        "name": "Serrano",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Servomyces",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Sour Cherries (Fresh)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Sour Cherries (Frozen)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Spearmint (Dried)",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Spearmint (Fresh)",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Spelt",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Spinach",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Spruce",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Star Anise",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Starfruit",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Strawberries (Fresh)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Strawberries (Frozen)",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Strawberry Extract",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Sucrose",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Sugar",
+        "type": "Other",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Syrup",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Tangerine",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Tea",
+        "type": "Other",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Tequila",
+        "type": "Flavor",
+        "use": "Secondary",
+        "active": true
+    },
+    {
+        "name": "Thyme",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Toffee",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Tomatoes",
+        "type": "Other",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Turmeric",
+        "type": "Spice",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Vanilla Beans",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Vanilla Extract",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Walnut",
+        "type": "Flavor",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Watermelon",
+        "type": "Flavor",
+        "use": "Primary",
+        "active": true
+    },
+    {
+        "name": "Wheat",
+        "type": "Flavor",
+        "use": "Mash",
+        "active": true
+    },
+    {
+        "name": "Wintergreen Leaves",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    },
+    {
+        "name": "Wormwood",
+        "type": "Herb",
+        "use": "Boil",
+        "active": true
+    }
+]

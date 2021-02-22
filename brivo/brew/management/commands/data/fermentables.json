@@ -1,0 +1,2331 @@
+[{
+        "name": "2-Row",
+        "country": "US",
+        "type": "Base malt",
+        "color": "1",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "6-Row",
+        "country": "US",
+        "type": "Base malt",
+        "color": "1",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Abbey Malt",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "17",
+        "max_use": "50",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Amber",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "27",
+        "max_use": "20",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Aromatic Malt",
+        "country": "US",
+        "type": "Base malt",
+        "color": "20",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Ashbourne Mild",
+        "country": "US",
+        "type": "Base malt",
+        "color": "5",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "65.2"
+    },
+    {
+        "name": "Bohemian Pilsner ",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Bonlander Munich",
+        "country": "US",
+        "type": "Base malt",
+        "color": "10",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Dark Munich",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "10",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Dark Wheat",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "7",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "84.8"
+    },
+    {
+        "name": "Enzyme Malt",
+        "country": "FI",
+        "type": "Base malt",
+        "color": "0",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "ESB Malt",
+        "country": "CA",
+        "type": "Base malt",
+        "color": "4",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Floor-Malted Bohemian Dark Pilsner",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "6",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Floor-Malted Bohemian Pilsner",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Floor-Malted Bohemian Wheat",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Golden Promise",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Halcyon",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Honey Malt",
+        "country": "CA",
+        "type": "Base malt",
+        "color": "25",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "KĂślsch",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Lager",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Malted Naked Oats",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Maris Otter Pale",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Mild",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Munich",
+        "country": "BE",
+        "type": "Base malt",
+        "color": "6",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Munich",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "6",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Munich - 60L",
+        "country": "US",
+        "type": "Base malt",
+        "color": "60",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Munich - Dark 20L",
+        "country": "US",
+        "type": "Base malt",
+        "color": "20",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Munich - Light 10L",
+        "country": "US",
+        "type": "Base malt",
+        "color": "10",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Munich Dark",
+        "country": "CA",
+        "type": "Base malt",
+        "color": "32",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Munich Dark",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "15",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Munich Light",
+        "country": "CA",
+        "type": "Base malt",
+        "color": "10",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Munich Light",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "6",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Oat Malt",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "60.9"
+    },
+    {
+        "name": "Optic",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Organic Pilsner Malt",
+        "country": "FI",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Pale 2-Row",
+        "country": "CA",
+        "type": "Base malt",
+        "color": "1",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Pale 2-Row",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Pale 2-Row",
+        "country": "US",
+        "type": "Base malt",
+        "color": "1",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Pale 2-Row - Toasted",
+        "country": "US",
+        "type": "Base malt",
+        "color": "30",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Pale 6-Row",
+        "country": "US",
+        "type": "Base malt",
+        "color": "1",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Pale Ale",
+        "country": "BE",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Pale Ale",
+        "country": "CA",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Pale Ale",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "84.8"
+    },
+    {
+        "name": "Pale Ale",
+        "country": "US",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Pale Malt",
+        "country": "US",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Pale Wheat",
+        "country": "CA",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Pale Wheat",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "84.8"
+    },
+    {
+        "name": "Pearl",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Peated Malt",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Pilsen",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Pilsner",
+        "country": "BE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Pilsner",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Pilsner",
+        "country": "US",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Red Wheat",
+        "country": "US",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Red X",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "12",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Rye",
+        "country": "US",
+        "type": "Base malt",
+        "color": "4",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Rye",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "4",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Smoked Malt",
+        "country": "US",
+        "type": "Base malt",
+        "color": "5",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Smoked Malt",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Spelt Malt",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Vienna",
+        "country": "US",
+        "type": "Base malt",
+        "color": "4",
+        "max_use": "90",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Vienna",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "4",
+        "max_use": "90",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Wheat",
+        "country": "US",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Wheat",
+        "country": "BE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Wheat",
+        "country": "UK",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Wheat Malt",
+        "country": "DE",
+        "type": "Base malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "White Wheat",
+        "country": "US",
+        "type": "Base malt",
+        "color": "3",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "87.0"
+    },
+    {
+        "name": "Cara 20L",
+        "country": "BE",
+        "type": "Crystal malt",
+        "color": "22",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Cara 45L",
+        "country": "BE",
+        "type": "Crystal malt",
+        "color": "42",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Cara Gold",
+        "country": "BE",
+        "type": "Crystal malt",
+        "color": "46",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Cara Malt",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "18",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Cara Pale",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "4",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Cara Plus 100",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "38",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Cara Plus 150",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "57",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Cara Plus 200",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "76",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Cara Plus 250",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "94",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "CaraAmber",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "23",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "CaraAroma",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "130",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "CaraBelge",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "14",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "CaraBohemian",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "75",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "CaraCrystal Wheat Malt",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "55",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Carafa I",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "340",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Carafa II",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "425",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "CaraFoam",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "CaraHell",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "11",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Caramel / Crystal 10L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "10",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Caramel / Crystal 120L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "120",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Caramel / Crystal 150L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "150",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Caramel / Crystal 15L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "15",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Caramel / Crystal 20L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "20",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Caramel / Crystal 30L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "30",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Caramel / Crystal 40L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "40",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Caramel / Crystal 60L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "60",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Caramel / Crystal 75L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "75",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Caramel / Crystal 80L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "80",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Caramel / Crystal 90L",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "90",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Caramel Pils",
+        "country": "BE",
+        "type": "Crystal malt",
+        "color": "8",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Caramel Pils",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Caramel Vienne 20L",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "20",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Caramel Wheat",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "46",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "CaraMunich",
+        "country": "BE",
+        "type": "Crystal malt",
+        "color": "50",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "CaraMunich I",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "39",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "CaraMunich II",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "46",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "CaraMunich III",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "57",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Carapils",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Carapils (Dextrine Malt)",
+        "country": "US",
+        "type": "Crystal malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "CaraRed",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "20",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Carastan (30/37)",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "34",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Carastan Light (15L)",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "15",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "CaraVienne",
+        "country": "BE",
+        "type": "Crystal malt",
+        "color": "20",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 120L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "120",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Crystal 135L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "135",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 140L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "140",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Crystal 15L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "15",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 30L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "30",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 40L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "40",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 45L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "45",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 50L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "50",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 60L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "60",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 70L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "70",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Crystal 90L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "90",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Crystal Malt 100",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "38",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Crystal Malt 150",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "57",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Crystal Malt 250",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "94",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Crystal Malt 300",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "113",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Crystal Malt 50",
+        "country": "FI",
+        "type": "Crystal malt",
+        "color": "19",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Crystal Rye",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "90",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Dark Crystal 80L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "80",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "De-Husked Caraf I",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "340",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "De-Husked Caraf II",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "418",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "De-Husked Caraf III",
+        "country": "DE",
+        "type": "Crystal malt",
+        "color": "470",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Dextrine Malt",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Extra Dark Crystal 120L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "120",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Extra Dark Crystal 160L",
+        "country": "UK",
+        "type": "Crystal malt",
+        "color": "160",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Honey Malt",
+        "country": "CA",
+        "type": "Crystal malt",
+        "color": "25",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Special B",
+        "country": "BE",
+        "type": "Crystal malt",
+        "color": "115",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Aromatic",
+        "country": "BE",
+        "type": "Roasted malt",
+        "color": "38",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Biscuit",
+        "country": "BE",
+        "type": "Roasted malt",
+        "color": "23",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Black Barley",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "530",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "58.7"
+    },
+    {
+        "name": "Black Malt",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "500",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "60.9"
+    },
+    {
+        "name": "Black Patent",
+        "country": "UK",
+        "type": "Roasted malt",
+        "color": "525",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "58.7"
+    },
+    {
+        "name": "Blackprinz",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "500",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Brown",
+        "country": "UK",
+        "type": "Roasted malt",
+        "color": "65",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "CaraBrown",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "55",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Carafa I",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "340",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Carafa II",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "425",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Carafa III",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "353",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Carafa Special II",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "430",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "47.8"
+    },
+    {
+        "name": "Chocolate",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "350",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "63.0"
+    },
+    {
+        "name": "Chocolate",
+        "country": "BE",
+        "type": "Roasted malt",
+        "color": "340",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "65.2"
+    },
+    {
+        "name": "Chocolate",
+        "country": "UK",
+        "type": "Roasted malt",
+        "color": "425",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Chocolate Malt",
+        "country": "FI",
+        "type": "Roasted malt",
+        "color": "338",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "67.4"
+    },
+    {
+        "name": "Chocolate Rye",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "240",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "67.4"
+    },
+    {
+        "name": "Chocolate Wheat",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "413",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "67.4"
+    },
+    {
+        "name": "Coffee Malt",
+        "country": "UK",
+        "type": "Roasted malt",
+        "color": "150",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Cookie Malt",
+        "country": "FI",
+        "type": "Roasted malt",
+        "color": "19",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Dark Ale",
+        "country": "FI",
+        "type": "Roasted malt",
+        "color": "14",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Dark Chocolate",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "420",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "63.0"
+    },
+    {
+        "name": "De-Bittered Black",
+        "country": "BE",
+        "type": "Roasted malt",
+        "color": "566",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "De-Husked Caraf I",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "340",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "De-Husked Caraf II",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "418",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "De-Husked Caraf III",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "470",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Melanoid Malt",
+        "country": "FI",
+        "type": "Roasted malt",
+        "color": "27",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Melanoidin",
+        "country": "DE",
+        "type": "Roasted malt",
+        "color": "25",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Midnight Wheat Malt",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "550",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Pale Chocolate",
+        "country": "UK",
+        "type": "Roasted malt",
+        "color": "207",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Roasted Barley",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "300",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Roasted Barley",
+        "country": "BE",
+        "type": "Roasted malt",
+        "color": "575",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "65.2"
+    },
+    {
+        "name": "Roasted Barley",
+        "country": "UK",
+        "type": "Roasted malt",
+        "color": "550",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "63.0"
+    },
+    {
+        "name": "Special B",
+        "country": "BE",
+        "type": "Roasted malt",
+        "color": "115",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Special Roast",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "50",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Victory",
+        "country": "US",
+        "type": "Roasted malt",
+        "color": "28",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Dry Malt Extract - Amber",
+        "country": "",
+        "type": "Dry extract",
+        "color": "10",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Dry Malt Extract - Dark",
+        "country": "",
+        "type": "Dry extract",
+        "color": "30",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "95.7"
+    },
+    {
+        "name": "Dry Malt Extract - Extra Light",
+        "country": "",
+        "type": "Dry extract",
+        "color": "3",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Dry Malt Extract - Light",
+        "country": "",
+        "type": "Dry extract",
+        "color": "4",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Dry Malt Extract - Maris Otter",
+        "country": "",
+        "type": "Dry extract",
+        "color": "2",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Dry Malt Extract - Munich",
+        "country": "",
+        "type": "Dry extract",
+        "color": "8",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Dry Malt Extract - Pale",
+        "country": "",
+        "type": "Dry extract",
+        "color": "2",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Dry Malt Extract - Pilsen",
+        "country": "",
+        "type": "Dry extract",
+        "color": "2",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Dry Malt Extract - Rye",
+        "country": "",
+        "type": "Dry extract",
+        "color": "9",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Dry Malt Extract - Wheat",
+        "country": "",
+        "type": "Dry extract",
+        "color": "3",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Rice Syrup Solids",
+        "country": "",
+        "type": "Dry extract",
+        "color": "1",
+        "max_use": "15",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Liquid Malt Extract - Amber",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "10",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Liquid Malt Extract - Dark",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "30",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Liquid Malt Extract - Extra Light",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "2.5",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Liquid Malt Extract - Light",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "4",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Liquid Malt Extract - Maris Otter",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "4",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Liquid Malt Extract - Munich",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "8",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Liquid Malt Extract - Pale",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "4",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Liquid Malt Extract - Pilsen",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "2",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Liquid Malt Extract - Rye",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "9",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Liquid Malt Extract - Wheat",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "3",
+        "max_use": "100",
+        "description": "-",
+        "active": true,
+        "extraction": "76.1"
+    },
+    {
+        "name": "Maris Otter Malt Extract",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "4",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Sorghum Extract",
+        "country": "",
+        "type": "Liquid extract",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "87.0"
+    },
+    {
+        "name": "Agave Nectar",
+        "country": "",
+        "type": "Sugar",
+        "color": "40",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Belgian Candi Sugar - Amber/Brown",
+        "country": "",
+        "type": "Sugar",
+        "color": "60",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Belgian Candi Sugar - Clear/Blond",
+        "country": "",
+        "type": "Sugar",
+        "color": "0",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Belgian Candi Sugar - Dark",
+        "country": "",
+        "type": "Sugar",
+        "color": "275",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Belgian Candi Syrup - Amber",
+        "country": "",
+        "type": "Sugar",
+        "color": "40",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Belgian Candi Syrup - Clear",
+        "country": "",
+        "type": "Sugar",
+        "color": "0",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Belgian Candi Syrup - D2",
+        "country": "",
+        "type": "Sugar",
+        "color": "160",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Belgian Candi Syrup - Dark",
+        "country": "",
+        "type": "Sugar",
+        "color": "80",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Brown Rice Syrup",
+        "country": "",
+        "type": "Sugar",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "95.7"
+    },
+    {
+        "name": "Brown Sugar",
+        "country": "",
+        "type": "Sugar",
+        "color": "15",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "97.8"
+    },
+    {
+        "name": "Cane Sugar",
+        "country": "",
+        "type": "Sugar",
+        "color": "0",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "100.0"
+    },
+    {
+        "name": "Corn Sugar - Dextrose",
+        "country": "",
+        "type": "Sugar",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "100.0"
+    },
+    {
+        "name": "Corn Syrup",
+        "country": "",
+        "type": "Sugar",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Demerara (Raw) Sugar",
+        "country": "",
+        "type": "Sugar",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "100.0"
+    },
+    {
+        "name": "Dextrose (Corn Sugar)",
+        "country": "",
+        "type": "Sugar",
+        "color": "0",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "100.0"
+    },
+    {
+        "name": "Honey",
+        "country": "",
+        "type": "Sugar",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Honey (Buckwheat)",
+        "country": "",
+        "type": "Sugar",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "91.3"
+    },
+    {
+        "name": "Invert Sugar",
+        "country": "",
+        "type": "Sugar",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "100.0"
+    },
+    {
+        "name": "Lactose (Milk Sugar)",
+        "country": "",
+        "type": "Sugar",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "89.1"
+    },
+    {
+        "name": "Maltodextrin",
+        "country": "",
+        "type": "Sugar",
+        "color": "0",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "84.8"
+    },
+    {
+        "name": "Maple Syrup",
+        "country": "",
+        "type": "Sugar",
+        "color": "35",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "65.2"
+    },
+    {
+        "name": "Molasses",
+        "country": "",
+        "type": "Sugar",
+        "color": "80",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Soft Candi Sugar - Blond",
+        "country": "",
+        "type": "Sugar",
+        "color": "5",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Soft Candi Sugar - Brown",
+        "country": "",
+        "type": "Sugar",
+        "color": "60",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "82.6"
+    },
+    {
+        "name": "Sucrose (Table Sugar)",
+        "country": "",
+        "type": "Sugar",
+        "color": "0",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "100.0"
+    },
+    {
+        "name": "Turbinado",
+        "country": "",
+        "type": "Sugar",
+        "color": "10",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "95.7"
+    },
+    {
+        "name": "White Sorghum Syrup",
+        "country": "",
+        "type": "Sugar",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "95.7"
+    },
+    {
+        "name": "Flaked Barley",
+        "country": "",
+        "type": "Adjunct",
+        "color": "2.2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "69.6"
+    },
+    {
+        "name": "Flaked Corn",
+        "country": "",
+        "type": "Adjunct",
+        "color": "0.5",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "87.0"
+    },
+    {
+        "name": "Flaked Oats",
+        "country": "",
+        "type": "Adjunct",
+        "color": "2.2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Flaked Rice",
+        "country": "",
+        "type": "Adjunct",
+        "color": "0.5",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "87.0"
+    },
+    {
+        "name": "Flaked Rye",
+        "country": "",
+        "type": "Adjunct",
+        "color": "2.8",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Flaked Wheat",
+        "country": "",
+        "type": "Adjunct",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "73.9"
+    },
+    {
+        "name": "Grits",
+        "country": "",
+        "type": "Adjunct",
+        "color": "1",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "80.4"
+    },
+    {
+        "name": "Rice Hulls",
+        "country": "",
+        "type": "Adjunct",
+        "color": "0",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "0.0"
+    },
+    {
+        "name": "Rolled Oats",
+        "country": "",
+        "type": "Adjunct",
+        "color": "2.2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "71.7"
+    },
+    {
+        "name": "Torrified Barley",
+        "country": "",
+        "type": "Adjunct",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    },
+    {
+        "name": "Torrified Wheat",
+        "country": "",
+        "type": "Adjunct",
+        "color": "2",
+        "max_use": "",
+        "description": "-",
+        "active": true,
+        "extraction": "78.3"
+    }
+]
