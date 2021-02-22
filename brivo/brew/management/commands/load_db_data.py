@@ -6,7 +6,7 @@ from django.db import connections
 from django.db.utils import OperationalError
 from django.core.management import BaseCommand
 
-from brew import models
+from brivo.brew import models
 from brivo.utils.measures import BeerColor, BeerGravity
 from measurement.measures import Volume, Weight, Temperature
 
@@ -72,6 +72,9 @@ class Command(BaseCommand):
                         self.stdout.write(self.style.WARNING(f"Fermentable {kwargs['name']} has no country"))
                         del kwargs["country"]
                 # if not models.Fermentable.objects.filter(name=kwargs["name"]).count():
+                for clr in ["color"]:
+                    if kwargs.get(clr):
+                        kwargs[clr] = BeerColor(srm=kwargs[clr])
                 fermentable = models.Fermentable(**kwargs)
                 fermentable.save()
                 i += 1

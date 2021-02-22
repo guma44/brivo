@@ -1,11 +1,16 @@
 import datetime, pytz
+from django.utils.decorators import method_decorator
 from django.forms import modelform_factory
 from django.shortcuts import redirect
-from django.urls import reverse
-from django.views.generic import FormView, TemplateView
-from . import constants
-from .forms import BaseBatchForm
-from .models import Batch, BATCH_STAGE_ORDER
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse, reverse_lazy
+from django.views.generic import FormView, TemplateView, ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+# from . import constants
+from brivo.brew.forms import BaseBatchForm
+from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable
 
 
 class BatchView(FormView):
@@ -43,3 +48,59 @@ class BatchView(FormView):
         kwargs = super().get_form_kwargs()
         kwargs["instance"] = self.batch
         return kwargs
+
+
+class FermentableListView(ListView):
+    model = Fermentable
+    template_name = "brew/fermentable/list.html"
+    context_object_name = 'fermentables'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(FermentableListView, self).get_context_data(**kwargs)
+        fermentables = self.get_queryset()
+        page = self.request.GET.get('page')
+        paginator = Paginator(fermentables, self.paginate_by)
+        try:
+            fermentables = paginator.page(page)
+        except PageNotAnInteger:
+            fermentables = paginator.page(1)
+        except EmptyPage:
+            fermentables = paginator.page(paginator.num_pages)
+        context['fermentables'] = fermentables
+        return context
+
+
+# @method_decorator(login_required, name='dispatch')
+class FermentableCreateView(CreateView):
+    model = Fermentable
+    template_name = 'brew/fermentable/create.html'
+    fields = "__all__"
+    success_url = reverse_lazy('brew:fermentable-list')
+
+
+# @method_decorator(login_required, name='dispatch')
+class FermentableDetailView(DetailView):
+
+    model = Fermentable
+    template_name = 'brew/fermentable/detail.html'
+    context_object_name = 'fermentable'
+
+
+# @method_decorator(login_required, name='dispatch')
+class FermentableUpdateView(UpdateView):
+
+    model = Fermentable
+    template_name = 'brew/fermentable/update.html'
+    context_object_name = 'fermentable'
+    fields = "__all__"
+
+    def get_success_url(self):
+        return reverse_lazy('brew:fermentable-detail', kwargs={'pk': self.object.id})
+
+
+# @method_decorator(login_required, name='dispatch')
+class FermentableDeleteView(DeleteView):
+    model = Fermentable
+    template_name = 'brew/fermentable/delete.html'
+    success_url = reverse_lazy('brew:fermentable-list')

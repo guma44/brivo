@@ -142,7 +142,7 @@ class Extra(BaseExtra):
 
 
 class Fermentable(BaseFermentable):
-    country = models.ForeignKey("brew.Country", verbose_name=_("Country"), on_delete=models.CASCADE, blank=True, null=True)
+    country = models.ForeignKey("Country", verbose_name=_("Country"), on_delete=models.CASCADE, blank=True, null=True)
     max_use = models.DecimalField(_("Max Use"), max_digits=5, decimal_places=2, blank=True, null=True)
     description = models.TextField(_("Description"), max_length=255, blank=True, null=True)
     external_link = models.URLField(_("External Link"), max_length=255, blank=True, null=True)
@@ -156,7 +156,7 @@ class BaseHop(models.Model):
 
 
 class Hop(BaseHop):
-    country = models.ForeignKey("brew.Country", verbose_name=_("Country"), on_delete=models.CASCADE, blank=True, null=True)
+    country = models.ForeignKey("Country", verbose_name=_("Country"), on_delete=models.CASCADE, blank=True, null=True)
     external_link = models.URLField(_("External Link"), max_length=255, blank=True, null=True)
     alpha_min = models.DecimalField(_("Alpha Min"), max_digits=5, decimal_places=2, blank=True, null=True)
     alpha_max = models.DecimalField(_("Alpha Max"), max_digits=5, decimal_places=2, blank=True, null=True)
@@ -228,13 +228,17 @@ class Style(models.Model):
     desc_ingre = models.TextField(_("Ingredients"), max_length=255, blank=True, null=True)
     desc_style_comp = models.TextField(_("Style Comparison"), max_length=255, blank=True, null=True)
     commercial_exam = models.TextField(_("Examples"), max_length=255, blank=True, null=True)
-    tags = models.ManyToManyField("brew.Tag")
+    tags = models.ManyToManyField("Tag")
     active = models.BooleanField(_("Active"), default=True)
 
 
 class Country(models.Model):
     name = models.CharField(_("Name"), max_length=255)
     code = models.CharField(_("Code"), max_length=255)
+
+    def __str__(self):
+        return f"{self.name} ({self.code})"
+    
 
 class InventoryFermentable(BaseFermentable):
     amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
@@ -361,7 +365,7 @@ class Recipe(models.Model):
 class Batch(models.Model):
     # Operational fields
     stage = models.CharField(_("Stage"), max_length=50, choices=BATCH_STAGES, default="MASHING")
-    recipe = models.ForeignKey("brew.Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE)
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE)
     user = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
     # Stage 1 fields: info and mashing
     name = models.CharField(_("Name"), max_length=255)

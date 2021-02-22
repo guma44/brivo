@@ -1,7 +1,7 @@
 [{
         "name": "2-Row",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "1",
         "max_use": "100",
         "description": "-",
@@ -11,7 +11,7 @@
     {
         "name": "6-Row",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "1",
         "max_use": "100",
         "description": "-",
@@ -21,7 +21,7 @@
     {
         "name": "Abbey Malt",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "17",
         "max_use": "50",
         "description": "-",
@@ -31,7 +31,7 @@
     {
         "name": "Amber",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "27",
         "max_use": "20",
         "description": "-",
@@ -41,7 +41,7 @@
     {
         "name": "Aromatic Malt",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "20",
         "max_use": "",
         "description": "-",
@@ -51,7 +51,7 @@
     {
         "name": "Ashbourne Mild",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "5",
         "max_use": "",
         "description": "-",
@@ -61,7 +61,7 @@
     {
         "name": "Bohemian Pilsner ",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -71,7 +71,7 @@
     {
         "name": "Bonlander Munich",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "10",
         "max_use": "",
         "description": "-",
@@ -81,7 +81,7 @@
     {
         "name": "Dark Munich",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "10",
         "max_use": "",
         "description": "-",
@@ -91,7 +91,7 @@
     {
         "name": "Dark Wheat",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "7",
         "max_use": "",
         "description": "-",
@@ -101,7 +101,7 @@
     {
         "name": "Enzyme Malt",
         "country": "FI",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "0",
         "max_use": "",
         "description": "-",
@@ -111,7 +111,7 @@
     {
         "name": "ESB Malt",
         "country": "CA",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "4",
         "max_use": "",
         "description": "-",
@@ -121,7 +121,7 @@
     {
         "name": "Floor-Malted Bohemian Dark Pilsner",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "6",
         "max_use": "",
         "description": "-",
@@ -131,7 +131,7 @@
     {
         "name": "Floor-Malted Bohemian Pilsner",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -141,7 +141,7 @@
     {
         "name": "Floor-Malted Bohemian Wheat",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -151,7 +151,7 @@
     {
         "name": "Golden Promise",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "",
         "description": "-",
@@ -161,7 +161,7 @@
     {
         "name": "Halcyon",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -171,7 +171,7 @@
     {
         "name": "Honey Malt",
         "country": "CA",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "25",
         "max_use": "",
         "description": "-",
@@ -181,7 +181,7 @@
     {
         "name": "KĂślsch",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -191,7 +191,7 @@
     {
         "name": "Lager",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -201,7 +201,7 @@
     {
         "name": "Malted Naked Oats",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -211,7 +211,7 @@
     {
         "name": "Maris Otter Pale",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "",
         "description": "-",
@@ -221,7 +221,7 @@
     {
         "name": "Mild",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "",
         "description": "-",
@@ -231,7 +231,7 @@
     {
         "name": "Munich",
         "country": "BE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "6",
         "max_use": "",
         "description": "-",
@@ -241,7 +241,7 @@
     {
         "name": "Munich",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "6",
         "max_use": "",
         "description": "-",
@@ -251,7 +251,7 @@
     {
         "name": "Munich - 60L",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "60",
         "max_use": "",
         "description": "-",
@@ -261,7 +261,7 @@
     {
         "name": "Munich - Dark 20L",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "20",
         "max_use": "",
         "description": "-",
@@ -271,7 +271,7 @@
     {
         "name": "Munich - Light 10L",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "10",
         "max_use": "",
         "description": "-",
@@ -281,7 +281,7 @@
     {
         "name": "Munich Dark",
         "country": "CA",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "32",
         "max_use": "",
         "description": "-",
@@ -291,7 +291,7 @@
     {
         "name": "Munich Dark",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "15",
         "max_use": "",
         "description": "-",
@@ -301,7 +301,7 @@
     {
         "name": "Munich Light",
         "country": "CA",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "10",
         "max_use": "",
         "description": "-",
@@ -311,7 +311,7 @@
     {
         "name": "Munich Light",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "6",
         "max_use": "",
         "description": "-",
@@ -321,7 +321,7 @@
     {
         "name": "Oat Malt",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -331,7 +331,7 @@
     {
         "name": "Optic",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -341,7 +341,7 @@
     {
         "name": "Organic Pilsner Malt",
         "country": "FI",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -351,7 +351,7 @@
     {
         "name": "Pale 2-Row",
         "country": "CA",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "1",
         "max_use": "100",
         "description": "-",
@@ -361,7 +361,7 @@
     {
         "name": "Pale 2-Row",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "100",
         "description": "-",
@@ -371,7 +371,7 @@
     {
         "name": "Pale 2-Row",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "1",
         "max_use": "100",
         "description": "-",
@@ -381,7 +381,7 @@
     {
         "name": "Pale 2-Row - Toasted",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "30",
         "max_use": "100",
         "description": "-",
@@ -391,7 +391,7 @@
     {
         "name": "Pale 6-Row",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "1",
         "max_use": "100",
         "description": "-",
@@ -401,7 +401,7 @@
     {
         "name": "Pale Ale",
         "country": "BE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "100",
         "description": "-",
@@ -411,7 +411,7 @@
     {
         "name": "Pale Ale",
         "country": "CA",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "100",
         "description": "-",
@@ -421,7 +421,7 @@
     {
         "name": "Pale Ale",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "100",
         "description": "-",
@@ -431,7 +431,7 @@
     {
         "name": "Pale Ale",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "100",
         "description": "-",
@@ -441,7 +441,7 @@
     {
         "name": "Pale Malt",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -451,7 +451,7 @@
     {
         "name": "Pale Wheat",
         "country": "CA",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -461,7 +461,7 @@
     {
         "name": "Pale Wheat",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -471,7 +471,7 @@
     {
         "name": "Pearl",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -481,7 +481,7 @@
     {
         "name": "Peated Malt",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "",
         "description": "-",
@@ -491,7 +491,7 @@
     {
         "name": "Pilsen",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -501,7 +501,7 @@
     {
         "name": "Pilsner",
         "country": "BE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -511,7 +511,7 @@
     {
         "name": "Pilsner",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -521,7 +521,7 @@
     {
         "name": "Pilsner",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -531,7 +531,7 @@
     {
         "name": "Red Wheat",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "",
         "description": "-",
@@ -541,7 +541,7 @@
     {
         "name": "Red X",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "12",
         "max_use": "",
         "description": "-",
@@ -551,7 +551,7 @@
     {
         "name": "Rye",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "4",
         "max_use": "",
         "description": "-",
@@ -561,7 +561,7 @@
     {
         "name": "Rye",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "4",
         "max_use": "",
         "description": "-",
@@ -571,7 +571,7 @@
     {
         "name": "Smoked Malt",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "5",
         "max_use": "",
         "description": "-",
@@ -581,7 +581,7 @@
     {
         "name": "Smoked Malt",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "",
         "description": "-",
@@ -591,7 +591,7 @@
     {
         "name": "Spelt Malt",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -601,7 +601,7 @@
     {
         "name": "Vienna",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "4",
         "max_use": "90",
         "description": "-",
@@ -611,7 +611,7 @@
     {
         "name": "Vienna",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "4",
         "max_use": "90",
         "description": "-",
@@ -621,7 +621,7 @@
     {
         "name": "Wheat",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -631,7 +631,7 @@
     {
         "name": "Wheat",
         "country": "BE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -641,7 +641,7 @@
     {
         "name": "Wheat",
         "country": "UK",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -651,7 +651,7 @@
     {
         "name": "Wheat Malt",
         "country": "DE",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -661,7 +661,7 @@
     {
         "name": "White Wheat",
         "country": "US",
-        "type": "Base malt",
+        "type": "BASE MALT",
         "color": "3",
         "max_use": "",
         "description": "-",
@@ -671,7 +671,7 @@
     {
         "name": "Cara 20L",
         "country": "BE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "22",
         "max_use": "",
         "description": "-",
@@ -681,7 +681,7 @@
     {
         "name": "Cara 45L",
         "country": "BE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "42",
         "max_use": "",
         "description": "-",
@@ -691,7 +691,7 @@
     {
         "name": "Cara Gold",
         "country": "BE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "46",
         "max_use": "",
         "description": "-",
@@ -701,7 +701,7 @@
     {
         "name": "Cara Malt",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "18",
         "max_use": "",
         "description": "-",
@@ -711,7 +711,7 @@
     {
         "name": "Cara Pale",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "4",
         "max_use": "",
         "description": "-",
@@ -721,7 +721,7 @@
     {
         "name": "Cara Plus 100",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "38",
         "max_use": "",
         "description": "-",
@@ -731,7 +731,7 @@
     {
         "name": "Cara Plus 150",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "57",
         "max_use": "",
         "description": "-",
@@ -741,7 +741,7 @@
     {
         "name": "Cara Plus 200",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "76",
         "max_use": "",
         "description": "-",
@@ -751,7 +751,7 @@
     {
         "name": "Cara Plus 250",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "94",
         "max_use": "",
         "description": "-",
@@ -761,7 +761,7 @@
     {
         "name": "CaraAmber",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "23",
         "max_use": "",
         "description": "-",
@@ -771,7 +771,7 @@
     {
         "name": "CaraAroma",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "130",
         "max_use": "",
         "description": "-",
@@ -781,7 +781,7 @@
     {
         "name": "CaraBelge",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "14",
         "max_use": "",
         "description": "-",
@@ -791,7 +791,7 @@
     {
         "name": "CaraBohemian",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "75",
         "max_use": "",
         "description": "-",
@@ -801,7 +801,7 @@
     {
         "name": "CaraCrystal Wheat Malt",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "55",
         "max_use": "",
         "description": "-",
@@ -811,7 +811,7 @@
     {
         "name": "Carafa I",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "340",
         "max_use": "",
         "description": "-",
@@ -821,7 +821,7 @@
     {
         "name": "Carafa II",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "425",
         "max_use": "",
         "description": "-",
@@ -831,7 +831,7 @@
     {
         "name": "CaraFoam",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -841,7 +841,7 @@
     {
         "name": "CaraHell",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "11",
         "max_use": "",
         "description": "-",
@@ -851,7 +851,7 @@
     {
         "name": "Caramel / Crystal 10L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "10",
         "max_use": "",
         "description": "-",
@@ -861,7 +861,7 @@
     {
         "name": "Caramel / Crystal 120L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "120",
         "max_use": "",
         "description": "-",
@@ -871,7 +871,7 @@
     {
         "name": "Caramel / Crystal 150L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "150",
         "max_use": "",
         "description": "-",
@@ -881,7 +881,7 @@
     {
         "name": "Caramel / Crystal 15L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "15",
         "max_use": "",
         "description": "-",
@@ -891,7 +891,7 @@
     {
         "name": "Caramel / Crystal 20L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "20",
         "max_use": "",
         "description": "-",
@@ -901,7 +901,7 @@
     {
         "name": "Caramel / Crystal 30L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "30",
         "max_use": "",
         "description": "-",
@@ -911,7 +911,7 @@
     {
         "name": "Caramel / Crystal 40L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "40",
         "max_use": "",
         "description": "-",
@@ -921,7 +921,7 @@
     {
         "name": "Caramel / Crystal 60L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "60",
         "max_use": "",
         "description": "-",
@@ -931,7 +931,7 @@
     {
         "name": "Caramel / Crystal 75L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "75",
         "max_use": "",
         "description": "-",
@@ -941,7 +941,7 @@
     {
         "name": "Caramel / Crystal 80L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "80",
         "max_use": "",
         "description": "-",
@@ -951,7 +951,7 @@
     {
         "name": "Caramel / Crystal 90L",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "90",
         "max_use": "",
         "description": "-",
@@ -961,7 +961,7 @@
     {
         "name": "Caramel Pils",
         "country": "BE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "8",
         "max_use": "",
         "description": "-",
@@ -971,7 +971,7 @@
     {
         "name": "Caramel Pils",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -981,7 +981,7 @@
     {
         "name": "Caramel Vienne 20L",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "20",
         "max_use": "",
         "description": "-",
@@ -991,7 +991,7 @@
     {
         "name": "Caramel Wheat",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "46",
         "max_use": "",
         "description": "-",
@@ -1001,7 +1001,7 @@
     {
         "name": "CaraMunich",
         "country": "BE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "50",
         "max_use": "",
         "description": "-",
@@ -1011,7 +1011,7 @@
     {
         "name": "CaraMunich I",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "39",
         "max_use": "",
         "description": "-",
@@ -1021,7 +1021,7 @@
     {
         "name": "CaraMunich II",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "46",
         "max_use": "",
         "description": "-",
@@ -1031,7 +1031,7 @@
     {
         "name": "CaraMunich III",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "57",
         "max_use": "",
         "description": "-",
@@ -1041,7 +1041,7 @@
     {
         "name": "Carapils",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -1051,7 +1051,7 @@
     {
         "name": "Carapils (Dextrine Malt)",
         "country": "US",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -1061,7 +1061,7 @@
     {
         "name": "CaraRed",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "20",
         "max_use": "",
         "description": "-",
@@ -1071,7 +1071,7 @@
     {
         "name": "Carastan (30/37)",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "34",
         "max_use": "",
         "description": "-",
@@ -1081,7 +1081,7 @@
     {
         "name": "Carastan Light (15L)",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "15",
         "max_use": "",
         "description": "-",
@@ -1091,7 +1091,7 @@
     {
         "name": "CaraVienne",
         "country": "BE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "20",
         "max_use": "",
         "description": "-",
@@ -1101,7 +1101,7 @@
     {
         "name": "Crystal 120L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "120",
         "max_use": "",
         "description": "-",
@@ -1111,7 +1111,7 @@
     {
         "name": "Crystal 135L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "135",
         "max_use": "",
         "description": "-",
@@ -1121,7 +1121,7 @@
     {
         "name": "Crystal 140L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "140",
         "max_use": "",
         "description": "-",
@@ -1131,7 +1131,7 @@
     {
         "name": "Crystal 15L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "15",
         "max_use": "",
         "description": "-",
@@ -1141,7 +1141,7 @@
     {
         "name": "Crystal 30L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "30",
         "max_use": "",
         "description": "-",
@@ -1151,7 +1151,7 @@
     {
         "name": "Crystal 40L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "40",
         "max_use": "",
         "description": "-",
@@ -1161,7 +1161,7 @@
     {
         "name": "Crystal 45L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "45",
         "max_use": "",
         "description": "-",
@@ -1171,7 +1171,7 @@
     {
         "name": "Crystal 50L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "50",
         "max_use": "",
         "description": "-",
@@ -1181,7 +1181,7 @@
     {
         "name": "Crystal 60L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "60",
         "max_use": "",
         "description": "-",
@@ -1191,7 +1191,7 @@
     {
         "name": "Crystal 70L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "70",
         "max_use": "",
         "description": "-",
@@ -1201,7 +1201,7 @@
     {
         "name": "Crystal 90L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "90",
         "max_use": "",
         "description": "-",
@@ -1211,7 +1211,7 @@
     {
         "name": "Crystal Malt 100",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "38",
         "max_use": "",
         "description": "-",
@@ -1221,7 +1221,7 @@
     {
         "name": "Crystal Malt 150",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "57",
         "max_use": "",
         "description": "-",
@@ -1231,7 +1231,7 @@
     {
         "name": "Crystal Malt 250",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "94",
         "max_use": "",
         "description": "-",
@@ -1241,7 +1241,7 @@
     {
         "name": "Crystal Malt 300",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "113",
         "max_use": "",
         "description": "-",
@@ -1251,7 +1251,7 @@
     {
         "name": "Crystal Malt 50",
         "country": "FI",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "19",
         "max_use": "",
         "description": "-",
@@ -1261,7 +1261,7 @@
     {
         "name": "Crystal Rye",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "90",
         "max_use": "",
         "description": "-",
@@ -1271,7 +1271,7 @@
     {
         "name": "Dark Crystal 80L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "80",
         "max_use": "",
         "description": "-",
@@ -1281,7 +1281,7 @@
     {
         "name": "De-Husked Caraf I",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "340",
         "max_use": "",
         "description": "-",
@@ -1291,7 +1291,7 @@
     {
         "name": "De-Husked Caraf II",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "418",
         "max_use": "",
         "description": "-",
@@ -1301,7 +1301,7 @@
     {
         "name": "De-Husked Caraf III",
         "country": "DE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "470",
         "max_use": "",
         "description": "-",
@@ -1311,7 +1311,7 @@
     {
         "name": "Dextrine Malt",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -1321,7 +1321,7 @@
     {
         "name": "Extra Dark Crystal 120L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "120",
         "max_use": "",
         "description": "-",
@@ -1331,7 +1331,7 @@
     {
         "name": "Extra Dark Crystal 160L",
         "country": "UK",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "160",
         "max_use": "",
         "description": "-",
@@ -1341,7 +1341,7 @@
     {
         "name": "Honey Malt",
         "country": "CA",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "25",
         "max_use": "",
         "description": "-",
@@ -1351,7 +1351,7 @@
     {
         "name": "Special B",
         "country": "BE",
-        "type": "Crystal malt",
+        "type": "CRYSTAL MALT",
         "color": "115",
         "max_use": "",
         "description": "-",
@@ -1361,7 +1361,7 @@
     {
         "name": "Aromatic",
         "country": "BE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "38",
         "max_use": "",
         "description": "-",
@@ -1371,7 +1371,7 @@
     {
         "name": "Biscuit",
         "country": "BE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "23",
         "max_use": "",
         "description": "-",
@@ -1381,7 +1381,7 @@
     {
         "name": "Black Barley",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "530",
         "max_use": "",
         "description": "-",
@@ -1391,7 +1391,7 @@
     {
         "name": "Black Malt",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "500",
         "max_use": "",
         "description": "-",
@@ -1401,7 +1401,7 @@
     {
         "name": "Black Patent",
         "country": "UK",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "525",
         "max_use": "",
         "description": "-",
@@ -1411,7 +1411,7 @@
     {
         "name": "Blackprinz",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "500",
         "max_use": "",
         "description": "-",
@@ -1421,7 +1421,7 @@
     {
         "name": "Brown",
         "country": "UK",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "65",
         "max_use": "",
         "description": "-",
@@ -1431,7 +1431,7 @@
     {
         "name": "CaraBrown",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "55",
         "max_use": "",
         "description": "-",
@@ -1441,7 +1441,7 @@
     {
         "name": "Carafa I",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "340",
         "max_use": "",
         "description": "-",
@@ -1451,7 +1451,7 @@
     {
         "name": "Carafa II",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "425",
         "max_use": "",
         "description": "-",
@@ -1461,7 +1461,7 @@
     {
         "name": "Carafa III",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "353",
         "max_use": "",
         "description": "-",
@@ -1471,7 +1471,7 @@
     {
         "name": "Carafa Special II",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "430",
         "max_use": "",
         "description": "-",
@@ -1481,7 +1481,7 @@
     {
         "name": "Chocolate",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "350",
         "max_use": "",
         "description": "-",
@@ -1491,7 +1491,7 @@
     {
         "name": "Chocolate",
         "country": "BE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "340",
         "max_use": "",
         "description": "-",
@@ -1501,7 +1501,7 @@
     {
         "name": "Chocolate",
         "country": "UK",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "425",
         "max_use": "",
         "description": "-",
@@ -1511,7 +1511,7 @@
     {
         "name": "Chocolate Malt",
         "country": "FI",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "338",
         "max_use": "",
         "description": "-",
@@ -1521,7 +1521,7 @@
     {
         "name": "Chocolate Rye",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "240",
         "max_use": "",
         "description": "-",
@@ -1531,7 +1531,7 @@
     {
         "name": "Chocolate Wheat",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "413",
         "max_use": "",
         "description": "-",
@@ -1541,7 +1541,7 @@
     {
         "name": "Coffee Malt",
         "country": "UK",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "150",
         "max_use": "",
         "description": "-",
@@ -1551,7 +1551,7 @@
     {
         "name": "Cookie Malt",
         "country": "FI",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "19",
         "max_use": "",
         "description": "-",
@@ -1561,7 +1561,7 @@
     {
         "name": "Dark Ale",
         "country": "FI",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "14",
         "max_use": "",
         "description": "-",
@@ -1571,7 +1571,7 @@
     {
         "name": "Dark Chocolate",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "420",
         "max_use": "",
         "description": "-",
@@ -1581,7 +1581,7 @@
     {
         "name": "De-Bittered Black",
         "country": "BE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "566",
         "max_use": "",
         "description": "-",
@@ -1591,7 +1591,7 @@
     {
         "name": "De-Husked Caraf I",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "340",
         "max_use": "",
         "description": "-",
@@ -1601,7 +1601,7 @@
     {
         "name": "De-Husked Caraf II",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "418",
         "max_use": "",
         "description": "-",
@@ -1611,7 +1611,7 @@
     {
         "name": "De-Husked Caraf III",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "470",
         "max_use": "",
         "description": "-",
@@ -1621,7 +1621,7 @@
     {
         "name": "Melanoid Malt",
         "country": "FI",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "27",
         "max_use": "",
         "description": "-",
@@ -1631,7 +1631,7 @@
     {
         "name": "Melanoidin",
         "country": "DE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "25",
         "max_use": "",
         "description": "-",
@@ -1641,7 +1641,7 @@
     {
         "name": "Midnight Wheat Malt",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "550",
         "max_use": "",
         "description": "-",
@@ -1651,7 +1651,7 @@
     {
         "name": "Pale Chocolate",
         "country": "UK",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "207",
         "max_use": "",
         "description": "-",
@@ -1661,7 +1661,7 @@
     {
         "name": "Roasted Barley",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "300",
         "max_use": "",
         "description": "-",
@@ -1671,7 +1671,7 @@
     {
         "name": "Roasted Barley",
         "country": "BE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "575",
         "max_use": "",
         "description": "-",
@@ -1681,7 +1681,7 @@
     {
         "name": "Roasted Barley",
         "country": "UK",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "550",
         "max_use": "",
         "description": "-",
@@ -1691,7 +1691,7 @@
     {
         "name": "Special B",
         "country": "BE",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "115",
         "max_use": "",
         "description": "-",
@@ -1701,7 +1701,7 @@
     {
         "name": "Special Roast",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "50",
         "max_use": "",
         "description": "-",
@@ -1711,7 +1711,7 @@
     {
         "name": "Victory",
         "country": "US",
-        "type": "Roasted malt",
+        "type": "ROASTED MALT",
         "color": "28",
         "max_use": "",
         "description": "-",
@@ -1721,7 +1721,7 @@
     {
         "name": "Dry Malt Extract - Amber",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "10",
         "max_use": "100",
         "description": "-",
@@ -1731,7 +1731,7 @@
     {
         "name": "Dry Malt Extract - Dark",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "30",
         "max_use": "100",
         "description": "-",
@@ -1741,7 +1741,7 @@
     {
         "name": "Dry Malt Extract - Extra Light",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "3",
         "max_use": "100",
         "description": "-",
@@ -1751,7 +1751,7 @@
     {
         "name": "Dry Malt Extract - Light",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "4",
         "max_use": "100",
         "description": "-",
@@ -1761,7 +1761,7 @@
     {
         "name": "Dry Malt Extract - Maris Otter",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "2",
         "max_use": "100",
         "description": "-",
@@ -1771,7 +1771,7 @@
     {
         "name": "Dry Malt Extract - Munich",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "8",
         "max_use": "100",
         "description": "-",
@@ -1781,7 +1781,7 @@
     {
         "name": "Dry Malt Extract - Pale",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "2",
         "max_use": "100",
         "description": "-",
@@ -1791,7 +1791,7 @@
     {
         "name": "Dry Malt Extract - Pilsen",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "2",
         "max_use": "100",
         "description": "-",
@@ -1801,7 +1801,7 @@
     {
         "name": "Dry Malt Extract - Rye",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "9",
         "max_use": "100",
         "description": "-",
@@ -1811,7 +1811,7 @@
     {
         "name": "Dry Malt Extract - Wheat",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "3",
         "max_use": "100",
         "description": "-",
@@ -1821,7 +1821,7 @@
     {
         "name": "Rice Syrup Solids",
         "country": "",
-        "type": "Dry extract",
+        "type": "DRY EXTRACT",
         "color": "1",
         "max_use": "15",
         "description": "-",
@@ -1831,7 +1831,7 @@
     {
         "name": "Liquid Malt Extract - Amber",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "10",
         "max_use": "100",
         "description": "-",
@@ -1841,7 +1841,7 @@
     {
         "name": "Liquid Malt Extract - Dark",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "30",
         "max_use": "100",
         "description": "-",
@@ -1851,7 +1851,7 @@
     {
         "name": "Liquid Malt Extract - Extra Light",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "2.5",
         "max_use": "100",
         "description": "-",
@@ -1861,7 +1861,7 @@
     {
         "name": "Liquid Malt Extract - Light",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "4",
         "max_use": "100",
         "description": "-",
@@ -1871,7 +1871,7 @@
     {
         "name": "Liquid Malt Extract - Maris Otter",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "4",
         "max_use": "100",
         "description": "-",
@@ -1881,7 +1881,7 @@
     {
         "name": "Liquid Malt Extract - Munich",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "8",
         "max_use": "100",
         "description": "-",
@@ -1891,7 +1891,7 @@
     {
         "name": "Liquid Malt Extract - Pale",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "4",
         "max_use": "100",
         "description": "-",
@@ -1901,7 +1901,7 @@
     {
         "name": "Liquid Malt Extract - Pilsen",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "2",
         "max_use": "100",
         "description": "-",
@@ -1911,7 +1911,7 @@
     {
         "name": "Liquid Malt Extract - Rye",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "9",
         "max_use": "100",
         "description": "-",
@@ -1921,7 +1921,7 @@
     {
         "name": "Liquid Malt Extract - Wheat",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "3",
         "max_use": "100",
         "description": "-",
@@ -1931,7 +1931,7 @@
     {
         "name": "Maris Otter Malt Extract",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "4",
         "max_use": "",
         "description": "-",
@@ -1941,7 +1941,7 @@
     {
         "name": "Sorghum Extract",
         "country": "",
-        "type": "Liquid extract",
+        "type": "LIQUID EXTRACT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -1951,7 +1951,7 @@
     {
         "name": "Agave Nectar",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "40",
         "max_use": "",
         "description": "-",
@@ -1961,7 +1961,7 @@
     {
         "name": "Belgian Candi Sugar - Amber/Brown",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "60",
         "max_use": "",
         "description": "-",
@@ -1971,7 +1971,7 @@
     {
         "name": "Belgian Candi Sugar - Clear/Blond",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "0",
         "max_use": "",
         "description": "-",
@@ -1981,7 +1981,7 @@
     {
         "name": "Belgian Candi Sugar - Dark",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "275",
         "max_use": "",
         "description": "-",
@@ -1991,7 +1991,7 @@
     {
         "name": "Belgian Candi Syrup - Amber",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "40",
         "max_use": "",
         "description": "-",
@@ -2001,7 +2001,7 @@
     {
         "name": "Belgian Candi Syrup - Clear",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "0",
         "max_use": "",
         "description": "-",
@@ -2011,7 +2011,7 @@
     {
         "name": "Belgian Candi Syrup - D2",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "160",
         "max_use": "",
         "description": "-",
@@ -2021,7 +2021,7 @@
     {
         "name": "Belgian Candi Syrup - Dark",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "80",
         "max_use": "",
         "description": "-",
@@ -2031,7 +2031,7 @@
     {
         "name": "Brown Rice Syrup",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -2041,7 +2041,7 @@
     {
         "name": "Brown Sugar",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "15",
         "max_use": "",
         "description": "-",
@@ -2051,7 +2051,7 @@
     {
         "name": "Cane Sugar",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "0",
         "max_use": "",
         "description": "-",
@@ -2061,7 +2061,7 @@
     {
         "name": "Corn Sugar - Dextrose",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -2071,7 +2071,7 @@
     {
         "name": "Corn Syrup",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -2081,7 +2081,7 @@
     {
         "name": "Demerara (Raw) Sugar",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -2091,7 +2091,7 @@
     {
         "name": "Dextrose (Corn Sugar)",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "0",
         "max_use": "",
         "description": "-",
@@ -2101,7 +2101,7 @@
     {
         "name": "Honey",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -2111,7 +2111,7 @@
     {
         "name": "Honey (Buckwheat)",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -2121,7 +2121,7 @@
     {
         "name": "Invert Sugar",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -2131,7 +2131,7 @@
     {
         "name": "Lactose (Milk Sugar)",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -2141,7 +2141,7 @@
     {
         "name": "Maltodextrin",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "0",
         "max_use": "",
         "description": "-",
@@ -2151,7 +2151,7 @@
     {
         "name": "Maple Syrup",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "35",
         "max_use": "",
         "description": "-",
@@ -2161,7 +2161,7 @@
     {
         "name": "Molasses",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "80",
         "max_use": "",
         "description": "-",
@@ -2171,7 +2171,7 @@
     {
         "name": "Soft Candi Sugar - Blond",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "5",
         "max_use": "",
         "description": "-",
@@ -2181,7 +2181,7 @@
     {
         "name": "Soft Candi Sugar - Brown",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "60",
         "max_use": "",
         "description": "-",
@@ -2191,7 +2191,7 @@
     {
         "name": "Sucrose (Table Sugar)",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "0",
         "max_use": "",
         "description": "-",
@@ -2201,7 +2201,7 @@
     {
         "name": "Turbinado",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "10",
         "max_use": "",
         "description": "-",
@@ -2211,7 +2211,7 @@
     {
         "name": "White Sorghum Syrup",
         "country": "",
-        "type": "Sugar",
+        "type": "SUGAR",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -2221,7 +2221,7 @@
     {
         "name": "Flaked Barley",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "2.2",
         "max_use": "",
         "description": "-",
@@ -2231,7 +2231,7 @@
     {
         "name": "Flaked Corn",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "0.5",
         "max_use": "",
         "description": "-",
@@ -2241,7 +2241,7 @@
     {
         "name": "Flaked Oats",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "2.2",
         "max_use": "",
         "description": "-",
@@ -2251,7 +2251,7 @@
     {
         "name": "Flaked Rice",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "0.5",
         "max_use": "",
         "description": "-",
@@ -2261,7 +2261,7 @@
     {
         "name": "Flaked Rye",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "2.8",
         "max_use": "",
         "description": "-",
@@ -2271,7 +2271,7 @@
     {
         "name": "Flaked Wheat",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -2281,7 +2281,7 @@
     {
         "name": "Grits",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "1",
         "max_use": "",
         "description": "-",
@@ -2291,7 +2291,7 @@
     {
         "name": "Rice Hulls",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "0",
         "max_use": "",
         "description": "-",
@@ -2301,7 +2301,7 @@
     {
         "name": "Rolled Oats",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "2.2",
         "max_use": "",
         "description": "-",
@@ -2311,7 +2311,7 @@
     {
         "name": "Torrified Barley",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "2",
         "max_use": "",
         "description": "-",
@@ -2321,7 +2321,7 @@
     {
         "name": "Torrified Wheat",
         "country": "",
-        "type": "Adjunct",
+        "type": "ADJUNCT",
         "color": "2",
         "max_use": "",
         "description": "-",
