@@ -1,0 +1,26 @@
+{% load static %}
+{% load brew_tags %}
+
+{% block content %}
+<div class="modal-header">
+  <h3 class="modal-title">Yeast details</h3>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+    <div class="card-body">
+    {% for name, value in yeast|get_fields %}
+    <dl class="row">
+        <dt class="col-sm-4">{{ name }}</dt>
+        <dd class="col-sm-8">{{ value }}</dd>
+    </dl>
+    {% endfor %}
+    </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+{% endblock content %}

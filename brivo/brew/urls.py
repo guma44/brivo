@@ -27,4 +27,16 @@ urlpatterns = [
          name='hop-update'),
     path('hop/<int:pk>/delete', views.HopDeleteView.as_view(),
          name='hop-delete'),
+
+    # Yeasts
+    path('yeast', views.YeastListView.as_view(),
+         name='yeast-list'),
+    path('yeast/create', views.YeastCreateView.as_view(),
+         name='yeast-create'),
+    path('yeast/<int:pk>', views.YeastDetailView.as_view(),
+         name='yeast-detail'),
+    path('yeast/<int:pk>/update', views.YeastUpdateView.as_view(),
+         name='yeast-update'),
+    path('yeast/<int:pk>/delete', views.YeastDeleteView.as_view(),
+         name='yeast-delete'),
 ]

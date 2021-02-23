@@ -6,7 +6,7 @@ from django_measurement.forms import MeasurementField
 from measurement.measures import Volume, Weight, Temperature
 
 from brivo.utils.measures import BeerColor, BeerGravity
-from brivo.brew.models import Fermentable, Hop
+from brivo.brew.models import Fermentable, Hop, Yeast
 
 
 class BaseBatchForm(ModelForm):
@@ -24,10 +24,8 @@ class BaseBatchForm(ModelForm):
 
 class FermentableModelForm(BSModalModelForm):
 
-
     def __init__(self, *args, **kwargs):
         super(FermentableModelForm, self).__init__(*args, **kwargs)
-        print(self.request.user)
         self.fields.update({
             "color": MeasurementField(
                 measurement=BeerColor,
@@ -44,4 +42,27 @@ class HopModelForm(BSModalModelForm):
 
     class Meta:
         model = Hop
+        fields = "__all__"
+
+
+class YeastModelForm(BSModalModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(YeastModelForm, self).__init__(*args, **kwargs)
+        if self.request.user.profile.general_units == "METRIC":
+            unit_choices = (("c", "c"),)
+        elif self.request.user.profile.general_units == "IMPERIAL":
+            unit_choices = (("f", "f"),)
+        else:
+            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+        self.fields.update({
+            "temp_min": MeasurementField(
+                measurement=Temperature,
+                unit_choices=unit_choices),
+            "temp_max": MeasurementField(
+                measurement=Temperature,
+                unit_choices=unit_choices)})
+
+    class Meta:
+        model = Yeast
         fields = "__all__"

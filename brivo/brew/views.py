@@ -17,8 +17,8 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView
 )
 # from . import constants
-from brivo.brew.forms import BaseBatchForm, FermentableModelForm, HopModelForm
-from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable, Hop
+from brivo.brew.forms import BaseBatchForm, FermentableModelForm, HopModelForm, YeastModelForm
+from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable, Hop, Yeast
 from brivo.users.models import User
 from brivo.brew import filters
 
@@ -121,6 +121,9 @@ class FermentableDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDelet
     success_message = 'Fermentable was deleted.'
     success_url = reverse_lazy('brew:fermentable-list')
 
+#
+# HOPS
+#
 
 class HopListView(LoginRequiredMixin, ListView):
     model = Hop
@@ -177,3 +180,63 @@ class HopDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     template_name = 'brew/hop/delete.html'
     success_message = 'Hop was deleted.'
     success_url = reverse_lazy('brew:hop-list')
+
+
+#
+# YEAST
+#
+class YeastListView(LoginRequiredMixin, ListView):
+    model = Yeast
+    template_name = "brew/yeast/list.html"
+    context_object_name = 'yeasts'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(YeastListView, self).get_context_data(**kwargs)
+        yeasts = self.get_queryset()
+        page = self.request.GET.get('page')
+        paginator = Paginator(yeasts, self.paginate_by)
+        try:
+            yeasts = paginator.page(page)
+        except PageNotAnInteger:
+            yeasts = paginator.page(1)
+        except EmptyPage:
+            yeasts = paginator.page(paginator.num_pages)
+        context['yeasts'] = yeasts
+        context['user'] = User.objects.get(id=self.request.user.id)
+        context['filter'] = filters.YeastFilter(self.request.GET)
+        return context
+
+    def get_queryset(self):
+        qs = self.model.objects.all()
+        filtered_yeasts = filters.YeastFilter(self.request.GET, queryset=qs)
+        return filtered_yeasts.qs
+
+
+class YeastCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
+    template_name = 'brew/yeast/create.html'
+    form_class = YeastModelForm
+    success_message = 'Yeast was successfully created.'
+    success_url = reverse_lazy('brew:yeast-list')
+
+
+class YeastDetailView(LoginRequiredMixin, BSModalReadView):
+    model = Yeast
+    template_name = 'brew/yeast/detail.html'
+    context_object_name = 'yeast'
+
+
+class YeastUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
+    model = Yeast
+    form_class = YeastModelForm
+    template_name = 'brew/yeast/update.html'
+    success_message = 'Success: Yeast was updated.'
+    context_object_name = 'yeast'
+    success_url = reverse_lazy('brew:yeast-list')
+
+
+class YeastDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
+    model = Yeast
+    template_name = 'brew/yeast/delete.html'
+    success_message = 'Yeast was deleted.'
+    success_url = reverse_lazy('brew:yeast-list')
