@@ -39,4 +39,16 @@ urlpatterns = [
          name='yeast-update'),
     path('yeast/<int:pk>/delete', views.YeastDeleteView.as_view(),
          name='yeast-delete'),
+
+    # Extras
+    path('extra', views.ExtraListView.as_view(),
+         name='extra-list'),
+    path('extra/create', views.ExtraCreateView.as_view(),
+         name='extra-create'),
+    path('extra/<int:pk>', views.ExtraDetailView.as_view(),
+         name='extra-detail'),
+    path('extra/<int:pk>/update', views.ExtraUpdateView.as_view(),
+         name='extra-update'),
+    path('extra/<int:pk>/delete', views.ExtraDeleteView.as_view(),
+         name='extra-delete'),
 ]

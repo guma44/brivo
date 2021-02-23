@@ -32,3 +32,12 @@ class YeastFilter(django_filters.FilterSet):
     class Meta:
         model = models.Yeast
         fields = ["name", "type", "form", "lab"]
+
+
+class ExtraFilter(django_filters.FilterSet):
+
+    name = django_filters.CharFilter(field_name="name", lookup_expr="icontains")
+
+    class Meta:
+        model = models.Extra
+        fields = ["name", "type", "use"]

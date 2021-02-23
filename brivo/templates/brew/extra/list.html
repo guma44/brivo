@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% load brew_tags %}
+
+{% block title %}Extras{% endblock title %}
+
+{% block content %}
+<h3>Extras</h3>
+<hl>
+<div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog mt-5 modal-lg">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog mt-5 modal-lg" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+<div class="container">
+    <div class="col-12 mb-3">
+    {% if user.is_staff %}
+    <button id="create-extra" class="btn btn-success" type="button" name="button">
+        <span class="fa fa-plus mr-2"></span>Create Extra
+    </button>
+    {% endif %}
+    <button id="create-extra" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
+        Toggle Filters
+    </button>
+    </div>
+    <div id="filter-row" class="row collapse">
+        <div class="col">
+            <div class="card card-body">
+                <form method="get">
+                    {{filter.form.as_p}}
+                    <button class="btn btn-primary" name="button" type="submit"><span class="fa fa-filter mr-2"></span>Filter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<table id="extras-table" class="table">
+    <thead>
+        <tr>
+            <th class="text-center" scope="col">Name</th>
+            <th class="text-center" scope="col">Type</th>
+            <th class="text-center" scope="col">Use</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for extra in extras %}
+        <tr>
+            <td class="text-center" scope="row">{{extra.name}}</td>
+            <td class="text-center">{{extra.type|title}}</td>
+            <td class="text-center">{{extra.use|title}}</td>
+            <td class="text-center">
+                <!-- Read extra buttons -->
+                <button type="button" class="bs-modal read-extra btn btn-sm btn-primary" data-form-url="{% url 'brew:extra-detail' extra.pk %}">
+                <span class="fa fa-eye"></span>
+                </button>
+                {% if user.is_staff %}
+                <!-- Update extra buttons -->
+                <button type="button" class="update-extra btn btn-sm btn-primary" data-form-url="{% url 'brew:extra-update' extra.pk %}">
+                <span class="fa fa-edit"></span>
+                </button>
+                <!-- Delete extra buttons -->
+                <button type="button" class="bs-modal delete-extra btn btn-sm btn-danger" data-form-url="{% url 'brew:extra-delete' extra.pk %}">
+                <span class="fa fa-trash"></span>
+                </button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if is_paginated %}
+    {% include "pagination.html" %}
+{% endif %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+{% endblock content %}
+{% block inline_javascript %}
+<script defer type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-extra").modalForm({
+        formURL: "{% url 'brew:extra-create' %}"
+    });
+
+    $(".update-extra").each(function () {
+        $(this).modalForm({
+        formURL: $(this).data("form-url"),
+        asyncUpdate: false,
+        });
+    });
+
+    // Read and Delete book buttons open modal with id="modal"
+    // The formURL is retrieved from the data of the element
+    $(".bs-modal").each(function () {
+        $(this).modalForm({formURL: $(this).data("form-url")});
+    });
+
+    // Hide message
+    $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+        $(".alert").slideUp(500);
+    });
+
+});
+</script>
+{% endblock inline_javascript %}

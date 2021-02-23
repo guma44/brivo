@@ -17,8 +17,8 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView
 )
 # from . import constants
-from brivo.brew.forms import BaseBatchForm, FermentableModelForm, HopModelForm, YeastModelForm
-from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable, Hop, Yeast
+from brivo.brew.forms import BaseBatchForm, FermentableModelForm, HopModelForm, YeastModelForm, ExtraModelForm
+from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable, Hop, Yeast, Extra
 from brivo.users.models import User
 from brivo.brew import filters
 
@@ -240,3 +240,63 @@ class YeastDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView)
     template_name = 'brew/yeast/delete.html'
     success_message = 'Yeast was deleted.'
     success_url = reverse_lazy('brew:yeast-list')
+
+
+#
+# Extra
+#
+class ExtraListView(LoginRequiredMixin, ListView):
+    model = Extra
+    template_name = "brew/extra/list.html"
+    context_object_name = 'extras'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(ExtraListView, self).get_context_data(**kwargs)
+        extras = self.get_queryset()
+        page = self.request.GET.get('page')
+        paginator = Paginator(extras, self.paginate_by)
+        try:
+            extras = paginator.page(page)
+        except PageNotAnInteger:
+            extras = paginator.page(1)
+        except EmptyPage:
+            extras = paginator.page(paginator.num_pages)
+        context['extras'] = extras
+        context['user'] = User.objects.get(id=self.request.user.id)
+        context['filter'] = filters.ExtraFilter(self.request.GET)
+        return context
+
+    def get_queryset(self):
+        qs = self.model.objects.all()
+        filtered_extras = filters.ExtraFilter(self.request.GET, queryset=qs)
+        return filtered_extras.qs
+
+
+class ExtraCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
+    template_name = 'brew/extra/create.html'
+    form_class = ExtraModelForm
+    success_message = 'Extra was successfully created.'
+    success_url = reverse_lazy('brew:extra-list')
+
+
+class ExtraDetailView(LoginRequiredMixin, BSModalReadView):
+    model = Extra
+    template_name = 'brew/extra/detail.html'
+    context_object_name = 'extra'
+
+
+class ExtraUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
+    model = Extra
+    form_class = ExtraModelForm
+    template_name = 'brew/extra/update.html'
+    success_message = 'Success: Extra was updated.'
+    context_object_name = 'extra'
+    success_url = reverse_lazy('brew:extra-list')
+
+
+class ExtraDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
+    model = Extra
+    template_name = 'brew/extra/delete.html'
+    success_message = 'Extra was deleted.'
+    success_url = reverse_lazy('brew:extra-list')
