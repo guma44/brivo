@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="modal-header">
-  <h3 class="modal-title">Fermentable details</h3>
+  <h3 class="modal-title">Hop details</h3>
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -11,7 +11,7 @@
 
 <div class="modal-body">
     <div class="card-body">
-    {% for name, value in fermentable|get_fields %}
+    {% for name, value in hop|get_fields %}
     <dl class="row">
         <dt class="col-sm-4">{{ name }}</dt>
         <dd class="col-sm-8">{{ value }}</dd>

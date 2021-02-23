@@ -9,7 +9,7 @@ from brivo.users.models import (
     GENERAL_UNITS,
     GRAVITY_UNITS,
     UserProfile,
-    BreweryProfile)
+    UserBrewery)
 
 
 User = get_user_model()
@@ -43,7 +43,7 @@ class AdminUserCreationForm(admin_forms.UserCreationForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         profile = UserProfile.objects.create(user=user).save()
-        brewery_profile = BreweryProfile.objects.create(user=user).save()
+        brewery_profile = UserBrewery.objects.create(user=user).save()
         if commit:
             user.save()
         return user
@@ -83,7 +83,7 @@ class BrivoSignupForm(SignupForm):
         user.profile = UserProfile.objects.create(user=user)
         user.profile.general_units = self.cleaned_data["general_units"]
         user.profile.gravity_units = self.cleaned_data["gravity_units"]
-        user.brewery_profile = BreweryProfile.objects.create(user=user)
+        user.brewery_profile = UserBrewery.objects.create(user=user)
         user.brewery_profile.save()
         user.profile.save()
         user.save()
@@ -113,10 +113,10 @@ class BrivoSignupForm(SignupForm):
 #         )
 
 
-# class BreweryProfileForm(forms.ModelForm):
+# class UserBreweryForm(forms.ModelForm):
     
 #     class Meta:
-#         model = BreweryProfile
+#         model = UserBrewery
 #         fields = (
 #             "image",
 #             "name",

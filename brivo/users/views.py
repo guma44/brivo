@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
-from brivo.users.models import UserProfile, BreweryProfile
+from brivo.users.models import UserProfile, UserBrewery
 
 User = get_user_model()
 
@@ -50,9 +50,9 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView)
         return UserProfile.objects.get(user=self.request.user)
 
 
-class BreweryProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class UserBreweryUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
-    model = BreweryProfile
+    model = UserBrewery
     fields = (
         "image",
         "name",
@@ -65,12 +65,12 @@ class BreweryProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateVi
         return reverse("users:detail", kwargs={"username": self.request.user.username})
 
     def get_object(self):
-        return BreweryProfile.objects.get(user=self.request.user)
+        return UserBrewery.objects.get(user=self.request.user)
 
 
 user_update_view = UserUpdateView.as_view()
 userprofile_update_view = UserProfileUpdateView.as_view()
-brewery_update_view = BreweryProfileUpdateView.as_view()
+brewery_update_view = UserBreweryUpdateView.as_view()
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
 

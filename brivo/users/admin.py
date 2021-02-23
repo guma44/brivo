@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from brivo.users.forms import AdminUserChangeForm, AdminUserCreationForm
+from brivo.users.models import UserProfile, UserBrewery
+from brivo.brew import models
 
 User = get_user_model()
 
@@ -28,14 +30,19 @@ class UserAdmin(BaseUserAdmin):
                 ),
             },
         ),
-        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+        (_("Important dates"), {"fields": ()}),
     )
     search_fields = ("email", "username")
     ordering = ("email",)
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("username", "email", "password1", "password2")
+            "fields": ("username", "email", "password")
         }),
     )
     filter_horizontal = ()
+
+admin.site.register(UserProfile)
+admin.site.register(UserBrewery)
+admin.site.register(models.Fermentable)
+admin.site.register(models.Hop)

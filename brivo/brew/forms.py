@@ -6,7 +6,7 @@ from django_measurement.forms import MeasurementField
 from measurement.measures import Volume, Weight, Temperature
 
 from brivo.utils.measures import BeerColor, BeerGravity
-from brivo.brew.models import Fermentable
+from brivo.brew.models import Fermentable, Hop
 
 
 class BaseBatchForm(ModelForm):
@@ -37,4 +37,11 @@ class FermentableModelForm(BSModalModelForm):
 
     class Meta:
         model = Fermentable
+        fields = "__all__"
+
+
+class HopModelForm(BSModalModelForm):
+
+    class Meta:
+        model = Hop
         fields = "__all__"

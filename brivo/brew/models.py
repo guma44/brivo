@@ -123,17 +123,26 @@ RECIPE_TYPE = [('GRAIN', 'Grain'),
 class Tag(models.Model):
     name = models.CharField(_("Name"), max_length=255)
 
+    def __str__(self):
+        return self.name
+
 class BaseFermentable(models.Model):
     name = models.CharField(_("Name"), max_length=255)
     type = models.CharField(_("Type"), max_length=255, choices=FERMENTABLE_TYPE)
     color = MeasurementField(measurement=BeerColor, verbose_name=_("Color"))
     extraction = models.DecimalField(_("Extraction"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
+    def __str__(self):
+        return self.name
+
 
 class BaseExtra(models.Model):
     name = models.CharField(_("Name"), max_length=255)
     type = models.CharField(_("Type"), max_length=255, choices=EXTRA_TYPE)
     use = models.CharField(_("Use"), max_length=255, choices=EXTRA_USE)
+
+    def __str__(self):
+        return self.name
 
 
 class Extra(BaseExtra):
@@ -153,6 +162,10 @@ class Fermentable(BaseFermentable):
 class BaseHop(models.Model):
     name = models.CharField(_("Name"), max_length=255)
     alpha_acids = models.DecimalField(_("Alpha Acids"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
+
+    def __str__(self):
+        return self.name
+    
 
 
 class Hop(BaseHop):
@@ -185,6 +198,9 @@ class BaseYeast(models.Model):
     name = models.CharField(_("Name"), max_length=255)
     lab = models.CharField(_("Lab"), max_length=255)
     type = models.CharField(_("Type"), max_length=255, choices=YEAST_TYPE)
+
+    def __str__(self):
+        return self.name
 
 
 class Yeast(BaseYeast):
@@ -230,6 +246,9 @@ class Style(models.Model):
     commercial_exam = models.TextField(_("Examples"), max_length=255, blank=True, null=True)
     tags = models.ManyToManyField("Tag")
     active = models.BooleanField(_("Active"), default=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Country(models.Model):

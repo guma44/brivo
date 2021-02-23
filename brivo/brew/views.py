@@ -17,8 +17,8 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView
 )
 # from . import constants
-from brivo.brew.forms import BaseBatchForm, FermentableModelForm
-from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable
+from brivo.brew.forms import BaseBatchForm, FermentableModelForm, HopModelForm
+from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable, Hop
 from brivo.users.models import User
 
 
@@ -113,3 +113,54 @@ class FermentableDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDelet
     template_name = 'brew/fermentable/delete.html'
     success_message = 'Fermentable was deleted.'
     success_url = reverse_lazy('brew:fermentable-list')
+
+
+class HopListView(LoginRequiredMixin, ListView):
+    model = Hop
+    template_name = "brew/hop/list.html"
+    context_object_name = 'hops'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(HopListView, self).get_context_data(**kwargs)
+        hops = self.get_queryset()
+        page = self.request.GET.get('page')
+        paginator = Paginator(hops, self.paginate_by)
+        try:
+            hops = paginator.page(page)
+        except PageNotAnInteger:
+            hops = paginator.page(1)
+        except EmptyPage:
+            hops = paginator.page(paginator.num_pages)
+        context['hops'] = hops
+        context['user'] = User.objects.get(id=self.request.user.id)
+        return context
+
+
+class HopCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
+    template_name = 'brew/hop/create.html'
+    form_class = HopModelForm
+    success_message = 'Hop was successfully created.'
+    success_url = reverse_lazy('brew:hop-list')
+
+
+class HopDetailView(LoginRequiredMixin, BSModalReadView):
+    model = Hop
+    template_name = 'brew/hop/detail.html'
+    context_object_name = 'hop'
+
+
+class HopUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
+    model = Hop
+    form_class = HopModelForm
+    template_name = 'brew/hop/update.html'
+    success_message = 'Success: Hop was updated.'
+    context_object_name = 'hop'
+    success_url = reverse_lazy('brew:hop-list')
+
+
+class HopDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
+    model = Hop
+    template_name = 'brew/hop/delete.html'
+    success_message = 'Hop was deleted.'
+    success_url = reverse_lazy('brew:hop-list')

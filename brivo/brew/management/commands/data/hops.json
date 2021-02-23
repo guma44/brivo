@@ -18,7 +18,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "1",
         "farnesene_max": "3",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Northdown (UK), Target (UK), Challenger (UK)",
         "active": true
     },
@@ -41,7 +41,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Cascade",
         "active": true
     },
@@ -64,7 +64,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "3",
         "farnesene_max": "7",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -87,7 +87,7 @@
         "caryophyllene_max": "4",
         "farnesene_min": "2",
         "farnesene_max": "4",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Cascade, Centennial, Simcoe",
         "active": true
     },
@@ -110,7 +110,7 @@
         "caryophyllene_max": "20",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Zeus, Columbus, Tomahawk, Nugget, Bravo",
         "active": true
     },
@@ -133,7 +133,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "2",
         "farnesene_max": "4",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Centennial, Chinook, Hallertau, Tettnang (DE)",
         "active": true
     },
@@ -156,7 +156,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "1",
         "farnesene_max": "1.5",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Galena, Nugget",
         "active": true
     },
@@ -179,7 +179,7 @@
         "caryophyllene_max": "19",
         "farnesene_min": "4",
         "farnesene_max": "6",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Cascade, Columbus, Chinook",
         "active": true
     },
@@ -202,7 +202,7 @@
         "caryophyllene_max": "16",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "East Kent Golding",
         "active": true
     },
@@ -225,7 +225,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Columbus, Magnum, Nugget",
         "active": true
     },
@@ -248,7 +248,7 @@
         "caryophyllene_max": "7.5",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Chinook, Galena, Nugget",
         "active": true
     },
@@ -271,7 +271,7 @@
         "caryophyllene_max": "7.5",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Galena, Northern Brewer, Northdown (UK)",
         "active": true
     },
@@ -294,7 +294,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Brewer's Gold, Chinook, Columbus, Galena, Northern Brewer",
         "active": true
     },
@@ -317,7 +317,7 @@
         "caryophyllene_max": "6",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -340,7 +340,7 @@
         "caryophyllene_max": "6",
         "farnesene_min": "4",
         "farnesene_max": "8",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Ahtanum, Amarillo, Centennial",
         "active": true
     },
@@ -363,7 +363,7 @@
         "caryophyllene_max": "13.0",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -386,7 +386,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Cascade, Chinook, Columbus",
         "active": true
     },
@@ -409,7 +409,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Northern Brewer, Perle (DE)",
         "active": true
     },
@@ -432,7 +432,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Galena, Nugget",
         "active": true
     },
@@ -455,7 +455,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Columbus, Northern Brewer, Nugget",
         "active": true
     },
@@ -478,7 +478,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Centennial",
         "active": true
     },
@@ -501,7 +501,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Galena",
         "active": true
     },
@@ -524,7 +524,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "3.8",
         "farnesene_max": "4.3",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Fuggle",
         "active": true
     },
@@ -547,7 +547,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Chinook, Galena, Millennium, Nugget",
         "active": true
     },
@@ -570,7 +570,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Galena, Summit",
         "active": true
     },
@@ -593,7 +593,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Hallertau, Liberty, Mt. Hood",
         "active": true
     },
@@ -616,7 +616,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -639,7 +639,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Golding, Progress",
         "active": true
     },
@@ -662,7 +662,7 @@
         "caryophyllene_max": "18",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -685,7 +685,7 @@
         "caryophyllene_max": "",
         "farnesene_min": "",
         "farnesene_max": "",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -708,7 +708,7 @@
         "caryophyllene_max": "13",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Brewer's Gold, Galena, Glacier, Bullion",
         "active": true
     },
@@ -731,7 +731,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "1",
         "farnesene_max": "3",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Crystal, East Kent Golding",
         "active": true
     },
@@ -754,7 +754,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "6",
         "farnesene_max": "8",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Fuggle, Willamette, Styrian Savinjski Golding",
         "active": true
     },
@@ -777,7 +777,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "4",
         "farnesene_max": "5",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Fuggle (UK), Willamette, Styrian Golding",
         "active": true
     },
@@ -800,7 +800,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "2",
         "farnesene_max": "4",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Citra",
         "active": true
     },
@@ -823,7 +823,7 @@
         "caryophyllene_max": "6",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Brewer's Gold, Columbus, Nugget",
         "active": true
     },
@@ -846,7 +846,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Fuggle, Willamette, Styrian Savinjski Golding",
         "active": true
     },
@@ -869,7 +869,7 @@
         "caryophyllene_max": "16",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Fuggle, Willamette, East Kent Goldng (UK), Styrian Savinjski Golding",
         "active": true
     },
@@ -892,7 +892,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Fuggle, Willamette",
         "active": true
     },
@@ -915,7 +915,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Liberty, Mt. Hood, Magnum, Merkur (DE), Tradition (DE)",
         "active": true
     },
@@ -938,7 +938,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "5",
         "farnesene_max": "7",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Hallertau Mittelfrüh",
         "active": true
     },
@@ -961,7 +961,7 @@
         "caryophyllene_max": "2",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Liberty",
         "active": true
     },
@@ -984,7 +984,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Liberty, Vanguard, Tradition (DE)",
         "active": true
     },
@@ -1007,7 +1007,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Hallertau",
         "active": true
     },
@@ -1030,7 +1030,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Pioneer",
         "active": true
     },
@@ -1053,7 +1053,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Hallertau, Tradition",
         "active": true
     },
@@ -1076,7 +1076,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Mt. Hood, Strisselpalt (FR)",
         "active": true
     },
@@ -1099,7 +1099,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "2",
         "farnesene_max": "4",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Magnum",
         "active": true
     },
@@ -1122,7 +1122,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -1145,7 +1145,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -1168,7 +1168,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Hallertau, Mt. Hood, Tradition (DE)",
         "active": true
     },
@@ -1191,7 +1191,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "10",
         "farnesene_max": "12",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz, Sterling",
         "active": true
     },
@@ -1214,7 +1214,7 @@
         "caryophyllene_max": "13",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Columbus, Nugget",
         "active": true
     },
@@ -1237,7 +1237,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Columbus, Horizon, Nugget, Magnum",
         "active": true
     },
@@ -1260,7 +1260,7 @@
         "caryophyllene_max": "5",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -1283,7 +1283,7 @@
         "caryophyllene_max": "12.5",
         "farnesene_min": "1",
         "farnesene_max": "2",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Tettnang (DE)",
         "active": true
     },
@@ -1306,7 +1306,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Magnum, Taurus (DE), Tradition (DE)",
         "active": true
     },
@@ -1329,7 +1329,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Columbus, Nugget, Summit",
         "active": true
     },
@@ -1352,7 +1352,7 @@
         "caryophyllene_max": "7.8",
         "farnesene_min": "0",
         "farnesene_max": "0",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Simcoe",
         "active": true
     },
@@ -1375,7 +1375,7 @@
         "caryophyllene_max": "3",
         "farnesene_min": "11",
         "farnesene_max": "13",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz, Sterling",
         "active": true
     },
@@ -1398,7 +1398,7 @@
         "caryophyllene_max": "16",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Strisselpalt (FR), Hallertau Mittelfrüh (DE), Hersburker (DE)",
         "active": true
     },
@@ -1421,7 +1421,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Brewer's Gold, Fuggle, Hallertau",
         "active": true
     },
@@ -1444,7 +1444,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Hallertau, Fuggle",
         "active": true
     },
@@ -1467,7 +1467,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Brewer's Gold, Fuggle, Galena, Magnum, Nugget",
         "active": true
     },
@@ -1490,7 +1490,7 @@
         "caryophyllene_max": "16",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Norhern Brewer, Challenger (UK)",
         "active": true
     },
@@ -1513,7 +1513,7 @@
         "caryophyllene_max": "20",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Chinook, Columbus, Galena, Magnum",
         "active": true
     },
@@ -1536,7 +1536,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Chinook, Galena, Northern Brewer (DE)",
         "active": true
     },
@@ -1559,7 +1559,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Columbus, Galena, Magnum",
         "active": true
     },
@@ -1582,7 +1582,7 @@
         "caryophyllene_max": "13",
         "farnesene_min": "0.8",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Chinook",
         "active": true
     },
@@ -1605,7 +1605,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Tettnang, East Kent Golding, Styrian Savinjski Golding",
         "active": true
     },
@@ -1628,7 +1628,7 @@
         "caryophyllene_max": "13",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Perle, Northern Brewer",
         "active": true
     },
@@ -1651,7 +1651,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Galena",
         "active": true
     },
@@ -1674,7 +1674,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Libertym, Ultra, Crystal",
         "active": true
     },
@@ -1697,7 +1697,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Pacific Gem",
         "active": true
     },
@@ -1720,7 +1720,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Pacific Gem",
         "active": true
     },
@@ -1743,7 +1743,7 @@
         "caryophyllene_max": "17",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Hallertau",
         "active": true
     },
@@ -1766,7 +1766,7 @@
         "caryophyllene_max": "18",
         "farnesene_min": "0",
         "farnesene_max": "0",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Willamette",
         "active": true
     },
@@ -1789,7 +1789,7 @@
         "caryophyllene_max": "20",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Northern Brewer, Perle",
         "active": true
     },
@@ -1812,7 +1812,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Northern Brewer, Northern Brewer (DE), Perle (DE)",
         "active": true
     },
@@ -1835,7 +1835,7 @@
         "caryophyllene_max": "12",
         "farnesene_min": "1.4",
         "farnesene_max": "1.6",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Northdown (UK), Challenger (UK)",
         "active": true
     },
@@ -1858,7 +1858,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Target (UK), Challenger (UK)",
         "active": true
     },
@@ -1881,7 +1881,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "East Kent Golding",
         "active": true
     },
@@ -1904,7 +1904,7 @@
         "caryophyllene_max": "13",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -1927,7 +1927,7 @@
         "caryophyllene_max": "13",
         "farnesene_min": "1.5",
         "farnesene_max": "3",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -1950,7 +1950,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Galena, Cluster",
         "active": true
     },
@@ -1973,7 +1973,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Fuggle, East Kent Golding",
         "active": true
     },
@@ -1996,7 +1996,7 @@
         "caryophyllene_max": "6",
         "farnesene_min": "4",
         "farnesene_max": "5",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Amarillo, Summit",
         "active": true
     },
@@ -2019,7 +2019,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "14",
         "farnesene_max": "16",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz (US), Sterling, Lublin",
         "active": true
     },
@@ -2042,7 +2042,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "9",
         "farnesene_max": "13",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Sterling, Saaz (CZ), Lublin",
         "active": true
     },
@@ -2065,7 +2065,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "13",
         "farnesene_max": "16",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Spalt (DE), Tettnang (DE), Select (DE)",
         "active": true
     },
@@ -2088,7 +2088,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Hallertau",
         "active": true
     },
@@ -2111,7 +2111,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Nugget, Chinook, Galena",
         "active": true
     },
@@ -2134,7 +2134,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "15",
         "farnesene_max": "22",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz, Tettnang (DE), Hersbruker (DE), Spalt (DE)",
         "active": true
     },
@@ -2157,7 +2157,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Magnum, Summit",
         "active": true
     },
@@ -2180,7 +2180,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "0.4",
         "farnesene_max": "0.6",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz, Lublin",
         "active": true
     },
@@ -2203,7 +2203,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Tradition",
         "active": true
     },
@@ -2226,7 +2226,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "0",
         "farnesene_max": "2",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -2249,7 +2249,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "7",
         "farnesene_max": "8",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -2272,7 +2272,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "3",
         "farnesene_max": "5",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -2295,7 +2295,7 @@
         "caryophyllene_max": "13",
         "farnesene_min": "12",
         "farnesene_max": "18",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz, Tettnang (DE)",
         "active": true
     },
@@ -2318,7 +2318,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "11",
         "farnesene_max": "17",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz (CZ), Lublin (PL)",
         "active": true
     },
@@ -2341,7 +2341,7 @@
         "caryophyllene_max": "6",
         "farnesene_min": "4",
         "farnesene_max": "4.6",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Norhern Brewer (DE)",
         "active": true
     },
@@ -2364,7 +2364,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Crystal, Liberty, Mt. Hood",
         "active": true
     },
@@ -2387,7 +2387,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "5",
         "farnesene_max": "10",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Styrian Bobek, Styrian Savinjski Golding",
         "active": true
     },
@@ -2410,7 +2410,7 @@
         "caryophyllene_max": "6",
         "farnesene_min": "4",
         "farnesene_max": "7",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz (CZ)",
         "active": true
     },
@@ -2433,7 +2433,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "3",
         "farnesene_max": "7",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz, Styrian Bobek, Styrian Savinjski Golding",
         "active": true
     },
@@ -2456,7 +2456,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "2",
         "farnesene_max": "5",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Fuggle, Fuggle (UK), Styrian Bobek",
         "active": true
     },
@@ -2479,7 +2479,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -2502,7 +2502,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Columbus, Millennium, Simcoe, Warrior",
         "active": true
     },
@@ -2525,7 +2525,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Green Bullet",
         "active": true
     },
@@ -2548,7 +2548,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Galena",
         "active": true
     },
@@ -2571,7 +2571,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Pride of Ringwood",
         "active": true
     },
@@ -2594,7 +2594,7 @@
         "caryophyllene_max": "32",
         "farnesene_min": "1",
         "farnesene_max": "3",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -2617,7 +2617,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "22",
         "farnesene_max": "28",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz (CZ)",
         "active": true
     },
@@ -2640,7 +2640,7 @@
         "caryophyllene_max": "3.5",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "-",
         "active": true
     },
@@ -2663,7 +2663,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Fuggle, Willamette",
         "active": true
     },
@@ -2686,7 +2686,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Citra, Magnum, Tradition (DE)",
         "active": true
     },
@@ -2709,7 +2709,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "16",
         "farnesene_max": "24",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Saaz, Hersbruker (DE), Spalt (DE), Select (DE)",
         "active": true
     },
@@ -2732,7 +2732,7 @@
         "caryophyllene_max": "7",
         "farnesene_min": "5",
         "farnesene_max": "8",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Fuggle, Santiam, Spalt (DE)",
         "active": true
     },
@@ -2755,7 +2755,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Chinook, Galena, Millennium, Nugget",
         "active": true
     },
@@ -2778,7 +2778,7 @@
         "caryophyllene_max": "13",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Cluster, Galena",
         "active": true
     },
@@ -2801,7 +2801,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Liberty, Hallertau Mittelfrüh (DE)",
         "active": true
     },
@@ -2824,7 +2824,7 @@
         "caryophyllene_max": "5.1",
         "farnesene_min": "0.3",
         "farnesene_max": "0.6",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Perle",
         "active": true
     },
@@ -2847,7 +2847,7 @@
         "caryophyllene_max": "6.3",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Ahtanum, Centennial, Chinook, Simcoe",
         "active": true
     },
@@ -2870,7 +2870,7 @@
         "caryophyllene_max": "15",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Hallertau",
         "active": true
     },
@@ -2893,7 +2893,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Hallertau, Liberty, Mt. Hood, Hersbruker (DE)",
         "active": true
     },
@@ -2916,7 +2916,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -2939,7 +2939,7 @@
         "caryophyllene_max": "3",
         "farnesene_min": "4",
         "farnesene_max": "6",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "-",
         "active": true
     },
@@ -2962,7 +2962,7 @@
         "caryophyllene_max": "9",
         "farnesene_min": "6",
         "farnesene_max": "8",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Hallertau (UK), Liberty",
         "active": true
     },
@@ -2985,7 +2985,7 @@
         "caryophyllene_max": "10",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Columbus, Magnum, Nugget",
         "active": true
     },
@@ -3008,7 +3008,7 @@
         "caryophyllene_max": "14",
         "farnesene_min": "1",
         "farnesene_max": "2",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "East Kent Golding, Progress",
         "active": true
     },
@@ -3031,7 +3031,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "5",
         "farnesene_max": "6",
-        "type": "Aroma",
+        "type": "AROMA",
         "substitute": "Fuggle, Glacier, Tettnang (DE), Styrian Savinjski Golding",
         "active": true
     },
@@ -3054,7 +3054,7 @@
         "caryophyllene_max": "8",
         "farnesene_min": "9",
         "farnesene_max": "10",
-        "type": "Dual purpose",
+        "type": "DUAL PURPOSE",
         "substitute": "Fuggle",
         "active": true
     },
@@ -3077,7 +3077,7 @@
         "caryophyllene_max": "11",
         "farnesene_min": "0",
         "farnesene_max": "1",
-        "type": "Bittering",
+        "type": "BITTERING",
         "substitute": "Chinook, Galena, Millennium, Nugget",
         "active": true
     }

@@ -63,7 +63,8 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
-
+        user.profile = UserProfile(user=user)
+        user.brewery = UserBrewery(user=user)
         return user
 
 
@@ -86,6 +87,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return reverse("users:detail", kwargs={"email": self.email})
 
+    def __str__(self):
+        return self.username
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField("User", verbose_name=_("User"), on_delete=models.CASCADE, related_name="profile")
@@ -95,10 +99,17 @@ class UserProfile(models.Model):
     gravity_units = models.CharField(_("Gravity Units"), max_length=255, choices=GRAVITY_UNITS, default="Plato")
     color_units = models.CharField(_("Color Units"), max_length=255, choices=COLOR_UNITS, default="SRM")
 
+    def __str__(self):
+        return f"{self.user.email} Profile"
+    
 
-class BreweryProfile(models.Model):
+
+class UserBrewery(models.Model):
     user = models.OneToOneField("User", verbose_name=_("User"), on_delete=models.CASCADE, related_name="brewery_profile")
-    image = models.ImageField(null=True, upload_to=brewery_profile_image_file_path, blank=True)
-    name = models.CharField(_("Brewery Name"), max_length=50, blank=True)
-    external_link = models.URLField(_("External URL"), max_length=200, blank=True)
+    image = models.ImageField(upload_to=brewery_profile_image_file_path, blank=True, null=True)
+    name = models.CharField(_("Brewery Name"), max_length=50, blank=True, null=True)
+    external_link = models.URLField(_("External URL"), max_length=200, blank=True, null=True)
     number_of_batches = models.IntegerField(_("Number of Batches"), default=0)
+
+    def __str__(self):
+        return f"{self.user.email} Brewery"
