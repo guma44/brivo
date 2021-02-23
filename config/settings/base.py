@@ -71,9 +71,12 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
+    "widget_tweaks",
+    'bootstrap_modal_forms',
     "allauth",
     "allauth.account",
     "django_celery_beat",
+    "fontawesome-free"
 ]
 
 LOCAL_APPS = [
@@ -188,6 +191,10 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "brivo.utils.context_processors.settings_context",
             ],
+            'libraries':{
+                'brew_tags': 'brivo.brew.templatetags.brew_tags',
+
+                }
         },
     }
 ]

@@ -5,15 +5,29 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, TemplateView, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from bootstrap_modal_forms.generic import (
+    BSModalFormView,
+    BSModalCreateView,
+    BSModalUpdateView,
+    BSModalReadView,
+    BSModalDeleteView
+)
 # from . import constants
-from brivo.brew.forms import BaseBatchForm
+from brivo.brew.forms import BaseBatchForm, FermentableModelForm
 from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable
+from brivo.users.models import User
 
 
-class BatchView(FormView):
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class BatchView(LoginRequiredMixin, FormView):
     template_name = 'batch/batch.html'
     batch = None
     form_class = None
@@ -50,7 +64,7 @@ class BatchView(FormView):
         return kwargs
 
 
-class FermentableListView(ListView):
+class FermentableListView(LoginRequiredMixin, ListView):
     model = Fermentable
     template_name = "brew/fermentable/list.html"
     context_object_name = 'fermentables'
@@ -68,39 +82,34 @@ class FermentableListView(ListView):
         except EmptyPage:
             fermentables = paginator.page(paginator.num_pages)
         context['fermentables'] = fermentables
+        context['user'] = User.objects.get(id=self.request.user.id)
         return context
 
 
-# @method_decorator(login_required, name='dispatch')
-class FermentableCreateView(CreateView):
-    model = Fermentable
+class FermentableCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
     template_name = 'brew/fermentable/create.html'
-    fields = "__all__"
+    form_class = FermentableModelForm
+    success_message = 'Fermentable was successfully created.'
     success_url = reverse_lazy('brew:fermentable-list')
 
 
-# @method_decorator(login_required, name='dispatch')
-class FermentableDetailView(DetailView):
-
+class FermentableDetailView(LoginRequiredMixin, BSModalReadView):
     model = Fermentable
     template_name = 'brew/fermentable/detail.html'
     context_object_name = 'fermentable'
 
 
-# @method_decorator(login_required, name='dispatch')
-class FermentableUpdateView(UpdateView):
-
+class FermentableUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
     model = Fermentable
+    form_class = FermentableModelForm
     template_name = 'brew/fermentable/update.html'
+    success_message = 'Success: Fermentable was updated.'
     context_object_name = 'fermentable'
-    fields = "__all__"
-
-    def get_success_url(self):
-        return reverse_lazy('brew:fermentable-detail', kwargs={'pk': self.object.id})
+    success_url = reverse_lazy('brew:fermentable-list')
 
 
-# @method_decorator(login_required, name='dispatch')
-class FermentableDeleteView(DeleteView):
+class FermentableDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Fermentable
     template_name = 'brew/fermentable/delete.html'
+    success_message = 'Fermentable was deleted.'
     success_url = reverse_lazy('brew:fermentable-list')

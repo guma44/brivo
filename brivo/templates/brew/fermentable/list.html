@@ -1,32 +1,104 @@
 {% extends "base.html" %}
 {% load static %}
+{% load brew_tags %}
 
-{% block title %}User: {{ object.username }}{% endblock %}
+{% block title %}Fermentables{% endblock title %}
 
 {% block content %}
+<h3>Fermentables</h3>
+<hl>
+<div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog mt-5">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog mt-5" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
 <div class="container">
-<table class="table">
-    <tr>
-        <thead class="thead-light">
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Type</th>
-                <th scope="col">Color</th>
-                <th scope="col">Extraction</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for fermentable in fermentables %}
-            <tr>
-                <td>{{fermentable.name}}</td>
-                <td>{{fermentable.type}}</td>
-                <td>{{fermentable.color.srm}}</td>
-                <td>{{fermentable.extraction}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    <div class="col-12 mb-3">
+    {% if user.is_staff %}
+    <button id="create-fermentable" class="btn btn-primary" type="button" name="button">
+        <span class="fa fa-plus mr-2"></span>Create fermentable
+    </button>
+    {% endif %}
+    </div>
+<table id="fermentables-table" class="table">
+    <thead>
+        <tr>
+            <th class="text-center" scope="col">Name</th>
+            <th class="text-center" scope="col">Type</th>
+            <th class="text-center" scope="col">Color [{{user.profile.color_units}}]</th>
+            <th class="text-center" scope="col">Extraction [%]</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fermentable in fermentables %}
+        <tr>
+            <td class="text-center" scope="row">{{fermentable.name}}</td>
+            <td class="text-center">{{fermentable.type}}</td>
+            <td class="text-center">{{fermentable.color|get_obj_attr:user.profile.color_units|floatformat}}</td>
+            <td class="text-center">{{fermentable.extraction}}</td>
+            <td class="text-center">
+                <!-- Read fermentable buttons -->
+                <button type="button" class="bs-modal read-fermentable btn btn-sm btn-primary" data-form-url="{% url 'brew:fermentable-detail' fermentable.pk %}">
+                <span class="fa fa-eye"></span>
+                </button>
+                {% if user.is_staff %}
+                <!-- Update fermentable buttons -->
+                <button type="button" class="update-fermentable btn btn-sm btn-primary" data-form-url="{% url 'brew:fermentable-update' fermentable.pk %}">
+                <span class="fa fa-edit"></span>
+                </button>
+                <!-- Delete fermentable buttons -->
+                <button type="button" class="bs-modal delete-fermentable btn btn-sm btn-danger" data-form-url="{% url 'brew:fermentable-delete' fermentable.pk %}">
+                <span class="fa fa-trash"></span>
+                </button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% if is_paginated %}
     {% include "pagination.html" %}
 {% endif %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
 {% endblock content %}
+{% block inline_javascript %}
+<script defer type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-fermentable").modalForm({
+        formURL: "{% url 'brew:fermentable-create' %}"
+    });
+
+    $(".update-fermentable").each(function () {
+        $(this).modalForm({
+        formURL: $(this).data("form-url"),
+        asyncUpdate: false,
+        });
+    });
+
+    // Read and Delete book buttons open modal with id="modal"
+    // The formURL is retrieved from the data of the element
+    $(".bs-modal").each(function () {
+        $(this).modalForm({formURL: $(this).data("form-url")});
+    });
+
+    // Hide message
+    $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+        $(".alert").slideUp(500);
+    });
+
+});
+</script>
+{% endblock inline_javascript %}

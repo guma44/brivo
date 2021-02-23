@@ -39,8 +39,7 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView)
         "general_units",
         "temperature_units",
         "gravity_units",
-        "color_units",
-        "ibu_type"
+        "color_units"
     )
     success_message = _("Information successfully updated")
 
