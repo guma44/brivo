@@ -16,6 +16,7 @@ FERMENTABLE_TYPE = (
     ('ADJUNCT', 'Adjunct'),
     ('BASE MALT', 'Base malt'),
     ('CRYSTAL MALT', 'Crystal malt'),
+    ('SPECIALITY MALT', 'Speciality malt'),
     ('DRY EXTRACT', 'Dry extract'),
     ('LIQUID EXTRACT', 'Liquid extract'),
     ('ROASTED MALT', 'Roasted malt'),
@@ -246,6 +247,36 @@ class Style(models.Model):
     commercial_exam = models.TextField(_("Examples"), max_length=255, blank=True, null=True)
     tags = models.ManyToManyField("Tag")
     active = models.BooleanField(_("Active"), default=True)
+
+    def get_og(self):
+        if self.og_min is not None and self.og_max is not None:
+            return (self.og_min + self.og_max) / 2.0
+        elif self.og_min is not None:
+            return self.og_min
+        elif self.og_max is not None:
+            return self.og_max
+        else:
+            return BeerGravity(0.0)
+
+    def get_ibu(self):
+        if self.ibu_min is not None and self.ibu_max is not None:
+            return float(self.ibu_min + self.ibu_max) / 2.0
+        elif self.ibu_min is not None:
+            return self.ibu_min
+        elif self.ibu_max is not None:
+            return self.ibu_max
+        else:
+            return None
+
+    def get_hex_color(self):
+        if self.color_min is not None and self.color_max is not None:
+            return functions.get_hex_color_from_srm(((self.color_min + self.color_max) / 2.0).srm)
+        elif self.color_min is not None:
+            return functions.get_hex_color_from_srm(self.color_min.srm)
+        elif self.color_max is not None:
+            return functions.get_hex_color_from_srm(self.color_max.srm)
+        else:
+            return ""
 
     def __str__(self):
         return self.name

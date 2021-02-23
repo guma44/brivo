@@ -17,8 +17,21 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView
 )
 # from . import constants
-from brivo.brew.forms import BaseBatchForm, FermentableModelForm, HopModelForm, YeastModelForm, ExtraModelForm
-from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable, Hop, Yeast, Extra
+from brivo.brew.forms import (
+    BaseBatchForm,
+    FermentableModelForm,
+    HopModelForm,
+    YeastModelForm,
+    ExtraModelForm,
+    StyleModelForm)
+from brivo.brew.models import (
+    Batch,
+    BATCH_STAGE_ORDER,
+    Fermentable,
+    Hop,
+    Yeast,
+    Extra,
+    Style)
 from brivo.users.models import User
 from brivo.brew import filters
 
@@ -300,3 +313,63 @@ class ExtraDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView)
     template_name = 'brew/extra/delete.html'
     success_message = 'Extra was deleted.'
     success_url = reverse_lazy('brew:extra-list')
+
+
+#
+# Style
+#
+class StyleListView(LoginRequiredMixin, ListView):
+    model = Style
+    template_name = "brew/style/list.html"
+    context_object_name = 'styles'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(StyleListView, self).get_context_data(**kwargs)
+        styles = self.get_queryset()
+        page = self.request.GET.get('page')
+        paginator = Paginator(styles, self.paginate_by)
+        try:
+            styles = paginator.page(page)
+        except PageNotAnInteger:
+            styles = paginator.page(1)
+        except EmptyPage:
+            styles = paginator.page(paginator.num_pages)
+        context['styles'] = styles
+        context['user'] = User.objects.get(id=self.request.user.id)
+        context['filter'] = filters.StyleFilter(self.request.GET)
+        return context
+
+    def get_queryset(self):
+        qs = self.model.objects.all()
+        filtered_styles = filters.StyleFilter(self.request.GET, queryset=qs)
+        return filtered_styles.qs
+
+
+class StyleCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
+    template_name = 'brew/style/create.html'
+    form_class = StyleModelForm
+    success_message = 'Style was successfully created.'
+    success_url = reverse_lazy('brew:style-list')
+
+
+class StyleDetailView(LoginRequiredMixin, BSModalReadView):
+    model = Style
+    template_name = 'brew/style/detail.html'
+    context_object_name = 'style'
+
+
+class StyleUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
+    model = Style
+    form_class = StyleModelForm
+    template_name = 'brew/style/update.html'
+    success_message = 'Success: Style was updated.'
+    context_object_name = 'style'
+    success_url = reverse_lazy('brew:style-list')
+
+
+class StyleDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
+    model = Style
+    template_name = 'brew/style/delete.html'
+    success_message = 'Style was deleted.'
+    success_url = reverse_lazy('brew:style-list')

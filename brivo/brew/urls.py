@@ -51,4 +51,16 @@ urlpatterns = [
          name='extra-update'),
     path('extra/<int:pk>/delete', views.ExtraDeleteView.as_view(),
          name='extra-delete'),
+
+    # Styles
+    path('style', views.StyleListView.as_view(),
+         name='style-list'),
+    path('style/create', views.StyleCreateView.as_view(),
+         name='style-create'),
+    path('style/<int:pk>', views.StyleDetailView.as_view(),
+         name='style-detail'),
+    path('style/<int:pk>/update', views.StyleUpdateView.as_view(),
+         name='style-update'),
+    path('style/<int:pk>/delete', views.StyleDeleteView.as_view(),
+         name='style-delete'),
 ]

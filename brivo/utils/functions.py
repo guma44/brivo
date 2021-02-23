@@ -180,7 +180,7 @@ def calculate_abw(og, fg):
     return 0.79336 * calculate_abv(og, fg)
 
 
-def return_hex_color_from_srm(srm):
+def get_hex_color_from_srm(srm):
     """Return HEX converted color from SRM"""
     if (srm <= 1):
         return '#FAFAA0'

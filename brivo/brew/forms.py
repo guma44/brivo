@@ -6,7 +6,7 @@ from django_measurement.forms import MeasurementField
 from measurement.measures import Volume, Weight, Temperature
 
 from brivo.utils.measures import BeerColor, BeerGravity
-from brivo.brew.models import Fermentable, Hop, Yeast, Extra
+from brivo.brew.models import Fermentable, Hop, Yeast, Extra, Style
 
 
 class BaseBatchForm(ModelForm):
@@ -72,4 +72,48 @@ class ExtraModelForm(BSModalModelForm):
 
     class Meta:
         model = Extra
+        fields = "__all__"
+
+
+class StyleModelForm(BSModalModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(StyleModelForm, self).__init__(*args, **kwargs)
+        user_color_unit = self.request.user.profile.color_units.lower()
+        user_gravity_unit = self.request.user.profile.gravity_units.lower()
+        self.fields.update({
+            "color_min": MeasurementField(
+                measurement=BeerColor,
+                unit_choices=(
+                    (user_color_unit,
+                     user_color_unit),)),
+            "color_max": MeasurementField(
+                measurement=BeerColor,
+                unit_choices=(
+                    (user_color_unit,
+                     user_color_unit),)),
+            "og_min": MeasurementField(
+                measurement=BeerGravity,
+                unit_choices=(
+                    (user_gravity_unit,
+                     user_gravity_unit),)),
+            "og_max": MeasurementField(
+                measurement=BeerGravity,
+                unit_choices=(
+                    (user_gravity_unit,
+                     user_gravity_unit),)),
+            "fg_min": MeasurementField(
+                measurement=BeerGravity,
+                unit_choices=(
+                    (user_gravity_unit,
+                     user_gravity_unit),)),
+            "fg_max": MeasurementField(
+                measurement=BeerGravity,
+                unit_choices=(
+                    (user_gravity_unit,
+                     user_gravity_unit),)),
+        })
+
+    class Meta:
+        model = Style
         fields = "__all__"
