@@ -20,6 +20,7 @@ from bootstrap_modal_forms.generic import (
 from brivo.brew.forms import BaseBatchForm, FermentableModelForm, HopModelForm
 from brivo.brew.models import Batch, BATCH_STAGE_ORDER, Fermentable, Hop
 from brivo.users.models import User
+from brivo.brew import filters
 
 
 class StaffRequiredMixin(UserPassesTestMixin):
@@ -83,7 +84,13 @@ class FermentableListView(LoginRequiredMixin, ListView):
             fermentables = paginator.page(paginator.num_pages)
         context['fermentables'] = fermentables
         context['user'] = User.objects.get(id=self.request.user.id)
+        context['filter'] = filters.FermentableFilter(self.request.GET)
         return context
+
+    def get_queryset(self):
+        qs = self.model.objects.all()
+        filtered_hops = filters.FermentableFilter(self.request.GET, queryset=qs)
+        return filtered_hops.qs
 
 
 class FermentableCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
@@ -134,7 +141,13 @@ class HopListView(LoginRequiredMixin, ListView):
             hops = paginator.page(paginator.num_pages)
         context['hops'] = hops
         context['user'] = User.objects.get(id=self.request.user.id)
+        context['filter'] = filters.HopFilter(self.request.GET)
         return context
+
+    def get_queryset(self):
+        qs = self.model.objects.all()
+        filtered_hops = filters.HopFilter(self.request.GET, queryset=qs)
+        return filtered_hops.qs
 
 
 class HopCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):

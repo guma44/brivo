@@ -22,10 +22,23 @@
 <div class="container">
     <div class="col-12 mb-3">
     {% if user.is_staff %}
-    <button id="create-hop" class="btn btn-primary" type="button" name="button">
+    <button id="create-hop" class="btn btn-success" type="button" name="button">
         <span class="fa fa-plus mr-2"></span>Create Hop
     </button>
     {% endif %}
+    <button id="create-hop" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
+        Toggle Filters
+    </button>
+    </div>
+    <div id="filter-row" class="row collapse">
+        <div class="col">
+            <div class="card card-body">
+                <form method="get">
+                    {{filter.form.as_p}}
+                    <button class="btn btn-primary" name="button" type="submit"><span class="fa fa-filter mr-2"></span>Filter</button>
+                </form>
+            </div>
+        </div>
     </div>
 <table id="hops-table" class="table">
     <thead>

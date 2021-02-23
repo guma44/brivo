@@ -76,7 +76,8 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "django_celery_beat",
-    "fontawesome-free"
+    "fontawesome-free",
+    "django_filters"
 ]
 
 LOCAL_APPS = [
