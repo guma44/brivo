@@ -2,10 +2,10 @@
 {% load static %}
 {% load brew_tags %}
 
-{% block title %}Styles{% endblock title %}
+{% block title %}Recipes{% endblock title %}
 
 {% block content %}
-<h3>Styles</h3>
+<h3>Recipes</h3>
 <hl>
 <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog mt-5 modal-lg">
@@ -22,11 +22,11 @@
 <div class="container">
     <div class="col-12 mb-3">
     {% if user.is_staff %}
-    <button id="create-style" class="btn btn-success" type="button" name="button">
-        <span class="fa fa-plus mr-2"></span>Create Style
+    <button id="create-recipe" class="btn btn-success" type="button" name="button">
+        <span class="fa fa-plus mr-2"></span>Create Recipe
     </button>
     {% endif %}
-    <button id="create-style" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
+    <button id="create-recipe" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
         Toggle Filters
     </button>
     </div>
@@ -40,35 +40,41 @@
             </div>
         </div>
     </div>
-<table id="styles-table" class="table">
+<table id="recipes-table" class="table">
     <thead>
-        <tr>
+        <tr >
             <th class="text-center" scope="col">Name</th>
-            <th class="text-center" scope="col">Fermentation Type</th>
-            <th class="text-center" scope="col">OG [{{user.profile.gravity_units}}]</th>
+            <th class="text-center" scope="col">Gravity [{{user.profile.gravity_units}}]</th>
+            <th class="text-center" scope="col">ABV</th>
+            <th class="text-center" scope="col">Size</th>
+            <th class="text-center" scope="col">Style</th>
             <th class="text-center" scope="col">IBU</th>
+            <th class="text-center" scope="col">Color [{{user.profile.color_units}}]</th>
             <th class="text-center" scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
-        {% for style in styles %}
-        <tr style="border-left-color:{{style.get_hex_color}};border-left-style:solid;border-left-width:10px">
-            <td class="text-center">{{style.name}}</td>
-            <td class="text-center">{{style.ferm_type}}</td>
-            <td class="text-center">{{style.get_og|get_obj_attr:user.profile.gravity_units|floatformat}}</td>
-            <td class="text-center">{{style.get_ibu|floatformat}}</td>
+        {% for recipe in recipes %}
+        <tr style="border-left-color:{{recipe.get_hex_color}};border-left-style:solid;border-left-width:10px">
+            <td class="text-center" scope="row">{{recipe.name}}</td>
+            <td class="text-center">{{recipe.get_gravity|get_obj_attr:user.profile.gravity_units|floatformat}}</td>
+            <td class="text-center">{{recipe.get_abv|floatformat}}</td>
+            <td class="text-center">{{recipe.expected_beer_volume|get_obj_attr:recipe.get_volume_unit}}</td>
+            <td class="text-center">{{recipe.style.name}}</td>
+            <td class="text-center">{{recipe.get_expected_ibu|floatformat}}</td>
+            <td class="text-center">{{recipe.get_color|get_obj_attr:user.profile.color_units|floatformat}}</td>
             <td class="text-center">
-                <!-- Read style buttons -->
-                <button type="button" class="bs-modal read-style btn btn-sm btn-primary" data-form-url="{% url 'brew:style-detail' style.pk %}">
+                <!-- Read recipe buttons -->
+                <button type="button" class="bs-modal read-recipe btn btn-sm btn-primary" data-form-url="{% url 'brew:recipe-detail' recipe.pk %}">
                 <span class="fa fa-eye"></span>
                 </button>
                 {% if user.is_staff %}
-                <!-- Update style buttons -->
-                <button type="button" class="update-style btn btn-sm btn-primary" data-form-url="{% url 'brew:style-update' style.pk %}">
+                <!-- Update recipe buttons -->
+                <button type="button" class="update-recipe btn btn-sm btn-primary" data-form-url="{% url 'brew:recipe-update' recipe.pk %}">
                 <span class="fa fa-edit"></span>
                 </button>
-                <!-- Delete style buttons -->
-                <button type="button" class="bs-modal delete-style btn btn-sm btn-danger" data-form-url="{% url 'brew:style-delete' style.pk %}">
+                <!-- Delete recipe buttons -->
+                <button type="button" class="bs-modal delete-recipe btn btn-sm btn-danger" data-form-url="{% url 'brew:recipe-delete' recipe.pk %}">
                 <span class="fa fa-trash"></span>
                 </button>
                 {% endif %}
@@ -90,11 +96,11 @@
 <script defer type="text/javascript">
 $(document).ready(function() {
 
-    $("#create-style").modalForm({
-        formURL: "{% url 'brew:style-create' %}"
+    $("#create-recipe").modalForm({
+        formURL: "{% url 'brew:recipe-create' %}"
     });
 
-    $(".update-style").each(function () {
+    $(".update-recipe").each(function () {
         $(this).modalForm({
         formURL: $(this).data("form-url"),
         asyncUpdate: false,

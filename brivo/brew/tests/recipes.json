@@ -1,0 +1,438 @@
+[
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1",
+                "unit": "kg",
+                "extraction": "60",
+                "color": "4"
+            },
+            {
+                "type": "GRAIN",
+                "name": "Carafa",
+                "amount": "0.5",
+                "unit": "kg",
+                "extraction": "70",
+                "color": "664"
+            },
+            {
+                "type": "SUGAR",
+                "name": "Brown Sugar, Dark",
+                "amount": "0.5",
+                "unit": "kg",
+                "extraction": "100",
+                "color": "99"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20",
+                "unit": "g",
+                "time": "60",
+                "time_unit": "min",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10",
+                "unit": "g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mashing": [
+            {
+                "temp": "66",
+                "time": "60",
+                "time_unit": "min"
+            }
+        ],
+        "fields": {
+            "boil_loss": "0",
+            "type": "ALL GRAIN",
+            "expected_beer_volume": "10 liter(s)",
+            "boil_time": "60",
+            "evaporation_rate": "10",
+            "trub_loss": "0",
+            "dry_hopping_loss": "0",
+            "mash_efficiency": "75",
+            "liquor_to_grist_ratio": "3",
+            "name": "TestAllGrain4",
+            "style": "Czech Premium Pale Lager"
+        },
+        "extra_info": {
+            "bitterness_ratio": "1.08",
+            "post-primary_gravity": "---",
+            "abv": "4.8 %",
+            "attenuation": "82.4 %",
+            "gravity_blg": "11.9",
+            "ibu": "52",
+            "srm": "40.1",
+            "style": "Bohemian Pilsener",
+            "public_recipe": "",
+            "boil_size": "11 liter(s)",
+            "mash_size": "4.5 liter(s)",
+            "total_mash_volume": "6 liter(s)",
+            "batch_id": 6
+        }
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "4",
+                "unit": "kg",
+                "extraction": "80",
+                "color": "4"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20",
+                "unit": "g",
+                "time": "60",
+                "time_unit": "min",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10",
+                "unit": "g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mashing": [
+            {
+                "temp": "66",
+                "time": "60",
+                "time_unit": "min"
+            }
+        ],
+        "fields": {
+            "boil_loss": "10",
+            "type": "ALL GRAIN",
+            "expected_beer_volume": "20 liter(s)",
+            "boil_time": "60",
+            "evaporation_rate": "10",
+            "trub_loss": "5",
+            "dry_hopping_loss": "5",
+            "mash_efficiency": "75",
+            "liquor_to_grist_ratio": "3",
+            "name": "TestAllGrain",
+            "style": "Czech Premium Pale Lager"
+        },
+        "extra_info": {
+            "bitterness_ratio": "0.59",
+            "abv": "4.2 %",
+            "attenuation": "80.5 %",
+            "gravity_blg": "9.8",
+            "ibu": "23",
+            "srm": "3.1",
+            "style": "Bohemian Pilsener",
+            "public_recipe": "",
+            "boil_size": "26.4 liter(s)",
+            "mash_size": "12 liter(s)",
+            "total_mash_volume": "16 liter(s)",
+            "batch_id": 2
+        }
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1",
+                "unit": "kg",
+                "extraction": "60",
+                "color": "4"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20",
+                "unit": "g",
+                "time": "60",
+                "time_unit": "min",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10",
+                "unit": "g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mashing": [
+            {
+                "temp": "66",
+                "time": "60",
+                "time_unit": "min"
+            }
+        ],
+        "fields": {
+            "boil_loss": "0",
+            "type": "ALL GRAIN",
+            "expected_beer_volume": "10 liter(s)",
+            "boil_time": "60",
+            "evaporation_rate": "10",
+            "trub_loss": "0",
+            "dry_hopping_loss": "0",
+            "mash_efficiency": "75",
+            "liquor_to_grist_ratio": "3",
+            "name": "TestAllGrain2",
+            "style": "Czech Premium Pale Lager"
+        },
+        "extra_info": {
+            "bitterness_ratio": "4",
+            "abv": "1 %",
+            "attenuation": "50.3 %",
+            "gravity_blg": "4.3",
+            "ibu": "68",
+            "srm": "2.2",
+            "style": "Bohemian Pilsener",
+            "public_recipe": "",
+            "boil_size": "11 liter(s)",
+            "mash_size": "3 liter(s)",
+            "total_mash_volume": "4 liter(s)",
+            "batch_id": 4
+        }
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1",
+                "unit": "kg",
+                "extraction": "60",
+                "color": "4"
+            },
+            {
+                "type": "GRAIN",
+                "name": "Carafa",
+                "amount": "0.5",
+                "unit": "kg",
+                "extraction": "70",
+                "color": "664"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20",
+                "unit": "g",
+                "time": "60",
+                "time_unit": "min",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10",
+                "unit": "g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mashing": [
+            {
+                "temp": "66",
+                "time": "60",
+                "time_unit": "min"
+            }
+        ],
+        "fields": {
+            "boil_loss": "0",
+            "type": "ALL GRAIN",
+            "expected_beer_volume": "10 liter(s)",
+            "boil_time": "60",
+            "evaporation_rate": "10",
+            "trub_loss": "0",
+            "dry_hopping_loss": "0",
+            "mash_efficiency": "75",
+            "liquor_to_grist_ratio": "3",
+            "name": "TestAllGrain3",
+            "style": "Czech Premium Pale Lager"
+        },
+        "extra_info": {
+            "bitterness_ratio": "2.21",
+            "abv": "2 %",
+            "attenuation": "67.1 %",
+            "gravity_blg": "7.1",
+            "ibu": "62",
+            "srm": "36.5",
+            "style": "Bohemian Pilsener",
+            "public_recipe": "",
+            "boil_size": "11 liter(s)",
+            "mash_size": "4.5 liter(s)",
+            "total_mash_volume": "6 liter(s)",
+            "batch_id": 5
+        }
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1",
+                "unit": "kg",
+                "extraction": "100",
+                "color": "4"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20",
+                "unit": "g",
+                "time": "60",
+                "time_unit": "min",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10",
+                "unit": "g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mashing": [
+            {
+                "temp": "66",
+                "time": "60",
+                "time_unit": "min"
+            }
+        ],
+        "fields": {
+            "boil_loss": "0",
+            "type": "ALL GRAIN",
+            "expected_beer_volume": "10 liter(s)",
+            "boil_time": "60",
+            "evaporation_rate": "10",
+            "trub_loss": "0",
+            "dry_hopping_loss": "0",
+            "mash_efficiency": "100",
+            "liquor_to_grist_ratio": "3",
+            "name": "TestAllGrain5",
+            "style": "Czech Premium Pale Lager"
+        },
+        "extra_info": {
+            "bitterness_ratio": "1.44",
+            "post-primary_gravity": "---",
+            "abv": "2 %",
+            "attenuation": "67.1 %",
+            "gravity_blg": "9.8",
+            "ibu": "56",
+            "srm": "2.2",
+            "style": "Bohemian Pilsener",
+            "public_recipe": "",
+            "boil_size": "11 liter(s)",
+            "mash_size": "3 liter(s)",
+            "total_mash_volume": "4 liter(s)",
+            "batch_id": 7
+        }
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1",
+                "unit": "kg",
+                "extraction": "100",
+                "color": "4"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20",
+                "unit": "g",
+                "time": "60",
+                "time_unit": "min",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10",
+                "unit": "g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mashing": [
+            {
+                "temp": "66",
+                "time": "60",
+                "time_unit": "min"
+            }
+        ],
+        "fields": {
+            "boil_loss": "0",
+            "type": "ALL GRAIN",
+            "expected_beer_volume": "10 liter(s)",
+            "boil_time": "60",
+            "evaporation_rate": "10",
+            "trub_loss": "0",
+            "dry_hopping_loss": "0",
+            "mash_efficiency": "75",
+            "liquor_to_grist_ratio": "3",
+            "name": "TestAllGrain",
+            "style": "Czech Premium Pale Lager"
+        },
+        "extra_info": {
+            "bitterness_ratio": "2.1",
+            "pre-boil_gravity": "---",
+            "post-primary_gravity": "---",
+            "abv": "2.6 %",
+            "attenuation": "71.8 %",
+            "gravity_blg": "7.3",
+            "ibu": "61",
+            "srm": "2.2",
+            "style": "Bohemian Pilsener",
+            "public_recipe": "",
+            "boil_size": "11 liter(s)",
+            "mash_size": "3 liter(s)",
+            "total_mash_volume": "4 liter(s)",
+            "batch_id": 3
+        }
+    }
+]

@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.deletion import DO_NOTHING
 from django.db.models.fields import CharField
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -10,23 +11,21 @@ from measurement.measures import Volume, Weight, Temperature
 
 from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.utils import functions
+from brivo.users.models import User
 
 
 FERMENTABLE_TYPE = (
     ('ADJUNCT', 'Adjunct'),
-    ('BASE MALT', 'Base malt'),
-    ('CRYSTAL MALT', 'Crystal malt'),
-    ('SPECIALITY MALT', 'Speciality malt'),
+    ('GRAIN', "Grain"),
     ('DRY EXTRACT', 'Dry extract'),
     ('LIQUID EXTRACT', 'Liquid extract'),
-    ('ROASTED MALT', 'Roasted malt'),
     ('SUGAR', 'Sugar')
 )
 
 
 BATCH_STAGES = (
     ("MASHING", "Mashing"),
-    ("BOILING", "Boiling"),
+    ("BOIL", "Boil"),
     ("PRIMARY FERMENTATION", "Primary Fermentation"),
     ("SECONDARY FERMENTATION", "Secondary Fermentation"),
     ("PACKAGING", "Packaging"),
@@ -63,12 +62,12 @@ EXTRA_USE = [
 
 
 FERMENTABLE_USE = [('MASHING', 'Mashing'),
- ('BOILING', 'Boiling'),
- ('LATE BOILING', 'Late boiling'),
+ ('BOIL', 'Boil'),
+ ('LATE BOIL', 'Late boil'),
  ('STEEP', 'Steep')]
 
 
-HOP_USE = [('BOILING', 'Boiling'),
+HOP_USE = [('BOIL', 'Boil'),
  ('DRY HOP', 'Dry hop'),
  ('MASH', 'Mash'),
  ("AROMA", "Aroma"),
@@ -92,6 +91,7 @@ HOP_TYPE = [
 YEAST_TYPE = [
     ('ALE', 'Ale'),
     ('LAGER', 'Lager'),
+    ('WHEAT', 'Wheat'),
     ('WILD', 'Wild'),
     ('CHAMPAGNE', 'Champagne'),
     ('BACTERIA', 'Bacteria'),
@@ -322,21 +322,31 @@ class Inventory(models.Model):
     inventory_extra = models.ForeignKey("InventoryExtra", verbose_name=_("Extra"), on_delete=models.CASCADE)
 
 class FermentableIngredient(BaseFermentable):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="fermentables")
     amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
     use = models.CharField(_("Fermentable Use"), max_length=255, choices=FERMENTABLE_USE)
 
+    def get_fermentable_sugar(self):
+        sugar = self.amount.kg * float(self.extraction) / 100.0
+        return Weight(kg=sugar)
+
 class HopIngredient(BaseHop):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="hops")
     use = models.CharField(_("Use"), max_length=255, choices=HOP_USE)
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
     time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
     time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
 
 
 class YeastIngredient(BaseYeast):
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)]),
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="yeasts")
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
     form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
 
 
 class ExtraIngredient(BaseExtra):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="extras")
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
     time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2)
     time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
 
@@ -347,39 +357,46 @@ class Fermentation(models.Model):
 
 
 class MashStep(models.Model):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="mash_steps")
     temperature = MeasurementField(measurement=Temperature, verbose_name=_("Temperature"))
     time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2, default=0)
     note = models.TextField(_("Note"), blank=True)
 
 
 class Recipe(models.Model):
-    user = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     # Recipe info
     type = models.CharField(_("Type"), max_length=255, choices=RECIPE_TYPE)
     name = models.CharField(_("Name"), max_length=255)
-    style = models.ManyToManyField("Style", _("Style"))
+    style = models.ForeignKey("Style", verbose_name=_("Style"), on_delete=models.DO_NOTHING)
     # Batch info
-    batch_volume = MeasurementField(measurement=Volume, verbose_name=_("Batch Volume"), unit_choices=["l", "ml", "oz", "gal"], validators=[MinValueValidator(0)])
-    boil_time = models.IntegerField(_("Boil Time"))
-    evaporation_rate = models.DecimalField(_("Evaporation Rate"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-    boil_loss = models.DecimalField(_("Boil Loss"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-    turb_loss = models.DecimalField(_("Trub Loss"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-    dry_hopping_loss = models.DecimalField(_("Dry Hopping Loss"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-    # Ingredients
-    fermentables = models.ForeignKey("FermentableIngredient", verbose_name=_(""), on_delete=models.CASCADE)
-    hops = models.ForeignKey("HopIngredient", verbose_name=_(""), on_delete=models.CASCADE)
-    yeasts = models.ForeignKey("YeastIngredient", verbose_name=_(""), on_delete=models.CASCADE)
-    extras = models.ForeignKey("ExtraIngredient", verbose_name=_(""), on_delete=models.CASCADE)
+    expected_beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Batch Volume"), unit_choices=["l", "ml", "oz", "gal"], validators=[MinValueValidator(0)])
+    boil_time = models.IntegerField(_("Boil Time"), default=60.0)
+    evaporation_rate = models.DecimalField(_("Evaporation Rate"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], default=10.0)
+    boil_loss = models.DecimalField(_("Boil Loss"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], default=10.0)
+    trub_loss = models.DecimalField(_("Trub Loss"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], default=5.0)
+    dry_hopping_loss = models.DecimalField(_("Dry Hopping Loss"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], default=0)
     # Mashing
-    mash_efficiency = models.DecimalField(_("Mash Efficiency"), max_digits=5, decimal_places=2, default=75)
-    liquor_to_grist_ration = models.DecimalField(_("Liquor-To-Grist Ratio"), max_digits=5, decimal_places=2)
-    mashing = models.ForeignKey("MashStep", verbose_name=_(""), on_delete=models.CASCADE)
+    mash_efficiency = models.DecimalField(_("Mash Efficiency"), max_digits=5, decimal_places=2, default=75.0)
+    liquor_to_grist_ratio = models.DecimalField(_("Liquor-To-Grist Ratio"), max_digits=5, decimal_places=2, default=3.0)
     # Rest
     note = models.TextField(_("Note"), max_length=255, blank=True)
     is_public = models.BooleanField(_("Public"), default=True)
 
+
+    def get_initial_size(self):
+        volume = self.expected_beer_volume.l
+        boil_loss = volume * (float(self.boil_loss)/100.0)
+        trub_loss = volume * (float(self.trub_loss)/100.0)
+        dry_hopping_loss = volume * (float(self.dry_hopping_loss)/100.0)
+        volume = volume + boil_loss + trub_loss + dry_hopping_loss
+        return Volume(l=volume)
+
+
     def get_boil_size(self):
-        pass
+        initial_size = self.get_initial_size()
+        volume = initial_size + (initial_size * (float(self.evaporation_rate)/100.0))
+        return volume
 
     def get_pre_boil_gravity(self):
         pass
@@ -391,13 +408,61 @@ class Recipe(models.Model):
         pass
 
     def get_color(self):
-        pass
+        added_colors = []
+        for fermentable in self.fermentables.all():
+            added_colors.append(functions.calculate_mcu(
+                color=fermentable.color.srm,
+                weigth=fermentable.amount.kg,
+                volume=self.expected_beer_volume.l))
+        return BeerColor(srm=sum(added_colors))
+
+    def get_hex_color(self):
+        return functions.get_hex_color_from_srm(self.get_color().srm)
+
+    def get_volume_unit(self):
+        if self.user.profile.general_units.lower() == "metric":
+            return "l"
+        else:
+            return "gal"
 
     def get_abv(self):
-        pass
+        return (self.get_gravity().plato - self.get_gravity().plato * 0.2) * 0.516
+
+    def get_grain_sugars(self):
+        sugars = Weight(kg=0.0)
+        for fermentable in self.fermentables.filter(type="GRAIN"):
+            sugars += fermentable.get_fermentable_sugar()
+        return Weight(kg=sugars.kg)
+
+    def get_other_sugars(self):
+        sugars = Weight(kg=0.0)
+        for fermentable in self.fermentables.filter(~Q(type="GRAIN")):
+            sugars += fermentable.get_fermentable_sugar()
+        return Weight(kg=sugars.kg)
+
 
     def get_gravity(self):
-        pass
+        eff = float(self.mash_efficiency)
+        grain_sugars = self.get_grain_sugars().kg * eff
+        other_sugars = self.get_other_sugars().kg * 100.0
+        grain_gravity = grain_sugars / (self.get_initial_size().l - grain_sugars / 145.0 + grain_sugars / 100.0)
+        other_gravity = other_sugars / (self.get_initial_size().l - other_sugars / 145.0 + other_sugars / 100.0)
+        # print(f"{self.name} [{self.get_initial_size().l}] - Grain gravity: {grain_gravity}, Other gravity: {other_gravity}, {eff}")
+        return BeerGravity(plato=(grain_gravity + other_gravity))
+        
+
+    def get_expected_ibu(self):
+        added_ibus = []
+        for hop in self.hops.all():
+            added_ibus.append(functions.calculate_ibu_tinseth(
+                og=self.get_gravity().sg,
+                time=float(hop.time),
+                type="PELLETS",
+                alpha=float(hop.alpha_acids),
+                weight=hop.amount.g,
+                volume=self.expected_beer_volume.l))
+        return sum(added_ibus)
+        
 
     def get_bitterness(self):
         pass
@@ -424,7 +489,7 @@ class Batch(models.Model):
     grain_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Grain Temperature"))
     sparging_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Sparging Temperature"))
 
-    # Stage 2 fields: boiling
+    # Stage 2 fields: boil
     gravity_before_boil = MeasurementField(measurement=BeerGravity, verbose_name=_("Gravity Before Boil"))
 
     # Stage 3 fields: primary fermentation
@@ -481,7 +546,7 @@ class Batch(models.Model):
                 "brewing_dat",
                 "grain_temperature",
                 "sparging_temperature"])
-        elif stage == "BOILING":
+        elif stage == "BOIL":
             fields.extend(["gravity_before_boil"])
         elif stage == "PRIMARY_FERMENTATION":
             fields.extend([

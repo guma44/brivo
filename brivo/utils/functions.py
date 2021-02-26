@@ -97,7 +97,7 @@ def morey_equation(mcu):
     :param float MCU: Malt Color Units
     :return float:     Added color in SRM
     """
-    return 1.4922 * (mcu^0.6859)
+    return 1.4922 * (mcu**0.6859)
 
 
 def calculate_gravity_points(weigth, extraction, efficiency, volume):
@@ -109,7 +109,8 @@ def calculate_gravity_points(weigth, extraction, efficiency, volume):
     :param float volume:     volume of batch in liters
     :return float:            Added gravity points
     """
-    return (weigth * (extraction / 100) * (efficiency / 100) * 384) / volume
+    points = (weigth * (extraction / 100) * (efficiency / 100) * 384) / volume
+    return points
 
 
 # =====================
@@ -128,9 +129,9 @@ def calculate_ibu_tinseth(og, time, type, alpha, weight, volume):
     :param float volume: Volume of the batch in liters
     :return float:        Added IBU for given hop and batch
     """
-    utilization = ((1.65 * (0.000125^(og - 1))) *
-        ((1 - (math.e^(-0.04 * time))) / (4.15)))
-    if (type == 'Hop pellets'):
+    utilization = ((1.65 * (0.000125**(og - 1))) *
+        ((1 - (math.e**(-0.04 * time))) / (4.15)))
+    if (type == 'PELLETS'):
         utilization = utilization + (utilization * 0.1)
 
     return utilization * alpha / 100 * weight * 1000 / volume
@@ -143,14 +144,14 @@ def calculate_ibu_rager(og, time, type, alpha, weight, volume):
     * Hop IBU calculation using Ranger formula
     :param float og:     Gravity of the beer in SG
     :param float time:   Time of boil (minutes)
-    :param string type:   Type of hops eg. Hop pellets
+    :param string type:   Type of hops eg. PELLETS
     :param float alpha:  Percent of alpha acids (%)
     :param float weight: Weigth of hops in grams
     :param float volume: Volume of the batch in liters
     :return float:        Added IBU for given hop and batch
     """
     utilization = 18.18 + 13.86 * math.tanh((time - 31.32) / 18.27)
-    if (type == 'Hop pellets'):
+    if (type == 'PELLETS'):
         utilization = utilization + (utilization * 0.1)
 
     u = 0

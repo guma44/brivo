@@ -31,7 +31,8 @@ from brivo.brew.models import (
     Hop,
     Yeast,
     Extra,
-    Style)
+    Style,
+    Recipe)
 from brivo.users.models import User
 from brivo.brew import filters
 
@@ -373,3 +374,63 @@ class StyleDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView)
     template_name = 'brew/style/delete.html'
     success_message = 'Style was deleted.'
     success_url = reverse_lazy('brew:style-list')
+
+
+#
+# Recipes
+#
+class RecipeListView(LoginRequiredMixin, ListView):
+    model = Recipe
+    template_name = "brew/recipe/list.html"
+    context_object_name = 'recipes'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(RecipeListView, self).get_context_data(**kwargs)
+        recipes = self.get_queryset()
+        page = self.request.GET.get('page')
+        paginator = Paginator(recipes, self.paginate_by)
+        try:
+            recipes = paginator.page(page)
+        except PageNotAnInteger:
+            recipes = paginator.page(1)
+        except EmptyPage:
+            recipes = paginator.page(paginator.num_pages)
+        context['recipes'] = recipes
+        context['user'] = User.objects.get(id=self.request.user.id)
+        context['filter'] = filters.RecipeFilter(self.request.GET)
+        return context
+
+    def get_queryset(self):
+        qs = self.model.objects.filter(user=self.request.user)
+        filtered_recipes = filters.RecipeFilter(self.request.GET, queryset=qs)
+        return filtered_recipes.qs
+
+
+class RecipeCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
+    template_name = 'brew/recipe/create.html'
+    #form_class = RecipeModelForm
+    success_message = 'Recipe was successfully created.'
+    success_url = reverse_lazy('brew:recipe-list')
+
+
+class RecipeDetailView(LoginRequiredMixin, DetailView):
+    model = Recipe
+    template_name = 'brew/recipe/detail.html'
+    context_object_name = 'recipe'
+
+
+class RecipeUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
+    model = Recipe
+    #form_class = RecipeModelForm
+    template_name = 'brew/recipe/update.html'
+    success_message = 'Recipe was updated.'
+    context_object_name = 'recipe'
+    success_url = reverse_lazy('brew:recipe-list')
+
+
+class RecipeDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+    model = Recipe
+    template_name = 'brew/recipe/delete.html'
+    success_message = 'Recipe was deleted.'
+    success_url = reverse_lazy('brew:recipe-list')
