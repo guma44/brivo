@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.forms import HiddenInput
 from django.forms.fields import ChoiceField
 from django.forms.models import ModelForm, inlineformset_factory
+from django.forms import BaseInlineFormSet
 from bootstrap_modal_forms.forms import BSModalModelForm
 from django_measurement.forms import MeasurementField
 from measurement.measures import Volume, Weight, Temperature
@@ -11,6 +12,18 @@ from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, ButtonHolder
 from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.brew import layouts
 from brivo.brew import models
+
+
+class BaseFormSet(BaseInlineFormSet):
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(BaseFormSet, self).__init__(*args, **kwargs)
+
+    def _construct_form(self, i, **kwargs):
+        form = super(BaseFormSet, self)._construct_form(i, **kwargs)
+        form.add_user_restrictions_to_field(self.request)
+        return form
 
 
 class BaseBatchForm(ModelForm):
@@ -125,15 +138,14 @@ class StyleModelForm(BSModalModelForm):
 
 class FermentableIngredientForm(BSModalModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(FermentableIngredientForm, self).__init__(*args, **kwargs)
-        if self.request.user.profile.general_units == "METRIC":
+    def add_user_restrictions_to_field(self, request):
+        if request.user.profile.general_units == "METRIC":
             unit_choices = (("kg", "kg"),)
-        elif self.request.user.profile.general_units == "IMPERIAL":
+        elif request.user.profile.general_units == "IMPERIAL":
             unit_choices = (("lb", "lb"),)
         else:
-            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
-        user_color_unit = self.request.user.profile.color_units.lower()
+            raise ValueError(f"No unit choice {request.user.profile.general_units}")
+        user_color_unit = request.user.profile.color_units.lower()
         color_choices = ((user_color_unit, user_color_unit),)
         self.fields.update({
             "amount": MeasurementField(
@@ -150,7 +162,10 @@ class FermentableIngredientForm(BSModalModelForm):
 
 FermentableIngredientFormSet = inlineformset_factory(
     models.Recipe, models.FermentableIngredient, form=FermentableIngredientForm,
-    fields=['name', 'type', 'use', 'color', 'extraction', 'amount'], extra=1, can_delete=True
+    fields=['name', 'type', 'use', 'color', 'extraction', 'amount'],
+    extra=1,
+    can_delete=True,
+    formset=BaseFormSet
 )
 
 class HopIngredientForm(BSModalModelForm):

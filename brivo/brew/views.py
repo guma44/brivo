@@ -1,4 +1,5 @@
 import datetime, pytz
+from django.http import request
 from django.utils.decorators import method_decorator
 from django.forms import modelform_factory
 from django.shortcuts import redirect
@@ -419,13 +420,13 @@ class RecipeCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView
     def get_context_data(self, **kwargs):
         data = super(RecipeCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST)
+            data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST, request=self.request)
             data['hops'] = forms.HopIngredientFormSet(self.request.POST)
             data['yeasts'] = forms.YeastIngredientFormSet(self.request.POST)
             data['extras'] = forms.ExtraIngredientFormSet(self.request.POST)
             data['mash_steps'] = forms.MashStepFormSet(self.request.POST)
         else:
-            data['fermentables'] = forms.FermentableIngredientFormSet()
+            data['fermentables'] = forms.FermentableIngredientFormSet(request=self.request)
             data['hops'] = forms.HopIngredientFormSet()
             data['yeasts'] = forms.YeastIngredientFormSet()
             data['extras'] = forms.ExtraIngredientFormSet()
