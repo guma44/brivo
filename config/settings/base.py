@@ -66,6 +66,8 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
+    'dal',
+    'dal_select2',
     "django.contrib.admin",
     "django.forms",
 ]
@@ -77,7 +79,8 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "django_celery_beat",
     "fontawesome-free",
-    "django_filters"
+    "django_filters",
+    "dynamic_formsets"
 ]
 
 LOCAL_APPS = [

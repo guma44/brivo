@@ -85,9 +85,10 @@ def calculate_mcu(color, weigth, volume):
     :param float color:  color in SRM
     :param float weigth: weigth in kilograms
     :param float volume: volume in liters
-    :return float:             MCUs for given ingredient
+    :return float:   MCUs for given ingredient
     """
-    return (color * weigth * 2.205) / (volume * 0.264)
+    lovibond = (color + 0.76)/1.3546
+    return (lovibond * weigth * 2.205) / (volume * 0.264)
 
 
 def morey_equation(mcu):
@@ -180,69 +181,85 @@ def calculate_abw(og, fg):
     """
     return 0.79336 * calculate_abv(og, fg)
 
-
 def get_hex_color_from_srm(srm):
     """Return HEX converted color from SRM"""
     if (srm <= 1):
-        return '#FAFAA0'
+        return "#FFE699"
     elif (srm <= 2):
-        return '#F9FB69'
+        return "#FFD878"
     elif (srm <= 3):
-        return '#F5F531'
+        return "#FFCA5A"
     elif (srm <= 4):
-        return '#EBE52F'
+        return "#FFBF42"
     elif (srm <= 5):
-        return '#E0D032'
+        return "#FBB123"
     elif (srm <= 6):
-        return '#D8BC34'
+        return "#F8A600"
     elif (srm <= 7):
-        return '#CDA836'
+        return "#F39C00"
     elif (srm <= 8):
-        return '#C69539'
+        return "#EA8F00"
     elif (srm <= 9):
-        return '#C18837'
+        return "#E58500"
     elif (srm <= 10):
-        return '#C08038'
+        return "#DE7C00"
     elif (srm <= 11):
-        return '#C07937'
+        return "#D77200"
     elif (srm <= 12):
-        return '#C17239'
+        return "#CF6900"
     elif (srm <= 13):
-        return '#BE6B39'
+        return "#CB6200"
     elif (srm <= 14):
-        return '#B46338'
+        return "#C35900"
     elif (srm <= 15):
-        return '#A65A36'
+        return "#BB5100"
     elif (srm <= 16):
-        return '#985332'
+        return "#B54C00"
     elif (srm <= 17):
-        return '#8B4B30'
+        return "#B04500"
     elif (srm <= 18):
-        return '#7D4429'
+        return "#A63E00"
     elif (srm <= 19):
-        return '#6C3D23'
+        return "#A13700"
     elif (srm <= 20):
-        return '#603417'
+        return "#9B3200"
     elif (srm <= 21):
-        return '#512D0B'
+        return "#952D00"
     elif (srm <= 22):
-        return '#44260E'
+        return "#8E2900"
     elif (srm <= 23):
-        return '#351311'
+        return "#882300"
     elif (srm <= 24):
-        return '#271717'
+        return "#821E00"
     elif (srm <= 25):
-        return '#211312'
+        return "#7B1A00"
     elif (srm <= 26):
-        return '#1B100E'
+        return "#771900"
     elif (srm <= 27):
-        return '#170D0B'
+        return "#701400"
     elif (srm <= 28):
-        return '#120A08'
+        return "#6A0E00"
     elif (srm <= 29):
-        return '#0E0604'
-    elif (srm > 29):
-        return '#080300'
+        return "#660D00"
+    elif (srm <= 30):
+        return "#5E0B00"
+    elif (srm <= 31):
+        return "#5A0A02"
+    elif (srm <= 32):
+        return "#600903"
+    elif (srm <= 33):
+        return "#520907"
+    elif (srm <= 34):
+        return "#4C0505"
+    elif (srm <= 35):
+        return "#470606"
+    elif (srm <= 36):
+        return "#440607"
+    elif (srm <= 37):
+        return "#3F0708"
+    elif (srm <= 38):
+        return "#3B0607"
+    elif (srm <= 39):
+        return "#3A070B"
     else:
-        return '#FAFAA0'
-
+        return "#36080A"

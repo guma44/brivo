@@ -22,3 +22,5 @@ django-bootstrap-modal-forms==2.0.1
 fontawesome-free==5.15.2
 django-widget-tweaks==1.4.8
 django-filter==2.4.0
+django-dynamic-formsets==0.0.8
+django-autocomplete-light==3.8.1

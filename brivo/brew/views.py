@@ -17,13 +17,16 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView
 )
 # from . import constants
+from brivo.brew import forms
 from brivo.brew.forms import (
     BaseBatchForm,
     FermentableModelForm,
     HopModelForm,
     YeastModelForm,
     ExtraModelForm,
-    StyleModelForm)
+    StyleModelForm,
+    RecipeModelForm,
+    FermentableIngredientFormSet)
 from brivo.brew.models import (
     Batch,
     BATCH_STAGE_ORDER,
@@ -383,7 +386,7 @@ class RecipeListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = "brew/recipe/list.html"
     context_object_name = 'recipes'
-    paginate_by = 20
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(RecipeListView, self).get_context_data(**kwargs)
@@ -407,29 +410,57 @@ class RecipeListView(LoginRequiredMixin, ListView):
         return filtered_recipes.qs
 
 
-class RecipeCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
+class RecipeCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
     template_name = 'brew/recipe/create.html'
-    #form_class = RecipeModelForm
+    form_class = RecipeModelForm
     success_message = 'Recipe was successfully created.'
     success_url = reverse_lazy('brew:recipe-list')
 
+    def get_context_data(self, **kwargs):
+        data = super(RecipeCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST)
+            data['hops'] = forms.HopIngredientFormSet(self.request.POST)
+            data['yeasts'] = forms.YeastIngredientFormSet(self.request.POST)
+            data['extras'] = forms.ExtraIngredientFormSet(self.request.POST)
+            data['mash_steps'] = forms.MashStepFormSet(self.request.POST)
+        else:
+            data['fermentables'] = forms.FermentableIngredientFormSet()
+            data['hops'] = forms.HopIngredientFormSet()
+            data['yeasts'] = forms.YeastIngredientFormSet()
+            data['extras'] = forms.ExtraIngredientFormSet()
+            data['mash_steps'] = forms.MashStepFormSet()
+        return data
 
-class RecipeDetailView(LoginRequiredMixin, DetailView):
+    # def form_valid(self, form):
+    #     context = self.get_context_data()
+    #     fermentables = context['fermentables']
+    #     with transaction.atomic():
+    #         form.instance.created_by = self.request.user
+    #         self.object = form.save()
+    #         if fermentables.is_valid():
+    #             fermentables.instance = self.object
+    #             fermentables.save()
+    #     return super(RecipeCreateView, self).form_valid(form)
+
+
+
+class RecipeDetailView(LoginRequiredMixin, BSModalReadView):
     model = Recipe
     template_name = 'brew/recipe/detail.html'
     context_object_name = 'recipe'
 
 
-class RecipeUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
+class RecipeUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
     model = Recipe
-    #form_class = RecipeModelForm
+    form_class = RecipeModelForm
     template_name = 'brew/recipe/update.html'
     success_message = 'Recipe was updated.'
     context_object_name = 'recipe'
     success_url = reverse_lazy('brew:recipe-list')
 
 
-class RecipeDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+class RecipeDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Recipe
     template_name = 'brew/recipe/delete.html'
     success_message = 'Recipe was deleted.'

@@ -106,6 +106,7 @@ def load_recipes(user):
             data = _clean_data(fermentable)
             data["recipe"] = new_recipe
             data["amount"] = Weight(**{data["unit"]: data["amount"]})
+            data["color"] = BeerColor(ebc=data["color"])
             del data["unit"]
             fermentable_ingredient = models.FermentableIngredient(**data)
             fermentable_ingredient.save()
@@ -166,8 +167,11 @@ def test_recipe():
         diff = recipe.get_gravity().plato - float(original_recipe['extra_info']['gravity_blg'])
         mess = f"{i}. Recipe {recipe.name} diff: {diff}, volume {recipe.expected_beer_volume.l}, {recipe.get_gravity().plato} vs. {float(original_recipe['extra_info']['gravity_blg'])}"
         dat.append((diff, mess))
-        assert recipe.get_boil_size().l == pytest.approx(float(original_recipe["extra_info"]["boil_size"].split()[0]), rel=1e-1, abs=1e-3),  f"Value not equal for {recipe.name}"
-        assert recipe.get_gravity().plato == pytest.approx(float(original_recipe["extra_info"]["gravity_blg"]), rel=1e-1, abs=1e-3),  f"Value not equal for {recipe.name}"
+        print(f"{i}. Recipe {recipe.name}")
+        assert recipe.get_boil_size().l == pytest.approx(float(original_recipe["extra_info"]["boil_size"].split()[0]), rel=1e-1, abs=1e-2),  f"Volume value not equal for {recipe.name}"
+        assert recipe.get_gravity().plato == pytest.approx(float(original_recipe["extra_info"]["gravity_blg"]), rel=1e-1, abs=1e-2),  f"Gravity alue not equal for {recipe.name}"
+        assert recipe.get_ibu() == pytest.approx(float(original_recipe["extra_info"]["ibu"]), rel=1e-1, abs=1e-2),  f"IBU value not equal for {recipe.name}"
+        assert recipe.get_color().srm == pytest.approx(float(original_recipe["extra_info"]["srm"]), rel=1e-1, abs=1e-2),  f"SRM value not equal for {recipe.name}"
         i += 1
     # dat_sorted = sorted(dat, key=lambda x: x[0])
     # for d in dat_sorted:

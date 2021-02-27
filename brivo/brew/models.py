@@ -115,11 +115,21 @@ TIME_CHOICE = [('MINUTE', 'minute'),
  ]
 
 
-RECIPE_TYPE = [('GRAIN', 'Grain'),
+RECIPE_TYPE = [('ALL GRAIN', 'All Grain'),
  ('EXTRACT', 'Extract'),
- ('PARTIAL_MASH', 'Partial Mash')
+ ('PARTIAL MASH', 'Partial Mash')
 ]
 
+MASS_UNITS = (
+    ('g', 'g'),
+    ('kg', 'Kg'),
+    ('oz', 'oz'),
+    ('lb', 'lb'))
+
+VOLUME_UNITS = (
+    ('l', 'l'),
+    ('ml', 'ml'),
+    ('us_oz', 'US oz'), ('us_g', 'US Gal'))
 
 class Tag(models.Model):
     name = models.CharField(_("Name"), max_length=255)
@@ -158,6 +168,9 @@ class Fermentable(BaseFermentable):
     external_link = models.URLField(_("External Link"), max_length=255, blank=True, null=True)
     comment = models.TextField(_("Comment"), blank=True, null=True)
     active = models.BooleanField(_("Active"), default=True)
+
+    def __str__(self):
+        return self.name
 
 
 class BaseHop(models.Model):
@@ -291,13 +304,13 @@ class Country(models.Model):
     
 
 class InventoryFermentable(BaseFermentable):
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS, validators=[MinValueValidator(0)])
     comment = models.TextField(_("Comment"))
 
 class InventoryHop(BaseHop):
     year = models.IntegerField(_("Year"), validators=[MinValueValidator(0)])
     form = models.CharField(_("Form"), max_length=255, choices=HOP_FORM)
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS, validators=[MinValueValidator(0)])
     comment = models.TextField(_("Comment"))
 
 
@@ -306,11 +319,11 @@ class InventoryYeast(BaseYeast):
     collected_at = models.DateField(_("Collected At"), auto_now=False, auto_now_add=False, blank=True)
     generation = models.CharField(_("Generation"), max_length=50, blank=True)
     form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS, validators=[MinValueValidator(0)])
     comment = models.TextField(_("Comment"))
 
 class InventoryExtra(BaseExtra):
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS, validators=[MinValueValidator(0)])
     comment = models.TextField(_("Comment"))
 
 
@@ -321,56 +334,16 @@ class Inventory(models.Model):
     inventory_hop = models.ForeignKey("InventoryHop", verbose_name=_("Hop"), on_delete=models.CASCADE)
     inventory_extra = models.ForeignKey("InventoryExtra", verbose_name=_("Extra"), on_delete=models.CASCADE)
 
-class FermentableIngredient(BaseFermentable):
-    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="fermentables")
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
-    use = models.CharField(_("Fermentable Use"), max_length=255, choices=FERMENTABLE_USE)
-
-    def get_fermentable_sugar(self):
-        sugar = self.amount.kg * float(self.extraction) / 100.0
-        return Weight(kg=sugar)
-
-class HopIngredient(BaseHop):
-    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="hops")
-    use = models.CharField(_("Use"), max_length=255, choices=HOP_USE)
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
-    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
-    time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
-
-
-class YeastIngredient(BaseYeast):
-    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="yeasts")
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
-    form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
-
-
-class ExtraIngredient(BaseExtra):
-    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="extras")
-    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=["g", "kg", "oz", "lb"], validators=[MinValueValidator(0)])
-    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2)
-    time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
-
-
-class Fermentation(models.Model):
-    primary_fermentation_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Primary Ferementation Temperature"), default=17)
-    secondary_fermentation_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Secondary Fermentation Temperature"), default=20)
-
-
-class MashStep(models.Model):
-    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="mash_steps")
-    temperature = MeasurementField(measurement=Temperature, verbose_name=_("Temperature"))
-    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2, default=0)
-    note = models.TextField(_("Note"), blank=True)
-
 
 class Recipe(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     # Recipe info
+    style = models.ForeignKey("Style", verbose_name=_("Style"), on_delete=models.DO_NOTHING)
     type = models.CharField(_("Type"), max_length=255, choices=RECIPE_TYPE)
     name = models.CharField(_("Name"), max_length=255)
-    style = models.ForeignKey("Style", verbose_name=_("Style"), on_delete=models.DO_NOTHING)
+
     # Batch info
-    expected_beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Batch Volume"), unit_choices=["l", "ml", "oz", "gal"], validators=[MinValueValidator(0)])
+    expected_beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Expected Beer Volume"), unit_choices=VOLUME_UNITS, validators=[MinValueValidator(0)])
     boil_time = models.IntegerField(_("Boil Time"), default=60.0)
     evaporation_rate = models.DecimalField(_("Evaporation Rate"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], default=10.0)
     boil_loss = models.DecimalField(_("Boil Loss"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], default=10.0)
@@ -410,11 +383,12 @@ class Recipe(models.Model):
     def get_color(self):
         added_colors = []
         for fermentable in self.fermentables.all():
-            added_colors.append(functions.calculate_mcu(
-                color=fermentable.color.srm,
-                weigth=fermentable.amount.kg,
-                volume=self.expected_beer_volume.l))
-        return BeerColor(srm=sum(added_colors))
+            if fermentable.color.srm > 0 and fermentable.amount.kg > 0:
+                added_colors.append(functions.calculate_mcu(
+                    color=fermentable.color.srm,
+                    weigth=fermentable.amount.kg,
+                    volume=self.expected_beer_volume.l))
+        return BeerColor(srm=functions.morey_equation(sum(added_colors)))
 
     def get_hex_color(self):
         return functions.get_hex_color_from_srm(self.get_color().srm)
@@ -423,10 +397,20 @@ class Recipe(models.Model):
         if self.user.profile.general_units.lower() == "metric":
             return "l"
         else:
-            return "gal"
+            return "us_g"
+
+    def get_max_attenuation(self):
+        min_val = 100
+        for yeast in self.yeasts.all():
+            if yeast.attenuation < min_val:
+                min_val = yeast.attenuation
+        return float(min_val) / 100
+
+    def get_final_gravity(self):
+        return self.get_gravity().plato * (1 - self.get_max_attenuation())
 
     def get_abv(self):
-        return (self.get_gravity().plato - self.get_gravity().plato * 0.2) * 0.516
+        return (self.get_gravity().plato - self.get_final_gravity()) * 0.516
 
     def get_grain_sugars(self):
         sugars = Weight(kg=0.0)
@@ -440,7 +424,6 @@ class Recipe(models.Model):
             sugars += fermentable.get_fermentable_sugar()
         return Weight(kg=sugars.kg)
 
-
     def get_gravity(self):
         eff = float(self.mash_efficiency)
         grain_sugars = self.get_grain_sugars().kg * eff
@@ -448,19 +431,22 @@ class Recipe(models.Model):
         grain_gravity = grain_sugars / (self.get_initial_size().l - grain_sugars / 145.0 + grain_sugars / 100.0)
         other_gravity = other_sugars / (self.get_initial_size().l - other_sugars / 145.0 + other_sugars / 100.0)
         # print(f"{self.name} [{self.get_initial_size().l}] - Grain gravity: {grain_gravity}, Other gravity: {other_gravity}, {eff}")
-        return BeerGravity(plato=(grain_gravity + other_gravity))
-        
+        return BeerGravity(plato=(grain_gravity + other_gravity)) 
 
-    def get_expected_ibu(self):
+    def get_ibu(self):
         added_ibus = []
         for hop in self.hops.all():
-            added_ibus.append(functions.calculate_ibu_tinseth(
-                og=self.get_gravity().sg,
-                time=float(hop.time),
-                type="PELLETS",
-                alpha=float(hop.alpha_acids),
-                weight=hop.amount.g,
-                volume=self.expected_beer_volume.l))
+            if hop.use in ["BOIL", "AROMA", "FIRST WORT", "WHIRLPOOL"]:
+                if hop.amount.g > 0 and hop.time > 0 and hop.alpha_acids > 0:
+                    if self.name == "Just Like A Water":
+                        print(f"Adding to {self.name}")
+                    added_ibus.append(functions.calculate_ibu_tinseth(
+                        og=self.get_gravity().sg,
+                        time=float(hop.time),
+                        type="PELLETS",
+                        alpha=float(hop.alpha_acids),
+                        weight=hop.amount.g,
+                        volume=self.get_initial_size().l))
         return sum(added_ibus)
         
 
@@ -475,6 +461,52 @@ class Recipe(models.Model):
 
     def get_total_mash_volume(self):
         pass
+
+    def __str__(self):
+        return self.name
+
+
+class FermentableIngredient(BaseFermentable):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="fermentables")
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS, validators=[MinValueValidator(0)])
+    use = models.CharField(_("Fermentable Use"), max_length=255, choices=FERMENTABLE_USE)
+
+    def get_fermentable_sugar(self):
+        sugar = self.amount.kg * float(self.extraction) / 100.0
+        return Weight(kg=sugar)
+
+class HopIngredient(BaseHop):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="hops")
+    use = models.CharField(_("Use"), max_length=255, choices=HOP_USE)
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS, validators=[MinValueValidator(0)])
+    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
+    time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
+
+
+class YeastIngredient(BaseYeast):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="yeasts")
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS, validators=[MinValueValidator(0)])
+    attenuation = models.DecimalField(_("Attenuation"), max_digits=5, decimal_places=2, blank=True, default=75.0, validators=[MinValueValidator(0), MaxValueValidator(100)])
+    form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
+
+
+class ExtraIngredient(BaseExtra):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="extras")
+    amount = MeasurementField(measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS, validators=[MinValueValidator(0)])
+    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2)
+    time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
+
+
+class Fermentation(models.Model):
+    primary_fermentation_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Primary Ferementation Temperature"), default=17)
+    secondary_fermentation_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Secondary Fermentation Temperature"), default=20)
+
+
+class MashStep(models.Model):
+    recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="mash_steps")
+    temperature = MeasurementField(measurement=Temperature, verbose_name=_("Temperature"))
+    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2, default=0)
+    note = models.TextField(_("Note"), blank=True)
 
 
 class Batch(models.Model):
@@ -494,7 +526,7 @@ class Batch(models.Model):
 
     # Stage 3 fields: primary fermentation
     initial_gravity = MeasurementField(measurement=BeerGravity, verbose_name=_("Initial Gravity"))
-    wort_volume = MeasurementField(measurement=Volume, verbose_name=_("Wort Volume"), unit_choices=["l", "ml", "oz", "gal"], validators=[MinValueValidator(0)])
+    wort_volume = MeasurementField(measurement=Volume, verbose_name=_("Wort Volume"), unit_choices=VOLUME_UNITS, validators=[MinValueValidator(0)])
     boil_waists = models.DecimalField(_("Boil Waists"), max_digits=5, decimal_places=2)
     primary_fermentation_start_day = models.DateField(_("Primary Fermentation Start Day"), auto_now=False, auto_now_add=False)
 
@@ -505,7 +537,7 @@ class Batch(models.Model):
     # Stage 4 fields: packaging
     packaging_date = models.DateField(_("Packaging Start Day"), auto_now=False, auto_now_add=False)
     end_gravity = MeasurementField(measurement=BeerGravity, verbose_name=_("End Gravity"))
-    beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Beer Volume"), unit_choices=["l", "ml", "oz", "gal"], validators=[MinValueValidator(0)])
+    beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Beer Volume"), unit_choices=VOLUME_UNITS, validators=[MinValueValidator(0)])
     carbonation_type = models.CharField(_("Carbonation Type"), max_length=50, choices=CARBONATION_TYPE)
     carbonation_level = models.DecimalField(_("Carbonation Level"), max_digits=5, decimal_places=2)
 
