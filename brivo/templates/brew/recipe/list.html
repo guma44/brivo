@@ -60,7 +60,7 @@
             <td class="text-center">{{recipe.get_gravity|get_obj_attr:user.profile.gravity_units|floatformat}}</td>
             <td class="text-center">{{recipe.get_abv|floatformat}}</td>
             <td class="text-center">{{recipe.expected_beer_volume|get_obj_attr:recipe.get_volume_unit|floatformat}}</td>
-            <td class="text-center"><a class="bs-modal read-style" href="#" data-form-url="{% url 'brew:style-detail' recipe.style.pk %}"">{{recipe.style.name}}</a></td>
+            <td class="text-center"><a class="bs-modal read-style" href="#" data-form-url="{% url 'brew:style-detail' recipe.style.pk %}">{{recipe.style.name}}</a></td>
             <td class="text-center">{{recipe.get_ibu|floatformat}}</td>
             <td class="text-center">{{recipe.get_color|get_obj_attr:user.profile.color_units|floatformat}}</td>
             <td class="text-center">

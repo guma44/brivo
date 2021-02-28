@@ -411,7 +411,7 @@ class RecipeListView(LoginRequiredMixin, ListView):
         return filtered_recipes.qs
 
 
-class RecipeCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
+class RecipeCreateView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'brew/recipe/create.html'
     form_class = RecipeModelForm
     success_message = 'Recipe was successfully created.'

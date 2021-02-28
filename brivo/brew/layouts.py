@@ -13,4 +13,7 @@ class RecipeFormsetLayout(LayoutObject):
 
     def render(self, form, form_style, context, template_pack=TEMPLATE_PACK):
         formset = context[self.formset_name_in_context]
+        for form in formset:
+            for field in form:
+                field.label = False
         return render_to_string(self.template, {'formset': formset})

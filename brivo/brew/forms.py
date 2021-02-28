@@ -153,7 +153,7 @@ class FermentableIngredientForm(BSModalModelForm):
                 unit_choices=unit_choices),
             "color": MeasurementField(
                 measurement=BeerColor,
-                unit_choices=unit_choices)
+                unit_choices=color_choices)
         })
 
     class Meta:
@@ -294,7 +294,7 @@ class RecipeModelForm(BSModalModelForm):
         self.helper.field_class = 'col-md-9'
         self.helper.layout = Layout(
             Div(
-                Field('style'),
+                Fieldset("Recipe Information", Field("type"), Field("name"), Field("style")),
                 Fieldset('Add Fermentables',
                     layouts.RecipeFormsetLayout('fermentables')),
                 Field('note'),
