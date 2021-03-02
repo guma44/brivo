@@ -1,15 +1,16 @@
 from django.core.exceptions import ValidationError
-from django.forms import HiddenInput
+from django.forms import HiddenInput, ModelChoiceField
 from django.forms.fields import ChoiceField
 from django.forms.models import ModelForm, inlineformset_factory
 from django.forms import BaseInlineFormSet
 from bootstrap_modal_forms.forms import BSModalModelForm
-from django_measurement.forms import MeasurementField
 from measurement.measures import Volume, Weight, Temperature
 from crispy_forms.helper import FormHelper
+from crispy_forms.bootstrap import AppendedText
 from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, ButtonHolder, Submit
 
 from brivo.utils.measures import BeerColor, BeerGravity
+from brivo.brew.measurement_forms import MeasurementField
 from brivo.brew import layouts
 from brivo.brew import models
 
@@ -170,20 +171,19 @@ FermentableIngredientFormSet = inlineformset_factory(
 
 class HopIngredientForm(BSModalModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(HopIngredientForm, self).__init__(*args, **kwargs)
-        if self.request.user.profile.general_units == "METRIC":
+    def add_user_restrictions_to_field(self, request):
+        if request.user.profile.general_units == "METRIC":
             unit_choices = (("g", "g"),)
-        elif self.request.user.profile.general_units == "IMPERIAL":
+        elif request.user.profile.general_units == "IMPERIAL":
             unit_choices = (("oz", "oz"),)
         else:
-            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+            raise ValueError(f"No unit choice {request.user.profile.general_units}")
         time_choices = (("min", "min"), ("day", "day"))
         self.fields.update({
             "amount": MeasurementField(
                 measurement=Weight,
                 unit_choices=unit_choices),
-            "time_unit": forms.ChoiceField("Unit", choices=time_choices, required=True)
+            "time_unit": ChoiceField("Unit", choices=time_choices, required=True)
         })
 
     class Meta:
@@ -192,19 +192,18 @@ class HopIngredientForm(BSModalModelForm):
 
 HopIngredientFormSet = inlineformset_factory(
     models.Recipe, models.HopIngredient, form=HopIngredientForm,
-    fields=['name', 'use', 'alpha_acids', 'amount', 'time', 'time_unit'], extra=1, can_delete=True
+    fields=['name', 'use', 'alpha_acids', 'amount', 'time', 'time_unit'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
 class YeastIngredientForm(BSModalModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(YeastIngredientForm, self).__init__(*args, **kwargs)
-        if self.request.user.profile.general_units == "METRIC":
+    def add_user_restrictions_to_field(self, request):
+        if request.user.profile.general_units == "METRIC":
             unit_choices = (("g", "g"),)
-        elif self.request.user.profile.general_units == "IMPERIAL":
+        elif request.user.profile.general_units == "IMPERIAL":
             unit_choices = (("oz", "oz"),)
         else:
-            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+            raise ValueError(f"No unit choice {request.user.profile.general_units}")
         self.fields.update({
             "amount": MeasurementField(
                 measurement=Weight,
@@ -217,19 +216,18 @@ class YeastIngredientForm(BSModalModelForm):
 
 YeastIngredientFormSet = inlineformset_factory(
     models.Recipe, models.YeastIngredient, form=YeastIngredientForm,
-    fields=['name', 'type', 'form', 'attenuation', 'amount', 'lab'], extra=1, can_delete=True
+    fields=['name', 'type', 'form', 'attenuation', 'amount', 'lab'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
 class ExtraIngredientForm(BSModalModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(ExtraIngredientForm, self).__init__(*args, **kwargs)
-        if self.request.user.profile.general_units == "METRIC":
+    def add_user_restrictions_to_field(self, request):
+        if request.user.profile.general_units == "METRIC":
             unit_choices = (("g", "g"),)
-        elif self.request.user.profile.general_units == "IMPERIAL":
+        elif request.user.profile.general_units == "IMPERIAL":
             unit_choices = (("oz", "oz"),)
         else:
-            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+            raise ValueError(f"No unit choice {request.user.profile.general_units}")
         self.fields.update({
             "amount": MeasurementField(
                 measurement=Weight,
@@ -242,19 +240,18 @@ class ExtraIngredientForm(BSModalModelForm):
 
 ExtraIngredientFormSet = inlineformset_factory(
     models.Recipe, models.ExtraIngredient, form=ExtraIngredientForm,
-    fields=['name', 'type', 'use', 'amount', 'time', 'time_unit'], extra=1, can_delete=True
+    fields=['name', 'type', 'use', 'amount', 'time', 'time_unit'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
 class MashStepForm(BSModalModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(MashStepForm, self).__init__(*args, **kwargs)
-        if self.request.user.profile.general_units == "METRIC":
+    def add_user_restrictions_to_field(self, request):
+        if request.user.profile.general_units == "METRIC":
             unit_choices = (("c", "c"),)
-        elif self.request.user.profile.general_units == "IMPERIAL":
+        elif request.user.profile.general_units == "IMPERIAL":
             unit_choices = (("f", "f"),)
         else:
-            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+            raise ValueError(f"No unit choice {request.user.profile.general_units}")
         self.fields.update({
             "temperature": MeasurementField(
                 measurement=Temperature,
@@ -267,10 +264,44 @@ class MashStepForm(BSModalModelForm):
 
 MashStepFormSet = inlineformset_factory(
     models.Recipe, models.MashStep, form=MashStepForm,
-    fields=['temperature', 'time'], extra=1, can_delete=True
+    fields=['temperature', 'time'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
+BatchInfoStatsHtml = """
+<div class="row">
+</br>
+<table class="table" style="background:#dedede">
+   <tr>
+      <td>Boil Volume:</td>
+      <td class: "text-left" id="boil_volume_info">NN</td>
+   <tr>
+   <tr>
+      <td>Pre-boil Gravity:</td>
+      <td class: "text-left" id="preboil_gravity_info">NN</td>
+   <tr>
+   <tr>
+      <td>Primary Volume:</td>
+      <td class: "text-left" id="primary_volume_info">NN</td>
+   <tr>
+   <tr>
+      <td>Secondary Volume:</td>
+      <td class: "text-left" id="secondary_volume_info">NN</td>
+   <tr>
+<table>
+</div>
+"""
 
+FermentableInfoStatsHtml = """
+<div class="row">
+</br>
+<table class="table" style="background:#dedede">
+   <tr>
+      <td>Gravity</td>
+      <td class: "text-left" id="gravity_info">NN</td>
+   <tr>
+<table>
+</div>
+"""
 class RecipeModelForm(BSModalModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -295,11 +326,15 @@ class RecipeModelForm(BSModalModelForm):
         self.helper.layout = Layout(
             Div(
                 Fieldset("Recipe Information", Field("type"), Field("name"), Field("style")),
-                Fieldset('Add Fermentables',
-                    layouts.RecipeFormsetLayout('fermentables')),
+                Fieldset("Batch Information", Field("expected_beer_volume"), AppendedText("boil_time", "min"),
+                    AppendedText("evaporation_rate", "%/h"), AppendedText("boil_loss", "%"),
+                    AppendedText("trub_loss", "%"), AppendedText("dry_hopping_loss", "%")),
+                HTML(BatchInfoStatsHtml),
+                Fieldset('Fermentables',
+                HTML(FermentableInfoStatsHtml),
+                    layouts.RecipeFormsetLayout('fermentables', "brew/recipe/fermentable_formset.html")),
                 Field('note'),
                 HTML("<br>"),
-                ButtonHolder(Submit('submit', 'save')),
                 )
             )
 

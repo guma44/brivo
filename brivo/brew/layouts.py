@@ -3,13 +3,11 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 
 class RecipeFormsetLayout(LayoutObject):
-    template = "brew/recipe/recipe_formset.html"
 
-    def __init__(self, formset_name_in_context, template=None):
+    def __init__(self, formset_name_in_context, template):
         self.formset_name_in_context = formset_name_in_context
         self.fields = []
-        if template:
-            self.template = template
+        self.template = template
 
     def render(self, form, form_style, context, template_pack=TEMPLATE_PACK):
         formset = context[self.formset_name_in_context]

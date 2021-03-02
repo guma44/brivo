@@ -1,5 +1,5 @@
 import datetime, pytz
-from django.http import request
+from django.http import request, JsonResponse, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
 from django.forms import modelform_factory
 from django.shortcuts import redirect
@@ -45,6 +45,52 @@ class StaffRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_staff
 
+
+class BaseAutocomplete(LoginRequiredMixin, ListView):
+    http_method_allowed = ('GET', 'POST')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method.upper() not in self.http_method_allowed:
+            return HttpResponseNotAllowed(self.http_method_allowed)
+
+        self.q = request.GET.get('q', '')
+        return super(ListView, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        qs = self.model.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
+
+        return qs
+
+    def render_to_response(self, context):
+        """Return a JSON response in correct format."""
+
+        return JsonResponse(
+            {
+                'suggestions': self.get_results(context),
+            })
+
+    def get_results(self, context):
+        raise NotImplementedError
+
+class FermentableAutocomplete(BaseAutocomplete):
+    model = Fermentable
+
+    def get_results(self, context):
+        """Return data for the 'results' key of the response."""
+        return [
+            {
+                'data': {
+                    "name": result.name,
+                    "type": result.type,
+                    "color": getattr(result.color, self.request.user.profile.color_units.lower()),
+                    "extraction": result.extraction
+                },
+                'value': result.name,
+            } for result in context['object_list']
+        ]
 
 class BatchView(LoginRequiredMixin, FormView):
     template_name = 'batch/batch.html'
@@ -427,10 +473,10 @@ class RecipeCreateView(LoginRequiredMixin, BSModalCreateView):
             data['mash_steps'] = forms.MashStepFormSet(self.request.POST)
         else:
             data['fermentables'] = forms.FermentableIngredientFormSet(request=self.request)
-            data['hops'] = forms.HopIngredientFormSet()
-            data['yeasts'] = forms.YeastIngredientFormSet()
-            data['extras'] = forms.ExtraIngredientFormSet()
-            data['mash_steps'] = forms.MashStepFormSet()
+            data['hops'] = forms.HopIngredientFormSet(request=self.request)
+            data['yeasts'] = forms.YeastIngredientFormSet(request=self.request)
+            data['extras'] = forms.ExtraIngredientFormSet(request=self.request)
+            data['mash_steps'] = forms.MashStepFormSet(request=self.request)
         return data
 
     # def form_valid(self, form):

@@ -15,6 +15,11 @@ urlpatterns = [
          name='fermentable-update'),
     path('fermentable/<int:pk>/delete', views.FermentableDeleteView.as_view(),
          name='fermentable-delete'),
+    path(
+        r'fermentable/autocomplete',
+        views.FermentableAutocomplete.as_view(),
+        name='fermentable-autocomplete',
+    ),
 
     # Hops
     path('hop', views.HopListView.as_view(),
