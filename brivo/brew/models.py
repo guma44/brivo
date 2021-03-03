@@ -232,6 +232,18 @@ class Yeast(BaseYeast):
     comment = models.TextField(_("Comment"), blank=True, null=True)
     active = models.BooleanField(_("Active"), default=True)
 
+    def get_average_attenuation(self):
+        has_min = self.atten_min is not None
+        has_max = self.atten_max is not None
+        if has_min and has_max:
+            return (float(self.atten_min) + float(self.atten_max)) / 2.0
+        elif has_min:
+            return float(self.atten_min)
+        elif has_max:
+            return float(self.atten_max)
+        else:
+            return 75.0
+
 
 class Style(models.Model):
     category_id = models.CharField(_("Catetory ID"), max_length=255)

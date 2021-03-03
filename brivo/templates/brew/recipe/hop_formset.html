@@ -1,0 +1,72 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<table class="table">
+{{ formset.management_form|crispy }}
+    <thead>
+        <tr >
+            <th class="text-center" scope="col">Name</th>
+            <th class="text-center" scope="col">Use</th>
+            <th class="text-center" scope="col">Alpha Acids</th>
+            <th class="text-center" scope="col">Amount</th>
+            <th class="text-center" scope="col">Time</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for form in formset.forms %}
+            {{ form.media }}
+            <tr class="{% cycle 'row1' 'row2' 'row3' 'row4' 'row5' %} formset_row-{{ formset.prefix }}">
+                <td>
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {{ field.name.errors.as_ul }}
+                    {{ form.name|as_crispy_field }}
+                </td>
+                <td>{{ field.use.errors.as_ul }}{{ form.use|as_crispy_field }}</td>
+                <td>{{ field.color.errors.as_ul }}{{ form.alpha_acids|as_crispy_field }}</td>
+                <td>{{ field.extraction.errors.as_ul }}{{ form.amount|as_crispy_field }}</td>
+                <td>{{ field.amount.errors.as_ul }}{{ form.time|as_crispy_field }}{{ form.time_unit|as_crispy_field }}</td>
+                <td class="delet-row"></td>
+            </tr>
+        {% endfor %}
+</table>
+
+<br>
+<script src="{% static "js/jquery.formset.js" %}"></script>
+<script src="{% static "js/jquery.autocomplete.js" %}"></script>
+<script type="text/javascript">
+$(function() {
+    $('.formset_row-{{ formset.prefix }}').formset({
+        addText: '<button type="button" class="add-hop btn btn-sm btn-warning"><span class="fa fa-plus"></span> Add Hop</button>',
+        deleteText: '<button type="button" class="delete-hop btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>',
+        prefix: '{{ formset.prefix }}',
+        added: function(row) {
+            let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
+            console.log("Binding to " + '#id_hops-' + row_index + '-name');
+            $('#id_hops-' + row_index + '-name').autocomplete({
+                serviceUrl: '/brew/hop/autocomplete',
+                noCache: false,
+                minChars: 3,
+                paramName: "q",
+                onSelect: function (suggestion) {
+                    let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
+                    $('#id_hops-' + row_index + '-alpha_acids').val(suggestion.data.alpha_acids);
+                }
+            });
+        }
+    });
+
+    $('#id_hops-0-name').autocomplete({
+        serviceUrl: '/brew/hop/autocomplete',
+        noCache: false,
+        minChars: 3,
+        paramName: "q",
+        onSelect: function (suggestion) {
+            $('#id_hops-0-alpha_acids').val(suggestion.data.alpha_acids);
+        }
+    });
+});
+</script>

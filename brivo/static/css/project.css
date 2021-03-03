@@ -12,6 +12,24 @@
   border-color: #eed3d7;
 }
 
+legend {
+  padding-left: 20px;
+  padding-right: 20px;
+  background: #ececec;
+  border-radius: 5px;
+  width: inherit;
+}
+
+fieldset {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 20px;
+  border-color: #ececec;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
 .autocomplete-suggestion { cursor: pointer; padding: 2px 5px; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #F0F0F0; }

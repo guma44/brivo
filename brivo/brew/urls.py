@@ -32,6 +32,11 @@ urlpatterns = [
          name='hop-update'),
     path('hop/<int:pk>/delete', views.HopDeleteView.as_view(),
          name='hop-delete'),
+    path(
+        r'hop/autocomplete',
+        views.HopAutocomplete.as_view(),
+        name='hop-autocomplete',
+    ),
 
     # Yeasts
     path('yeast', views.YeastListView.as_view(),
@@ -44,6 +49,11 @@ urlpatterns = [
          name='yeast-update'),
     path('yeast/<int:pk>/delete', views.YeastDeleteView.as_view(),
          name='yeast-delete'),
+    path(
+        r'yeast/autocomplete',
+        views.YeastAutocomplete.as_view(),
+        name='yeast-autocomplete',
+    ),
 
     # Extras
     path('extra', views.ExtraListView.as_view(),

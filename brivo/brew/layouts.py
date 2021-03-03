@@ -15,3 +15,4 @@ class RecipeFormsetLayout(LayoutObject):
             for field in form:
                 field.label = False
         return render_to_string(self.template, {'formset': formset})
+

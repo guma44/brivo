@@ -92,6 +92,42 @@ class FermentableAutocomplete(BaseAutocomplete):
             } for result in context['object_list']
         ]
 
+
+class HopAutocomplete(BaseAutocomplete):
+    model = Hop
+
+    def get_results(self, context):
+        """Return data for the 'results' key of the response."""
+        return [
+            {
+                'data': {
+                    "name": result.name,
+                    "alpha_acids": result.alpha_acids
+                },
+                'value': result.name,
+            } for result in context['object_list']
+        ]
+
+
+class YeastAutocomplete(BaseAutocomplete):
+    model = Yeast
+
+    def get_results(self, context):
+        """Return data for the 'results' key of the response."""
+
+        return [
+            {
+                'data': {
+                    "name": result.name,
+                    "lab": result.lab,
+                    "attenuation": result.get_average_attenuation(),
+                    "form": result.form,
+                    "type": result.type
+                },
+                'value': result.name,
+            } for result in context['object_list']
+        ]
+
 class BatchView(LoginRequiredMixin, FormView):
     template_name = 'batch/batch.html'
     batch = None

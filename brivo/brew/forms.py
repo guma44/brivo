@@ -7,7 +7,7 @@ from bootstrap_modal_forms.forms import BSModalModelForm
 from measurement.measures import Volume, Weight, Temperature
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import AppendedText
-from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, ButtonHolder, Submit
+from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, Row, ButtonHolder, Submit, MultiField, Column
 
 from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.brew.measurement_forms import MeasurementField
@@ -183,7 +183,7 @@ class HopIngredientForm(BSModalModelForm):
             "amount": MeasurementField(
                 measurement=Weight,
                 unit_choices=unit_choices),
-            "time_unit": ChoiceField("Unit", choices=time_choices, required=True)
+            "time_unit": ChoiceField(choices=time_choices)
         })
 
     class Meta:
@@ -268,7 +268,6 @@ MashStepFormSet = inlineformset_factory(
 )
 
 BatchInfoStatsHtml = """
-<div class="row">
 </br>
 <table class="table" style="background:#dedede">
    <tr>
@@ -287,8 +286,7 @@ BatchInfoStatsHtml = """
       <td>Secondary Volume:</td>
       <td class: "text-left" id="secondary_volume_info">NN</td>
    <tr>
-<table>
-</div>
+</table>
 """
 
 FermentableInfoStatsHtml = """
@@ -320,23 +318,40 @@ class RecipeModelForm(BSModalModelForm):
 
         self.helper = FormHelper()
         self.helper.form_tag = True
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-3 create-label'
-        self.helper.field_class = 'col-md-9'
+        #self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-6 create-label'
+        self.helper.field_class = 'col-md-6'
         self.helper.layout = Layout(
             Div(
                 Fieldset("Recipe Information", Field("type"), Field("name"), Field("style")),
-                Fieldset("Batch Information", Field("expected_beer_volume"), AppendedText("boil_time", "min"),
-                    AppendedText("evaporation_rate", "%/h"), AppendedText("boil_loss", "%"),
-                    AppendedText("trub_loss", "%"), AppendedText("dry_hopping_loss", "%")),
-                HTML(BatchInfoStatsHtml),
-                Fieldset('Fermentables',
-                HTML(FermentableInfoStatsHtml),
-                    layouts.RecipeFormsetLayout('fermentables', "brew/recipe/fermentable_formset.html")),
+                Fieldset("Batch Information",
+                    Row(
+                        Column(Field("expected_beer_volume"), css_class='form-group col-md-6 mb-0'),
+                        css_class="form-row"),
+                    Row(
+                        Column(AppendedText("boil_time", "min"), css_class='form-group col-md-4 mb-0'),
+                        Column(AppendedText("evaporation_rate", "%/h"), css_class='form-group col-md-4 mb-0'),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(AppendedText("boil_loss", "%"), css_class='form-group col-md-4 mb-0'),
+                        Column(AppendedText("trub_loss", "%"), css_class='form-group col-md-4 mb-0'),
+                        Column(AppendedText("dry_hopping_loss", "%"), css_class='form-group col-md-4 mb-0'),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        Column(HTML(BatchInfoStatsHtml), css_class='form-group col-md-3 mb-0'),
+                        css_class='form-row'
+                    )
+                ),
+                Fieldset('Fermentables', layouts.RecipeFormsetLayout('fermentables', "brew/recipe/fermentable_formset.html")),
+                Fieldset("Mash", layouts.RecipeFormsetLayout('mash_steps', "brew/recipe/mash_formset.html")),
+                Fieldset("Hops", layouts.RecipeFormsetLayout('hops', "brew/recipe/hop_formset.html")),
+                Fieldset("Yeasts", layouts.RecipeFormsetLayout('yeasts', "brew/recipe/yeast_formset.html")),
                 Field('note'),
                 HTML("<br>"),
-                )
-            )
+            ),
+        )
 
 
     class Meta:

@@ -1,0 +1,41 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<table class="table">
+{{ formset.management_form|crispy }}
+    <thead>
+        <tr >
+            <th class="text-center" scope="col">Temperature</th>
+            <th class="text-center" scope="col">Time</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for form in formset.forms %}
+            {{ form.media }}
+            <tr class="{% cycle 'row1' 'row2' 'row3' 'row4' 'row5' %} formset_row-{{ formset.prefix }}">
+                <td>
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {{ field.name.errors.as_ul }}
+                    {{ form.temperature|as_crispy_field }}
+                </td>
+                <td>{{ field.type.errors.as_ul }}{{ form.time|as_crispy_field }}</td>
+                <td class="delet-row"></td>
+            </tr>
+        {% endfor %}
+</table>
+
+<br>
+<script src="{% static "js/jquery.formset.js" %}"></script>
+<script type="text/javascript">
+$(function() {
+    $('.formset_row-{{ formset.prefix }}').formset({
+        addText: '<button type="button" class="add-mash_step btn btn-sm btn-warning"><span class="fa fa-plus"></span> Add Mash Step</button>',
+        deleteText: '<button type="button" class="delete-mash_step btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>',
+        prefix: '{{ formset.prefix }}'
+    });
+});
+</script>

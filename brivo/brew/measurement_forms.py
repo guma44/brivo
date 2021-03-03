@@ -8,6 +8,15 @@ from measurement.base import BidimensionalMeasure, MeasureBase
 from django_measurement import utils
 from django_measurement.conf import settings
 
+template = """
+<div class="input-group">
+  <input name="{{ widget.name }}" id="id_{{ widget.name }}" type="text" class="form-control">
+  <div class="input-group-append">
+    <span class="input-group-text">%(unit)s</span>
+  </div>'
+</div>'
+"""
+
 class AppendWidget(forms.Widget):
     """ Widget that prepend boostrap-style span with data to specified base widget """
 
@@ -22,12 +31,12 @@ class AppendWidget(forms.Widget):
         field = self.base_widget.render(name, value, attrs)
         return mark_safe((
             u'<div class="input-group">'
-            u'  <input type="text" class="form-control">'
+            u'  <input name="%(name)s" id="id_%(name)s" type="number" class="form-control">'
             u'  <div class="input-group-append">'
             u'    <span class="input-group-text">%(unit)s</span>'
             u'  </div>'
             u'</div>'
-        ) % {'field': field, 'unit': self.unit_choices[0][1]})
+        ) % {'field': field, 'unit': self.unit_choices[0][1], 'name': name})
 
     def decompress(self, value):
         if value:
