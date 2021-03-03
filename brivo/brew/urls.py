@@ -90,4 +90,9 @@ urlpatterns = [
          name='recipe-update'),
     path('recipe/<int:pk>/delete', views.RecipeDeleteView.as_view(),
          name='recipe-delete'),
+    path(
+        r'recipe/info',
+        views.get_recipe_data,
+        name='recipe-info',
+    ),
 ]

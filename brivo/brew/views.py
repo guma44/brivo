@@ -1,3 +1,5 @@
+import re
+import json
 import datetime, pytz
 from django.http import request, JsonResponse, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
@@ -39,6 +41,42 @@ from brivo.brew.models import (
     Recipe)
 from brivo.users.models import User
 from brivo.brew import filters
+
+
+_FLOAT_REGEX = re.compile(r"^-?(?:\d+())?(?:\.\d*())?(?:e-?\d+())?(?:\2|\1\3)$")
+_INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
+_EMAIL_REGEX = re.compile(r"(.+@[a-zA-Z0-9\.]+,?){1,}")
+
+
+def _convert_type(data):
+    """Check and convert the type of variable"""
+    if isinstance(data, dict):
+        return _clean_data(data)
+    if _FLOAT_REGEX.match(data) is not None:  # Floats
+        return float(data)
+    elif _INT_REGEX.match(data) is not None:  # Integers
+        return int(data)
+    elif data == "True" or data == "true":
+        return True
+    elif data == "False" or data == "false":
+        return False
+    else:
+        return str(data)  # The rest is string
+
+def _clean_data(data):
+    new_data = {}
+    for k, v in data.items():
+        new_data[k] = _convert_type(v)
+    return new_data
+
+def get_recipe_data(request):
+    form = request.POST.get('form', None)
+    print(type(form))
+    input_data = _clean_data(json.loads(form))
+    data = {
+        "boil_size": 10
+    }
+    return JsonResponse(data)
 
 
 class StaffRequiredMixin(UserPassesTestMixin):
