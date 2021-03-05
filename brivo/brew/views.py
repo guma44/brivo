@@ -1,6 +1,7 @@
 import re
 import json
 import datetime, pytz
+from django.db import transaction
 from django.http import request, JsonResponse, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
 from django.forms import modelform_factory
@@ -19,8 +20,12 @@ from bootstrap_modal_forms.generic import (
     BSModalReadView,
     BSModalDeleteView
 )
+from attrdict import AttrDict
 # from . import constants
+from measurement.measures import Volume, Weight, Temperature
+from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.brew import forms
+from brivo.utils import functions
 from brivo.brew.forms import (
     BaseBatchForm,
     FermentableModelForm,
@@ -38,7 +43,8 @@ from brivo.brew.models import (
     Yeast,
     Extra,
     Style,
-    Recipe)
+    Recipe,
+    RecipeCalculatorMixin)
 from brivo.users.models import User
 from brivo.brew import filters
 
@@ -69,12 +75,115 @@ def _clean_data(data):
         new_data[k] = _convert_type(v)
     return new_data
 
+measures_map = {
+    "temperature": Temperature,
+    "amount": Weight,
+    "volume": Volume,
+    "color": BeerColor
+}
+
+def _convert_to_measure(d):
+    for k, v in d.items():
+        if k.endswith("_unit") and k not in ["time_unit"]:
+            new_k = "_".join(k.split("_")[:-1])
+            if d[new_k]:
+                d[new_k] = measures_map[new_k](**{v: d[new_k]})
+    return d
+
+
+class DummyRecipe(RecipeCalculatorMixin, AttrDict):
+    def get_fermentables(self):
+        return self.fermentables
+
+    def get_yeasts(self):
+        return self.yeasts
+
+    def get_hops(self):
+        return self.hops
+
+
 def get_recipe_data(request):
     form = request.POST.get('form', None)
-    print(type(form))
     input_data = _clean_data(json.loads(form))
+    for f in ["fermentables", "hops", "extras", "mash_steps", "yeasts"]:
+        input_data[f] = [_convert_to_measure(v) for v in input_data[f].values()]
+    if input_data["general_units"] == "METRIC":
+        volume_unit = "l"
+    else:
+        volume_unit = "us_g"
+    
+    input_data["expected_beer_volume"] = Volume(**{volume_unit: input_data["expected_beer_volume"]})
+    input_data = DummyRecipe(input_data)
+    try:
+        boil_volume = f"{round(getattr(input_data.get_boil_volume(), volume_unit.lower()), 2)} {volume_unit.lower()}"
+    except Exception as exc:
+        print(exc)
+        boil_volume = "---"
+    try:
+        primary_volume = f"{round(getattr(input_data.get_primary_volume(), volume_unit.lower()), 2)} {volume_unit.lower()}"
+    except Exception as exc:
+        print(exc)
+        primary_volume = "---"
+    try:
+        secondary_volume = f"{round(getattr(input_data.get_secondary_volume(), volume_unit.lower()), 2)} {volume_unit.lower()}"
+    except Exception as exc:
+        print(exc)
+        secondary_volume = "---"
+    try:
+        color_hex = functions.get_hex_color_from_srm(input_data.get_color().srm)
+        color = f"{round(getattr(input_data.get_color(), input_data.color_units.lower()), 1)} {input_data.color_units}"
+    except Exception as exc:
+        print(exc)
+        color_hex = "#FFFFFF"
+        color = "---"
+    try:
+        if input_data.gravity_units.lower() == "plato":
+            prec = 1
+            un = "°P"
+        else:
+            prec = 4
+            un = input_data.gravity_units.upper()
+        preboil_gravity = f"{round(getattr(input_data.get_preboil_gravity(), input_data.gravity_units.lower()), prec)} {un}"
+    except Exception as exc:
+        print(exc)
+        preboil_gravity = "---"
+    try:
+        if input_data.gravity_units.lower() == "plato":
+            prec = 1
+            un = "°P"
+        else:
+            prec = 4
+            un = input_data.gravity_units.upper()
+        gravity = f"{round(getattr(input_data.get_gravity(), input_data.gravity_units.lower()), prec)} {un}"
+    except Exception as exc:
+        print(exc)
+        gravity = "---"
+    try:
+        abv = f"{round(input_data.get_abv(), 1)} %"
+    except Exception as exc:
+        print(exc)
+        abv = "---"
+    try:
+        ibu = f"{round(input_data.get_ibu(), 1)} IBU"
+    except Exception as exc:
+        print(exc)
+        ibu = "---"
+    try:
+        bitterness_ratio = f"{round(input_data.get_bitterness_ratio(), 1)}"
+    except Exception as exc:
+        print(exc)
+        bitterness_ratio = "---"
     data = {
-        "boil_size": 10
+        "boil_volume": boil_volume,
+        "primary_volume": primary_volume,
+        "secondary_volume": secondary_volume,
+        "color": color,
+        "color_hex": color_hex,
+        "preboil_gravity": preboil_gravity,
+        "gravity": gravity,
+        "abv": abv,
+        "ibu": ibu,
+        "bitterness_ratio": bitterness_ratio,
     }
     return JsonResponse(data)
 
@@ -531,39 +640,49 @@ class RecipeListView(LoginRequiredMixin, ListView):
         return filtered_recipes.qs
 
 
-class RecipeCreateView(LoginRequiredMixin, BSModalCreateView):
+class RecipeCreateView(LoginRequiredMixin, CreateView):
     template_name = 'brew/recipe/create.html'
     form_class = RecipeModelForm
     success_message = 'Recipe was successfully created.'
     success_url = reverse_lazy('brew:recipe-list')
 
+    def get_form_kwargs(self):
+        kwargs = super(RecipeCreateView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
     def get_context_data(self, **kwargs):
         data = super(RecipeCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
             data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST, request=self.request)
-            data['hops'] = forms.HopIngredientFormSet(self.request.POST)
-            data['yeasts'] = forms.YeastIngredientFormSet(self.request.POST)
-            data['extras'] = forms.ExtraIngredientFormSet(self.request.POST)
-            data['mash_steps'] = forms.MashStepFormSet(self.request.POST)
+            data['hops'] = forms.HopIngredientFormSet(self.request.POST, request=self.request)
+            data['yeasts'] = forms.YeastIngredientFormSet(self.request.POST, request=self.request)
+            #data['extras'] = forms.ExtraIngredientFormSet(self.request.POST, request=self.request)
+            data['mash_steps'] = forms.MashStepFormSet(self.request.POST, request=self.request)
         else:
             data['fermentables'] = forms.FermentableIngredientFormSet(request=self.request)
             data['hops'] = forms.HopIngredientFormSet(request=self.request)
             data['yeasts'] = forms.YeastIngredientFormSet(request=self.request)
-            data['extras'] = forms.ExtraIngredientFormSet(request=self.request)
+            #data['extras'] = forms.ExtraIngredientFormSet(request=self.request)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request)
         return data
 
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     fermentables = context['fermentables']
-    #     with transaction.atomic():
-    #         form.instance.created_by = self.request.user
-    #         self.object = form.save()
-    #         if fermentables.is_valid():
-    #             fermentables.instance = self.object
-    #             fermentables.save()
-    #     return super(RecipeCreateView, self).form_valid(form)
-
+    def form_valid(self, form):
+        context = self.get_context_data()
+        fermentables = context['fermentables']
+        hops = context['hops']
+        #extras = context['extras']
+        yeasts = context['yeasts']
+        mash_steps = context['mash_steps']
+        formsets = [fermentables, hops, yeasts, mash_steps]
+        with transaction.atomic():
+            form.instance.user = self.request.user
+            self.object = form.save()
+            for formset in formsets:
+                if formset.is_valid():
+                    formset.instance = self.object
+                    formset.save()
+        return super(RecipeCreateView, self).form_valid(form)
 
 
 class RecipeDetailView(LoginRequiredMixin, BSModalReadView):

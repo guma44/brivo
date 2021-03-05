@@ -9,20 +9,15 @@
 </div>
 <form method="post" action="">
   {% csrf_token %}
-  <div>
       {% crispy form %}
-  </div>
-
-  <div>
-    <button type="button" class="submit-btn btn btn-primary">Create</button>
-  </div>
-
 </form>
 </div>
 <script>
-  $("form").change(function () {
+$(document).ready(function() {
+  $("form").on("change", function () {
     console.log("Form changed")
     let arrayform = $("form").serializeArray();
+    console.log(arrayform)
     input_data = {
         "fermentables": {},
         "hops": {},
@@ -30,36 +25,37 @@
         "extras": {},
         "mash_steps": {}
     }
+    input_data["gravity_units"] = "{{ user.profile.gravity_units }}"
+    input_data["color_units"] = "{{ user.profile.color_units }}"
+    input_data["general_units"] = "{{ user.profile.general_units }}"
     for (i = 0; i < arrayform.length; i++) {
       if (arrayform[i].name.includes("FORMS") || arrayform[i].name.includes("csrf")) {continue;}
-      else if (arrayform[i].name.startsWith("fermentables-")) {
+      else if (arrayform[i].name.startsWith("fermentables-") || arrayform[i].name.startsWith("mash_steps-") || arrayform[i].name.startsWith("extras-") || arrayform[i].name.startsWith("yeasts-") || arrayform[i].name.startsWith("hops-")) {
         var [type, idx, name] = arrayform[i].name.split("-");
+        var new_name = name.split("_")[0]
         !(idx in input_data[type]) && (input_data[type][idx] = {})
-        input_data[type][idx][name] = arrayform[i].value
+        if (name.endsWith("_0")) {
+            input_data[type][idx][new_name] = arrayform[i].value
+            unit_id = "#id_" + arrayform[i].name.substring(0, arrayform[i].name.length - 2) + "_1";
+            var unit = $(unit_id).text()
+            input_data[type][idx][new_name + "_unit"] = unit
+        }
+        else if (name.endsWith("_1")) {
+            input_data[type][idx][new_name + "_unit"] = arrayform[i].value
+        }
+        else {
+          var [type, idx, name] = arrayform[i].name.split("-");
+          input_data[type][idx][name] = arrayform[i].value
+        }
       }
-      else if (arrayform[i].name.startsWith("hops-")) {
-        var [type, idx, name] = arrayform[i].name.split("-");
-        !(idx in input_data[type]) && (input_data[type][idx] = {})
-        input_data[type][idx][name] = arrayform[i].value
-      }
-      else if (arrayform[i].name.startsWith("yeasts-")) {
-        var [type, idx, name] = arrayform[i].name.split("-");
-        !(idx in input_data[type]) && (input_data[type][idx] = {})
-        input_data[type][idx][name] = arrayform[i].value
-      }
-      else if (arrayform[i].name.startsWith("extras-")) {
-        var [type, idx, name] = arrayform[i].name.split("-");
-        !(idx in input_data[type]) && (input_data[type][idx] = {})
-        input_data[type][idx][name] = arrayform[i].value
-      }
-      else if (arrayform[i].name.startsWith("mash_steps-")) {
-        var [type, idx, name] = arrayform[i].name.split("-");
-        !(idx in input_data[type]) && (input_data[type][idx] = {})
-        input_data[type][idx][name] = arrayform[i].value
+      else if (arrayform[i].name.startsWith("expected_beer_volume_0")) {
+        var new_name = arrayform[i].name.substring(0, arrayform[i].name.length - 2)
+        input_data[new_name] = arrayform[i].value;
       }
       else {
         input_data[arrayform[i].name] = arrayform[i].value;
       }
+
     }
     $.ajax({
       type: "POST",
@@ -70,10 +66,19 @@
       },
       dataType: 'json',
       success: function (data) {
-        console.log(data)
+        $("#boil_volume_info").text(data.boil_volume);
+        $("#primary_volume_info").text(data.primary_volume);
+        $("#secondary_volume_info").text(data.secondary_volume);
+        $("#preboil_gravity_info").text(data.preboil_gravity);
+        $("#gravity_info").text(data.gravity);
+        $("#abv_info").text(data.abv);
+        $("#color_info").text(data.color);
+        $("#ibu_info").text(data.ibu);
+        $("#bitterness_ratio_info").text(data.bitterness_ratio);
       }
     });
-
   });
+  $("form").trigger("change");
+});
 </script>
 {% endblock content %}

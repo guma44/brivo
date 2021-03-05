@@ -1,6 +1,7 @@
 from itertools import product
 
 from django import forms
+from django.forms import widgets
 from django.utils.safestring import mark_safe
 from django.core.validators import MaxValueValidator, MinValueValidator
 from measurement.base import BidimensionalMeasure, MeasureBase
@@ -8,48 +9,16 @@ from measurement.base import BidimensionalMeasure, MeasureBase
 from django_measurement import utils
 from django_measurement.conf import settings
 
-template = """
-<div class="input-group">
-  <input name="{{ widget.name }}" id="id_{{ widget.name }}" type="text" class="form-control">
-  <div class="input-group-append">
-    <span class="input-group-text">%(unit)s</span>
-  </div>'
-</div>'
-"""
 
-class AppendWidget(forms.Widget):
-    """ Widget that prepend boostrap-style span with data to specified base widget """
+class SingleChoiceWidget(widgets.ChoiceWidget):
+    template_name = "widgets/single_choice_widget.html"
 
-    def __init__(self, base_widget, unit_choices, *args, **kwargs):
+    def __init__(self, choices=(), attrs=None):
         u"""Initialise widget and get base instance"""
-        super(AppendWidget, self).__init__(*args, **kwargs)
-        self.base_widget = base_widget
-        self.unit_choices = unit_choices
+        super(SingleChoiceWidget, self).__init__(choices=choices, attrs=attrs)
 
-    def render(self, name, value, attrs=None, renderer=None):
-        u"""Render base widget and add bootstrap spans"""
-        field = self.base_widget.render(name, value, attrs)
-        return mark_safe((
-            u'<div class="input-group">'
-            u'  <input name="%(name)s" id="id_%(name)s" type="number" class="form-control">'
-            u'  <div class="input-group-append">'
-            u'    <span class="input-group-text">%(unit)s</span>'
-            u'  </div>'
-            u'</div>'
-        ) % {'field': field, 'unit': self.unit_choices[0][1], 'name': name})
-
-    def decompress(self, value):
-        if value:
-            choice_units = set([u for u, n in self.unit_choices])
-
-            unit = value.STANDARD_UNIT
-            if unit not in choice_units:
-                unit = choice_units.pop()
-
-            magnitude = getattr(value, unit)
-            return [magnitude, unit]
-
-        return [None, None]
+    def format_value(self, value):
+        return self.choices[0][0]
 
 
 class MeasurementWidget(forms.MultiWidget):
@@ -86,6 +55,12 @@ class MeasurementWidget(forms.MultiWidget):
             return [magnitude, unit]
 
         return [None, None]
+
+
+class AppendWidget(MeasurementWidget):
+    """ Widget that prepend boostrap-style span with data to specified base widget """
+
+    template_name = "widgets/append_widget.html"
 
 
 class MeasurementField(forms.MultiValueField):
@@ -169,14 +144,17 @@ class MeasurementField(forms.MultiValueField):
             fields = (float_field, choice_field)
         else:
             float_field = forms.FloatField(*args, **kwargs)
+            float_field.widget.attrs = {"class": "form-control"}
+            choice_field = forms.ChoiceField(choices=unit_choices)
             defaults = {
                 "widget": AppendWidget(
-                    base_widget=float_field.widget,
+                    float_widget=float_field.widget,
+                    unit_choices_widget=choice_field.widget,
                     unit_choices=unit_choices,
                 ),
             }
             defaults.update(kwargs)
-            fields = (float_field, )
+            fields = (float_field, choice_field)
         super(MeasurementField, self).__init__(
             fields, validators=validators, *args, **defaults
         )

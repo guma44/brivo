@@ -4,15 +4,23 @@ from django.forms.fields import ChoiceField
 from django.forms.models import ModelForm, inlineformset_factory
 from django.forms import BaseInlineFormSet
 from bootstrap_modal_forms.forms import BSModalModelForm
-from measurement.measures import Volume, Weight, Temperature
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import AppendedText
 from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, Row, ButtonHolder, Submit, MultiField, Column
 
+from measurement.measures import Volume, Weight, Temperature
 from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.brew.measurement_forms import MeasurementField
 from brivo.brew import layouts
 from brivo.brew import models
+
+
+class PopRequestMixin:
+
+    def get_form_kwargs(self):
+        kwargs = super(PopRequestMixin, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
 
 class BaseFormSet(BaseInlineFormSet):
@@ -137,7 +145,7 @@ class StyleModelForm(BSModalModelForm):
         fields = "__all__"
 
 
-class FermentableIngredientForm(BSModalModelForm):
+class FermentableIngredientForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -169,7 +177,7 @@ FermentableIngredientFormSet = inlineformset_factory(
     formset=BaseFormSet
 )
 
-class HopIngredientForm(BSModalModelForm):
+class HopIngredientForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -178,7 +186,7 @@ class HopIngredientForm(BSModalModelForm):
             unit_choices = (("oz", "oz"),)
         else:
             raise ValueError(f"No unit choice {request.user.profile.general_units}")
-        time_choices = (("min", "min"), ("day", "day"))
+        time_choices = (("MINUTE", "MINUTE"), ("day", "day"))
         self.fields.update({
             "amount": MeasurementField(
                 measurement=Weight,
@@ -195,7 +203,7 @@ HopIngredientFormSet = inlineformset_factory(
     fields=['name', 'use', 'alpha_acids', 'amount', 'time', 'time_unit'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
-class YeastIngredientForm(BSModalModelForm):
+class YeastIngredientForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -219,7 +227,7 @@ YeastIngredientFormSet = inlineformset_factory(
     fields=['name', 'type', 'form', 'attenuation', 'amount', 'lab'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
-class ExtraIngredientForm(BSModalModelForm):
+class ExtraIngredientForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -243,7 +251,7 @@ ExtraIngredientFormSet = inlineformset_factory(
     fields=['name', 'type', 'use', 'amount', 'time', 'time_unit'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
-class MashStepForm(BSModalModelForm):
+class MashStepForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -290,16 +298,41 @@ BatchInfoStatsHtml = """
 """
 
 FermentableInfoStatsHtml = """
-<div class="row">
+<div>
 </br>
 <table class="table" style="background:#dedede">
    <tr>
       <td>Gravity</td>
       <td class: "text-left" id="gravity_info">NN</td>
    <tr>
-<table>
+   <tr>
+      <td>Expected ABV</td>
+      <td class: "text-left" id="abv_info">NN</td>
+   <tr>
+   <tr>
+      <td>Color</td>
+      <td class: "text-left" id="color_info">NN</td>
+   <tr>
+</table>
 </div>
 """
+
+HopInfoStatsHtml = """
+<div>
+</br>
+<table class="table" style="background:#dedede">
+   <tr>
+      <td>Bitterness</td>
+      <td class: "text-left" id="ibu_info">NN</td>
+   <tr>
+   <tr>
+      <td>Bitterness Ratio</td>
+      <td class: "text-left" id="bitterness_ratio_info">NN</td>
+   <tr>
+</table>
+</div>
+"""
+
 class RecipeModelForm(BSModalModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -307,17 +340,19 @@ class RecipeModelForm(BSModalModelForm):
         if self.request.user.profile.general_units == "METRIC":
             unit_choices = (("l", "l"),)
         elif self.request.user.profile.general_units == "IMPERIAL":
-            unit_choices = (("US Gal", "US Gal"),)
+            unit_choices = (("us_g", "us_g"),)
         else:
             raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
         self.fields.update({
             "expected_beer_volume": MeasurementField(
-                measurement=Temperature,
+                measurement=Volume,
                 unit_choices=unit_choices),
         })
 
         self.helper = FormHelper()
         self.helper.form_tag = True
+        self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+        self.helper.form_method = 'POST'
         #self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-6 create-label'
         self.helper.field_class = 'col-md-6'
@@ -344,12 +379,41 @@ class RecipeModelForm(BSModalModelForm):
                         css_class='form-row'
                     )
                 ),
-                Fieldset('Fermentables', layouts.RecipeFormsetLayout('fermentables', "brew/recipe/fermentable_formset.html")),
-                Fieldset("Mash", layouts.RecipeFormsetLayout('mash_steps', "brew/recipe/mash_formset.html")),
-                Fieldset("Hops", layouts.RecipeFormsetLayout('hops', "brew/recipe/hop_formset.html")),
+                Fieldset('Fermentables',
+                    Row(
+                        Column(HTML(FermentableInfoStatsHtml), css_class='form-group col-md-3 mb-0'),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        layouts.RecipeFormsetLayout('fermentables', "brew/recipe/fermentable_formset.html"),
+                        css_class="form-row"
+                    ),
+                ),
+                Fieldset(
+                    "Mash",
+                    Row(
+                        Column(AppendedText("mash_efficiency", "%"), css_class='form-group col-md-4 mb-0'),
+                        Column(AppendedText("liquor_to_grist_ratio", "?"), css_class='form-group col-md-4 mb-0'),
+                        css_class="form-row"
+                    ),
+                    Row(
+                        layouts.RecipeFormsetLayout('mash_steps', "brew/recipe/mash_formset.html"),
+                        css_class="form-row"
+                    )
+                ),
+                Fieldset("Hops",
+                    Row(
+                        Column(HTML(HopInfoStatsHtml), css_class='form-group col-md-3 mb-0'),
+                        css_class='form-row'
+                    ),
+                    Row(
+                        layouts.RecipeFormsetLayout('hops', "brew/recipe/hop_formset.html"),
+                        css_class="form-row"
+                    ),
+                ),
                 Fieldset("Yeasts", layouts.RecipeFormsetLayout('yeasts', "brew/recipe/yeast_formset.html")),
                 Field('note'),
-                HTML("<br>"),
+                HTML("<br>")
             ),
         )
 
