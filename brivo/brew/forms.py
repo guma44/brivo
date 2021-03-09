@@ -280,19 +280,19 @@ BatchInfoStatsHtml = """
 <table class="table" style="background:#dedede">
    <tr>
       <td>Boil Volume:</td>
-      <td class: "text-left" id="boil_volume_info">NN</td>
+      <td class: "text-left" id="boil_volume_info">---</td>
    <tr>
    <tr>
       <td>Pre-boil Gravity:</td>
-      <td class: "text-left" id="preboil_gravity_info">NN</td>
+      <td class: "text-left" id="preboil_gravity_info">---</td>
    <tr>
    <tr>
       <td>Primary Volume:</td>
-      <td class: "text-left" id="primary_volume_info">NN</td>
+      <td class: "text-left" id="primary_volume_info">---</td>
    <tr>
    <tr>
       <td>Secondary Volume:</td>
-      <td class: "text-left" id="secondary_volume_info">NN</td>
+      <td class: "text-left" id="secondary_volume_info">---</td>
    <tr>
 </table>
 """
@@ -303,15 +303,15 @@ FermentableInfoStatsHtml = """
 <table class="table" style="background:#dedede">
    <tr>
       <td>Gravity</td>
-      <td class: "text-left" id="gravity_info">NN</td>
+      <td class: "text-left" id="gravity_info">---</td>
    <tr>
    <tr>
       <td>Expected ABV</td>
-      <td class: "text-left" id="abv_info">NN</td>
+      <td class: "text-left" id="abv_info">---</td>
    <tr>
    <tr>
       <td>Color</td>
-      <td class: "text-left" id="color_info">NN</td>
+      <td class: "text-left" id="color_info">---</td>
    <tr>
 </table>
 </div>
@@ -323,11 +323,11 @@ HopInfoStatsHtml = """
 <table class="table" style="background:#dedede">
    <tr>
       <td>Bitterness</td>
-      <td class: "text-left" id="ibu_info">NN</td>
+      <td class: "text-left" id="ibu_info">---</td>
    <tr>
    <tr>
       <td>Bitterness Ratio</td>
-      <td class: "text-left" id="bitterness_ratio_info">NN</td>
+      <td class: "text-left" id="bitterness_ratio_info">---</td>
    <tr>
 </table>
 </div>

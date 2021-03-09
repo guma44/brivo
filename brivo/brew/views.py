@@ -90,6 +90,9 @@ def _convert_to_measure(d):
                 d[new_k] = measures_map[new_k](**{v: d[new_k]})
     return d
 
+def _is_valid(v):
+    return v.get("amount", "") != ""
+
 
 class DummyRecipe(RecipeCalculatorMixin, AttrDict):
     def get_fermentables(self):
@@ -106,7 +109,7 @@ def get_recipe_data(request):
     form = request.POST.get('form', None)
     input_data = _clean_data(json.loads(form))
     for f in ["fermentables", "hops", "extras", "mash_steps", "yeasts"]:
-        input_data[f] = [_convert_to_measure(v) for v in input_data[f].values()]
+        input_data[f] = [_convert_to_measure(v) for v in input_data[f].values() if _is_valid(v)]
     if input_data["general_units"] == "METRIC":
         volume_unit = "l"
     else:
@@ -685,19 +688,56 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
         return super(RecipeCreateView, self).form_valid(form)
 
 
+class RecipeUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'brew/recipe/create.html'
+    form_class = RecipeModelForm
+    success_message = 'Recipe was successfully created.'
+    success_url = reverse_lazy('brew:recipe-list')
+    model = Recipe
+
+    def get_form_kwargs(self):
+        kwargs = super(RecipeUpdateView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        data = super(RecipeUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
+            data['hops'] = forms.HopIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
+            data['yeasts'] = forms.YeastIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
+            #data['extras'] = forms.ExtraIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
+            data['mash_steps'] = forms.MashStepFormSet(self.request.POST, request=self.request, instance=self.object)
+        else:
+            data['fermentables'] = forms.FermentableIngredientFormSet(request=self.request, instance=self.object)
+            data['hops'] = forms.HopIngredientFormSet(request=self.request, instance=self.object)
+            data['yeasts'] = forms.YeastIngredientFormSet(request=self.request, instance=self.object)
+            #data['extras'] = forms.ExtraIngredientFormSet(request=self.request, instance=self.object)
+            data['mash_steps'] = forms.MashStepFormSet(request=self.request, instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        fermentables = context['fermentables']
+        hops = context['hops']
+        #extras = context['extras']
+        yeasts = context['yeasts']
+        mash_steps = context['mash_steps']
+        formsets = [fermentables, hops, yeasts, mash_steps]
+        with transaction.atomic():
+            form.instance.user = self.request.user
+            self.object = form.save()
+            for formset in formsets:
+                if formset.is_valid():
+                    formset.instance = self.object
+                    formset.save()
+        return super(RecipeUpdateView, self).form_valid(form)
+
+
 class RecipeDetailView(LoginRequiredMixin, BSModalReadView):
     model = Recipe
     template_name = 'brew/recipe/detail.html'
     context_object_name = 'recipe'
-
-
-class RecipeUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
-    model = Recipe
-    form_class = RecipeModelForm
-    template_name = 'brew/recipe/update.html'
-    success_message = 'Recipe was updated.'
-    context_object_name = 'recipe'
-    success_url = reverse_lazy('brew:recipe-list')
 
 
 class RecipeDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):

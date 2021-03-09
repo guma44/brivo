@@ -21,10 +21,10 @@
 </div>
 <div class="container">
     <div class="col-12 mb-3">
-    {% if user.is_staff %}
-    <button id="create-recipe" class="btn btn-success" type="button" name="button">
+    {% if user.is_authenticated %}
+    <a href="{% url 'brew:recipe-create' %}"><button id="create-recipe" class="btn btn-success" type="button" name="button">
         <span class="fa fa-plus mr-2"></span>Create Recipe
-    </button>
+    </button></a>
     {% endif %}
     <button id="create-recipe" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
         Toggle Filters
@@ -70,9 +70,9 @@
                 </button>
                 {% if user.is_staff %}
                 <!-- Update recipe buttons -->
-                <button type="button" class="update-recipe btn btn-sm btn-primary" data-form-url="{% url 'brew:recipe-update' recipe.pk %}">
+                <a href="{% url 'brew:recipe-update' recipe.pk %}"><button type="button" class="update-recipe btn btn-sm btn-primary" data-form-url="{% url 'brew:recipe-update' recipe.pk %}">
                 <span class="fa fa-edit"></span>
-                </button>
+                </button></a>
                 <!-- Delete recipe buttons -->
                 <button type="button" class="bs-modal delete-recipe btn btn-sm btn-danger" data-form-url="{% url 'brew:recipe-delete' recipe.pk %}">
                 <span class="fa fa-trash"></span>
@@ -95,18 +95,6 @@
 {% block inline_javascript %}
 <script defer type="text/javascript">
 $(document).ready(function() {
-
-    $("#create-recipe").modalForm({
-        formURL: "{% url 'brew:recipe-create' %}"
-    });
-
-    $(".update-recipe").each(function () {
-        $(this).modalForm({
-        formURL: $(this).data("form-url"),
-        asyncUpdate: false,
-        });
-    });
-
     // Read and Delete book buttons open modal with id="modal"
     // The formURL is retrieved from the data of the element
     $(".bs-modal").each(function () {
