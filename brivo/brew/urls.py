@@ -79,13 +79,15 @@ urlpatterns = [
     path('style/<int:pk>/delete', views.StyleDeleteView.as_view(),
          name='style-delete'),
 
-    # Styles
+    # Recipes
     path('recipe', views.RecipeListView.as_view(),
          name='recipe-list'),
     path('recipe/create', views.RecipeCreateView.as_view(),
          name='recipe-create'),
     path('recipe/<int:pk>', views.RecipeDetailView.as_view(),
          name='recipe-detail'),
+    path('recipe/<int:pk>/print', views.RecipePrintView.as_view(),
+         name='recipe-print'),
     path('recipe/<int:pk>/update', views.RecipeUpdateView.as_view(),
          name='recipe-update'),
     path('recipe/<int:pk>/delete', views.RecipeDeleteView.as_view(),

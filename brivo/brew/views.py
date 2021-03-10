@@ -1,6 +1,8 @@
 import re
 import json
 import datetime, pytz
+from django.conf import settings
+from django.templatetags.static import static
 from django.db import transaction
 from django.http import request, JsonResponse, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
@@ -21,6 +23,7 @@ from bootstrap_modal_forms.generic import (
     BSModalDeleteView
 )
 from attrdict import AttrDict
+from django_weasyprint import WeasyTemplateResponseMixin
 # from . import constants
 from measurement.measures import Volume, Weight, Temperature
 from brivo.utils.measures import BeerColor, BeerGravity
@@ -702,6 +705,15 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         data = super(RecipeUpdateView, self).get_context_data(**kwargs)
+        if self.request.user.profile.general_units.lower() == "metric":
+            data["small_weight"] = "g"
+            data["big_weight"] = "kg"
+            data["volume"] = "l"
+        else:
+            data["small_weight"] = "oz"
+            data["big_weight"] = "lb"
+            data["volume"] = "us_g"
+
         if self.request.POST:
             data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
             data['hops'] = forms.HopIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
@@ -714,6 +726,7 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
             data['yeasts'] = forms.YeastIngredientFormSet(request=self.request, instance=self.object)
             #data['extras'] = forms.ExtraIngredientFormSet(request=self.request, instance=self.object)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request, instance=self.object)
+        print(data)
         return data
 
     def form_valid(self, form):
@@ -739,9 +752,45 @@ class RecipeDetailView(LoginRequiredMixin, BSModalReadView):
     template_name = 'brew/recipe/detail.html'
     context_object_name = 'recipe'
 
+    def get_context_data(self, **kwargs):
+        data = super(RecipeDetailView, self).get_context_data(**kwargs)
+        if self.request.user.profile.general_units.lower() == "metric":
+            data["small_weight"] = ("g", "g")
+            data["big_weight"] = ("kg", "kg")
+            data["volume"] = ("l", "l")
+        else:
+            data["small_weight"] = ("oz", "g")
+            data["big_weight"] = ("lb", "lb")
+            data["volume"] = ("us_g", "US Gal")
+        if self.request.user.profile.gravity_units.lower() == "plato":
+            data["gravity_units"] = ("Plato", "°P")
+        else:
+            data["gravity_units"] = ("SG", "SG")
+        if self.request.user.profile.color_units.lower() == "ebc":
+            data["color_units"] = ("EBC", "EBC")
+        else:
+            data["color_units"] = ("SRM", "SRM")
+        if self.request.user.profile.temperature_units.lower() == "celsius":
+            data["temp_units"] = ("c", "°C")
+        elif self.request.user.profile.temperature_units.lower() == "fahrenheit":
+            data["temp_units"] = ("f", "°F")
+        else:
+            data["temp_units"] = ("k", "K")
+        return data
+
 
 class RecipeDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Recipe
     template_name = 'brew/recipe/delete.html'
     success_message = 'Recipe was deleted.'
     success_url = reverse_lazy('brew:recipe-list')
+
+
+class RecipePrintView(WeasyTemplateResponseMixin, RecipeDetailView):
+    # pdf_stylesheets = [
+    #     static('/css/bootstrap.min.css'),
+    #     static('/fontawesome_free/css/all.min.css'),
+    #     static('/css/project.css'),
+    # ]
+    template_name = 'brew/recipe/print.html'
+    pdf_attachment = False

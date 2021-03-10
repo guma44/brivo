@@ -1,0 +1,179 @@
+{% load static i18n %}
+{% load brew_tags %}<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Brivo{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Open Source Brewery App">
+    <meta name="author" content="Rafal Gumienny">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="{% static 'js/html5shiv.min.js' %}"></script>
+    <![endif]-->
+
+    <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
+
+    {% block css %}
+    
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome_free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Your stuff: Third-party CSS libraries go here -->
+    
+    <!-- This file stores project-specific CSS -->
+    
+    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    
+    
+    {% endblock %}
+    <!-- Le javascript
+    ================================================== -->
+    {# Placed at the top of the document so pages load faster with defer #}
+    {% block javascript %}
+      
+      <!-- Bootstrap JS and its dependencies-->
+      <script src="{% static 'js/jquery.min.js' %}"></script>
+      <script defer src="{% static 'js/popper.min.js' %}"></script>
+      <script defer src="{% static 'js/bootstrap.min.js' %}"></script>
+      <script defer src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+      <script src="{% static 'fontawesome_free/js/all.min.js' %}"></script>
+      <!-- Your stuff: Third-party javascript libraries go here -->
+      
+
+      <!-- place project specific Javascript in this file -->
+      
+      <script defer src="{% static 'js/project.js' %}"></script>
+      
+
+    {% endblock javascript %}
+
+  </head>
+
+  <body>
+    <div class="container">
+        <h3>{{recipe.name}}</h3>
+        <hr class="mb-3"/>
+        <div class="recipe-info">
+            <ul>
+                <li><span class="rip-head">Gravity:  {{recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</li>
+                <li><span class="rip-head">IBU : {{recipe.get_ibu|floatformat}}</li>
+                <li><span class="rip-head">ABV:  {{recipe.get_abv|floatformat}}%</li>
+                <li><span class="rip-head">Color:  {{recipe.get_color|get_obj_attr:color_units.0|floatformat}} {{color_units.1}}</li>
+                <li><span class="rip-head">Style:  {{recipe.style.name}}</li>
+            </ul>
+            <h5>Batch</h5>
+                <ul>
+                    <li><span class="rip-head">Expected Volume:</span> {{recipe.expected_beer_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</li>
+                    <li><span class="rip-head">Boil Time:</span> {{recipe.boil_time}} Min</li>
+                    <li><span class="rip-head">Evaporation rate:</span> {{recipe.evaporation_rate|floatformat}}%</li>
+                    <li><span class="rip-head">Boil Volume:</span> {{recipe.get_boil_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</li>
+                    <li><span class="rip-head">Boil Loss:</span> {{recipe.boil_loss|floatformat}}%</li>
+                    <li><span class="rip-head">Trub Loss:</span> {{recipe.trub_loss|floatformat}}%</li>
+                    <li><span class="rip-head">Dry Hopping Loss:</span> {{recipe.dry_hopping_loss|floatformat}}%</li>
+                </ul>
+            <h5>Mashing</h5>
+                <ul>
+                    <li><span class="rip-head">Mash Efficiency:</span> {{recipe.mash_efficiency|floatformat}}%</li>
+                    <li><span class="rip-head">Liquor-to-Grist Ratio:</span> {{recipe.liquor_to_grist_ratio|floatformat}} {{volume.1}}/{{big_weight.1}}</li>
+                </ul>
+            <h5>Steps</h5>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                {% for step in recipe.mash_steps.all %}
+                    <tr>
+                    <th>{{forloop.counter}}.</th>
+                    <td>{{step.temperature|get_obj_attr:temp_units.0|floatformat}} {{temp_units.1}}</td>
+                    {# <th>{{step.temperature|get_obj_attr:user.profile.temperature_units|floatformat}}</th> #}
+                    <td>{{step.time|floatformat}} Min</td>
+                    <tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <hr class="mb-3"/>
+            <div class="ingredients">
+                <h5>Fermentables</h5>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th class="text-left" scope="col">Name</th>
+                            <th class="text-left" scope="col">Type</th>
+                            <th class="text-left" scope="col">Use</th>
+                            <th class="text-left" scope="col">Color</th>
+                            <th class="text-left" scope="col">Extraction</th>
+                            <th class="text-left" scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fermentable in recipe.fermentables.all %}
+                            <tr class="">
+                                <td class="text-left">{{ fermentable.name }}</td>
+                                <td class="text-left">{{ fermentable.type|title }}</td>
+                                <td class="text-left">{{ fermentable.use|title|default:"---" }}</td>
+                                <td class="text-left">{{ fermentable.color|get_obj_attr:color_units.0|floatformat }} {{color_units.1}}</td>
+                                <td class="text-left">{{ fermentable.extraction }}%</td>
+                                <td class="text-left">{{ fermentable.amount|get_obj_attr:big_weight.0|floatformat }} {{big_weight.1}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="ingredients">
+                <h5>Hops</h5>
+                <table class="table table-sm">
+                    <thead>
+                        <tr >
+                            <th class="text-left" scope="col">Name</th>
+                            <th class="text-left" scope="col">Use</th>
+                            <th class="text-left" scope="col">Alpha Acids</th>
+                            <th class="text-left" scope="col">Amount</th>
+                            <th class="text-left" scope="col">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hop in recipe.hops.all %}
+                            <tr>
+                                <td class="text-left">{{ hop.name }}</td>
+                                <td class="text-left">{{ hop.use|title }}</td>
+                                <td class="text-left">{{ hop.alpha_acids }}%</td>
+                                <td class="text-left">{{ hop.amount|get_obj_attr:small_weight.0 }} {{small_weight.1}}</td>
+                                <td class="text-left">{{ hop.time|floatformat }} {{hop.time_unit|lower}}(s)</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="ingredients">
+                <h5>Yeasts</h5>
+                <table class="table table-sm">
+                    <thead>
+                        <tr >
+                            <th class="text-left" scope="col">Name</th>
+                            <th class="text-left" scope="col">Lab</th>
+                            <th class="text-left" scope="col">Type</th>
+                            <th class="text-left" scope="col">Attenuation</th>
+                            <th class="text-left" scope="col">Form</th>
+                            <th class="text-left" scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for yeast in recipe.yeasts.all %}
+                            <tr>
+                                <td class="text-left">{{ yeast.name }}</td>
+                                <td class="text-left">{{ yeast.lab }}</td>
+                                <td class="text-left">{{ yeast.type|title }}</td>
+                                <td class="text-left">{{ yeast.attenuation|floatformat }}%</td>
+                                <td class="text-left">{{ yeast.form|title }}</td>
+                                <td class="text-left">{{ yeast.amount|get_obj_attr:small_weight.0|floatformat }} {{small_weight.1}}</td>
+                            </tr>
+                        {% endfor %}
+                </table>
+            </div>
+    </div> <!-- /container -->
+  </body>
+</html>
+ 

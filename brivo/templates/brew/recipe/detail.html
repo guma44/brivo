@@ -2,11 +2,29 @@
 {% load brew_tags %}
 
 {% block content %}
-<div class="modal-header">
-  <h3 class="modal-title">{{recipe.name}}</h3>
-  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="modal-footer pb-0">
+  <div>
+    <div class="float-right">
+      <a target="_blank" href={% url 'brew:recipe-print' recipe.pk %}>
+        <button class="btn btn-primary" type="button">
+          <span class="fa fa-print"></span>
+        </button>
+      </a>
+      <a target="_blank" href={% url 'brew:recipe-update' recipe.pk %}>
+        <button class="btn btn-primary" type="button">
+          <span class="fa fa-pen"></span>
+        </button>
+      </a>
+      <button type="button" class="btn btn-dark" data-dismiss="modal">
+        <span class="fa fa-window-close"></span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="modal-header pt-0">
+    <div class="float-left">
+      <h2 class="modal-title">{{recipe.name}}</h2>
+    </div>
 </div>
 
 <div class="modal-body">
@@ -16,8 +34,8 @@
       <table class="table table-sm">
         <tbody>
           <tr>
-            <th>Gravity [{{user.profile.gravity_units}}]</th>
-            <td>{{recipe.get_gravity|get_obj_attr:user.profile.gravity_units|floatformat}}</td>
+            <th>Gravity</th>
+            <td>{{recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
           <tr>
           <tr>
             <th>IBU</th>
@@ -28,8 +46,8 @@
             <td>{{recipe.get_abv|floatformat}}%</td>
           <tr>
           <tr>
-            <th>Color [{{user.profile.color_units}}]</th>
-            <td>{{recipe.get_color|get_obj_attr:user.profile.color_units|floatformat}}</td>
+            <th>Color</th>
+            <td>{{recipe.get_color|get_obj_attr:color_units.0|floatformat}} {{color_units.1}}</td>
           <tr>
           <tr>
             <th>Type</th>
@@ -48,7 +66,7 @@
         <tbody>
           <tr>
             <th>Expected Volume</th>
-            <td>{{recipe.expected_beer_volume}}</td>
+            <td>{{recipe.expected_beer_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</td>
           <tr>
           <tr>
             <th>Boil Time</th>
@@ -60,7 +78,7 @@
           <tr>
           <tr>
             <th>Boil Volume</th>
-            <td>{{recipe.get_boil_volume}}</td>
+            <td>{{recipe.get_boil_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</td>
           <tr>
           <tr>
             <th>Boil Loss</th>
@@ -81,11 +99,11 @@
         <tbody>
           <tr>
             <th>Mash Efficiency</th>
-            <td>{{recipe.mash_efficiency|floatformat}}</td>
+            <td>{{recipe.mash_efficiency|floatformat}}%</td>
           <tr>
           <tr>
             <th>Liquor-to-Grist Ratio</th>
-            <td>{{recipe.liquor_to_grist_ratio|floatformat}}</td>
+            <td>{{recipe.liquor_to_grist_ratio|floatformat}} {{volume.1}}/{{big_weight.1}}</td>
           <tr>
         </tbody>
       </table>
@@ -94,8 +112,7 @@
         <tbody>
           {% for step in recipe.mash_steps.all %}
             <tr>
-              <th>{{step.temperature|get_obj_attr:'c'|floatformat}} C</th>
-              {# <th>{{step.temperature|get_obj_attr:user.profile.temperature_units|floatformat}}</th> #}
+              <th>{{step.temperature|get_obj_attr:temp_units.0|floatformat}} {{temp_units.1}}</th>
               <td>{{step.time|floatformat}} Min</td>
             <tr>
           {% endfor %}
@@ -108,23 +125,23 @@
     <table class="table table-sm">
         <thead>
             <tr>
-                <th class="text-center" scope="col">Name</th>
-                <th class="text-center" scope="col">Type</th>
-                <th class="text-center" scope="col">Use</th>
-                <th class="text-center" scope="col">Color</th>
-                <th class="text-center" scope="col">Extraction</th>
-                <th class="text-center" scope="col">Amount</th>
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Type</th>
+                <th class="text-left" scope="col">Use</th>
+                <th class="text-left" scope="col">Color</th>
+                <th class="text-left" scope="col">Extraction</th>
+                <th class="text-left" scope="col">Amount</th>
             </tr>
         </thead>
         <tbody>
             {% for fermentable in recipe.fermentables.all %}
                 <tr class="">
-                    <td class="text-center">{{ fermentable.name }}</td>
-                    <td class="text-center">{{ fermentable.type|title }}</td>
-                    <td class="text-center">{{ fermentable.use|title }}</td>
-                    <td class="text-center">{{ fermentable.color }}</td>
-                    <td class="text-center">{{ fermentable.extraction }}</td>
-                    <td class="text-center">{{ fermentable.amount }}</td>
+                    <td class="text-left">{{ fermentable.name }}</td>
+                    <td class="text-left">{{ fermentable.type|title }}</td>
+                    <td class="text-left">{{ fermentable.use|title|default:"---" }}</td>
+                    <td class="text-left">{{ fermentable.color|get_obj_attr:color_units.0|floatformat }} {{color_units.1}}</td>
+                    <td class="text-left">{{ fermentable.extraction }}%</td>
+                    <td class="text-left">{{ fermentable.amount|get_obj_attr:big_weight.0|floatformat }} {{big_weight.1}}</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -135,21 +152,21 @@
     <table class="table table-sm">
         <thead>
             <tr >
-                <th class="text-center" scope="col">Name</th>
-                <th class="text-center" scope="col">Use</th>
-                <th class="text-center" scope="col">Alpha Acids</th>
-                <th class="text-center" scope="col">Amount</th>
-                <th class="text-center" scope="col">Time</th>
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Use</th>
+                <th class="text-left" scope="col">Alpha Acids</th>
+                <th class="text-left" scope="col">Amount</th>
+                <th class="text-left" scope="col">Time</th>
             </tr>
         </thead>
         <tbody>
             {% for hop in recipe.hops.all %}
                 <tr>
-                    <td class="text-center">{{ hop.name }}</td>
-                    <td class="text-center">{{ hop.use|title }}</td>
-                    <td class="text-center">{{ hop.alpha_acids }}%</td>
-                    <td class="text-center">{{ hop.amount }}</td>
-                    <td class="text-center">{{ hop.time }} {{ hop.time_unit|title }}</td>
+                    <td class="text-left">{{ hop.name }}</td>
+                    <td class="text-left">{{ hop.use|title }}</td>
+                    <td class="text-left">{{ hop.alpha_acids }}%</td>
+                    <td class="text-left">{{ hop.amount|get_obj_attr:small_weight.0 }} {{small_weight.1}}</td>
+                    <td class="text-left">{{ hop.time|floatformat }} {{hop.time_unit|lower}}(s)</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -160,23 +177,23 @@
     <table class="table table-sm">
         <thead>
             <tr >
-                <th class="text-center" scope="col">Name</th>
-                <th class="text-center" scope="col">Lab</th>
-                <th class="text-center" scope="col">Type</th>
-                <th class="text-center" scope="col">Attenuation</th>
-                <th class="text-center" scope="col">Form</th>
-                <th class="text-center" scope="col">Amount</th>
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Lab</th>
+                <th class="text-left" scope="col">Type</th>
+                <th class="text-left" scope="col">Attenuation</th>
+                <th class="text-left" scope="col">Form</th>
+                <th class="text-left" scope="col">Amount</th>
             </tr>
         </thead>
         <tbody>
             {% for yeast in recipe.yeasts.all %}
                 <tr>
-                    <td class="text-center">{{ yeast.name }}</td>
-                    <td class="text-center">{{ yeast.lab }}</td>
-                    <td class="text-center">{{ yeast.type|title }}</td>
-                    <td class="text-center">{{ yeast.attenuation }}</td>
-                    <td class="text-center">{{ yeast.form|title }}</td>
-                    <td class="text-center">{{ yeast.amount }}</td>
+                    <td class="text-left">{{ yeast.name }}</td>
+                    <td class="text-left">{{ yeast.lab }}</td>
+                    <td class="text-left">{{ yeast.type|title }}</td>
+                    <td class="text-left">{{ yeast.attenuation|floatformat }}%</td>
+                    <td class="text-left">{{ yeast.form|title }}</td>
+                    <td class="text-left">{{ yeast.amount|get_obj_attr:small_weight.0|floatformat }} {{small_weight.1}}</td>
                 </tr>
             {% endfor %}
     </table>
@@ -184,6 +201,6 @@
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
 </div>
 {% endblock content %}
