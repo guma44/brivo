@@ -78,6 +78,9 @@ urlpatterns = [
          name='style-update'),
     path('style/<int:pk>/delete', views.StyleDeleteView.as_view(),
          name='style-delete'),
+    path('style/<int:pk>/info', views.StyleInfoView.as_view(),
+         name='style-info'),
+
 
     # Recipes
     path('recipe', views.RecipeListView.as_view(),

@@ -144,7 +144,7 @@ class MeasurementField(forms.MultiValueField):
             fields = (float_field, choice_field)
         else:
             float_field = forms.FloatField(*args, **kwargs)
-            float_field.widget.attrs = {"class": "form-control"}
+            float_field.widget.attrs = {"class": "form-control", "step": "any"}
             choice_field = forms.ChoiceField(choices=unit_choices)
             defaults = {
                 "widget": AppendWidget(

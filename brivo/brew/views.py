@@ -57,6 +57,33 @@ _INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
 _EMAIL_REGEX = re.compile(r"(.+@[a-zA-Z0-9\.]+,?){1,}")
 
 
+def _get_units_for_user(user):
+    data = {}
+    if user.profile.general_units.lower() == "metric":
+        data["small_weight"] = ("g", "g")
+        data["big_weight"] = ("kg", "kg")
+        data["volume"] = ("l", "l")
+    else:
+        data["small_weight"] = ("oz", "g")
+        data["big_weight"] = ("lb", "lb")
+        data["volume"] = ("us_g", "US Gal")
+    if user.profile.gravity_units.lower() == "plato":
+        data["gravity_units"] = ("Plato", "°P")
+    else:
+        data["gravity_units"] = ("SG", "SG")
+    if user.profile.color_units.lower() == "ebc":
+        data["color_units"] = ("EBC", "EBC")
+    else:
+        data["color_units"] = ("SRM", "SRM")
+    if user.profile.temperature_units.lower() == "celsius":
+        data["temp_units"] = ("c", "°C")
+    elif user.profile.temperature_units.lower() == "fahrenheit":
+        data["temp_units"] = ("f", "°F")
+    else:
+        data["temp_units"] = ("k", "K")
+    return data
+
+
 def _convert_type(data):
     """Check and convert the type of variable"""
     if isinstance(data, dict):
@@ -71,6 +98,7 @@ def _convert_type(data):
         return False
     else:
         return str(data)  # The rest is string
+
 
 def _clean_data(data):
     new_data = {}
@@ -599,6 +627,37 @@ class StyleDetailView(LoginRequiredMixin, BSModalReadView):
     context_object_name = 'style'
 
 
+class StyleInfoView(LoginRequiredMixin, BSModalReadView):
+    http_method_allowed = ('GET', 'POST')
+    model = Style
+    context_object_name = 'style'
+
+    def get_context_data(self, **kwargs):
+        context = super(StyleInfoView, self).get_context_data(**kwargs)
+        return context
+
+    def render_to_response(self, context):
+        """Return a JSON response in correct format."""
+        if self.request.user.profile.gravity_units.lower() == "plato":
+            gprec = 1
+        else:
+            gprec = 4
+        return JsonResponse(
+            {
+                'name': context["style"].name,
+                "og_min": f'{round(getattr(context["style"].og_min, self.request.user.profile.gravity_units.lower()), gprec)}',
+                "og_max": f'{round(getattr(context["style"].og_max, self.request.user.profile.gravity_units.lower()), gprec)}',
+                "fg_min": f'{round(getattr(context["style"].fg_min, self.request.user.profile.gravity_units.lower()), gprec)}',
+                "fg_max": f'{round(getattr(context["style"].fg_max, self.request.user.profile.gravity_units.lower()), gprec)}',
+                "ibu_min": f'{round(float(context["style"].ibu_min), 1)}',
+                "ibu_max": f'{round(float(context["style"].ibu_max), 1)}',
+                "color_min": f'{round(getattr(context["style"].color_min, self.request.user.profile.color_units.lower()), 1)}',
+                "color_max": f'{round(getattr(context["style"].color_max, self.request.user.profile.color_units.lower()), 1)}',
+                "alcohol_min": f'{round(float(context["style"].alcohol_min), 1)}',
+                "alcohol_max": f'{round(float(context["style"].alcohol_max), 1)}'
+            })
+
+
 class StyleUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
     model = Style
     form_class = StyleModelForm
@@ -705,14 +764,8 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         data = super(RecipeUpdateView, self).get_context_data(**kwargs)
-        if self.request.user.profile.general_units.lower() == "metric":
-            data["small_weight"] = "g"
-            data["big_weight"] = "kg"
-            data["volume"] = "l"
-        else:
-            data["small_weight"] = "oz"
-            data["big_weight"] = "lb"
-            data["volume"] = "us_g"
+        units = _get_units_for_user(self.request.user)
+        data.update(units)
 
         if self.request.POST:
             data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
@@ -726,7 +779,6 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
             data['yeasts'] = forms.YeastIngredientFormSet(request=self.request, instance=self.object)
             #data['extras'] = forms.ExtraIngredientFormSet(request=self.request, instance=self.object)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request, instance=self.object)
-        print(data)
         return data
 
     def form_valid(self, form):
@@ -754,28 +806,8 @@ class RecipeDetailView(LoginRequiredMixin, BSModalReadView):
 
     def get_context_data(self, **kwargs):
         data = super(RecipeDetailView, self).get_context_data(**kwargs)
-        if self.request.user.profile.general_units.lower() == "metric":
-            data["small_weight"] = ("g", "g")
-            data["big_weight"] = ("kg", "kg")
-            data["volume"] = ("l", "l")
-        else:
-            data["small_weight"] = ("oz", "g")
-            data["big_weight"] = ("lb", "lb")
-            data["volume"] = ("us_g", "US Gal")
-        if self.request.user.profile.gravity_units.lower() == "plato":
-            data["gravity_units"] = ("Plato", "°P")
-        else:
-            data["gravity_units"] = ("SG", "SG")
-        if self.request.user.profile.color_units.lower() == "ebc":
-            data["color_units"] = ("EBC", "EBC")
-        else:
-            data["color_units"] = ("SRM", "SRM")
-        if self.request.user.profile.temperature_units.lower() == "celsius":
-            data["temp_units"] = ("c", "°C")
-        elif self.request.user.profile.temperature_units.lower() == "fahrenheit":
-            data["temp_units"] = ("f", "°F")
-        else:
-            data["temp_units"] = ("k", "K")
+        units = _get_units_for_user(self.request.user)
+        data.update(units)
         return data
 
 

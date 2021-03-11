@@ -304,14 +304,17 @@ FermentableInfoStatsHtml = """
    <tr>
       <td>Gravity</td>
       <td class: "text-left" id="gravity_info">---</td>
+      <td class: "text-left" id="gravity_styleinfo">---</td>
    <tr>
    <tr>
       <td>Expected ABV</td>
       <td class: "text-left" id="abv_info">---</td>
+      <td class: "text-left" id="abv_styleinfo">---</td>
    <tr>
    <tr>
       <td>Color</td>
       <td class: "text-left" id="color_info">---</td>
+      <td class: "text-left" id="color_styleinfo">---</td>
    <tr>
 </table>
 </div>
@@ -324,6 +327,7 @@ HopInfoStatsHtml = """
    <tr>
       <td>Bitterness</td>
       <td class: "text-left" id="ibu_info">---</td>
+      <td class: "text-left" id="ibu_styleinfo">---</td>
    <tr>
    <tr>
       <td>Bitterness Ratio</td>
@@ -381,7 +385,7 @@ class RecipeModelForm(BSModalModelForm):
                 ),
                 Fieldset('Fermentables',
                     Row(
-                        Column(HTML(FermentableInfoStatsHtml), css_class='form-group col-md-3 mb-0'),
+                        Column(HTML(FermentableInfoStatsHtml), css_class='form-group col-md-4 mb-0'),
                         css_class='form-row'
                     ),
                     Row(
@@ -403,7 +407,7 @@ class RecipeModelForm(BSModalModelForm):
                 ),
                 Fieldset("Hops",
                     Row(
-                        Column(HTML(HopInfoStatsHtml), css_class='form-group col-md-3 mb-0'),
+                        Column(HTML(HopInfoStatsHtml), css_class='form-group col-md-4 mb-0'),
                         css_class='form-row'
                     ),
                     Row(

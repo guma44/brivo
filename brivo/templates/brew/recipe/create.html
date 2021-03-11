@@ -15,7 +15,6 @@
 <script>
 $(document).ready(function() {
   $("form").on("change", function () {
-    console.log("Form changed")
     let arrayform = $("form").serializeArray();
     console.log(arrayform)
     input_data = {
@@ -78,7 +77,25 @@ $(document).ready(function() {
       }
     });
   });
+
+  $("#id_style").on("change", function () {
+    var recipe_id = $("#id_style option:selected").val()
+    $.ajax({
+      type: "GET",
+      headers: { "X-CSRFToken": "{{ csrf_token }}" }, 
+      url: '/brew/style/' + recipe_id + '/info',
+      dataType: 'json',
+      success: function (data) {
+        $("#gravity_styleinfo").text(data.og_min + " - " + data.og_max);
+        $("#color_styleinfo").text(data.color_min + " - " + data.color_max);
+        $("#abv_styleinfo").text(data.alcohol_min + " - " + data.alcohol_max);
+        $("#ibu_styleinfo").text(data.ibu_min + " - " + data.ibu_max);
+      }
+    });
+  });
+
   $("form").trigger("change");
+  $("#id_style").trigger("change");
 });
 </script>
 {% endblock content %}
