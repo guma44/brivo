@@ -483,7 +483,7 @@ class Recipe(RecipeCalculatorMixin, models.Model):
     name = models.CharField(_("Name"), max_length=255)
 
     # Batch info
-    expected_beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Expected Beer Volume"), unit_choices=VOLUME_UNITS, default=Volume(l=20))
+    expected_beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Expected Beer Volume"), unit_choices=VOLUME_UNITS)
     boil_time = models.IntegerField(_("Boil Time"), default=60.0)
     evaporation_rate = models.DecimalField(_("Evaporation Rate"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], default=10.0)
     boil_loss = models.DecimalField(_("Boil Loss"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], default=10.0)
@@ -495,6 +495,8 @@ class Recipe(RecipeCalculatorMixin, models.Model):
     # Rest
     note = models.TextField(_("Note"), max_length=255, blank=True)
     is_public = models.BooleanField(_("Public"), default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def get_fermentables(self):
         return self.fermentables.all()
@@ -550,6 +552,8 @@ class Batch(models.Model):
     stage = models.CharField(_("Stage"), max_length=50, choices=BATCH_STAGES, default="MASHING")
     recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE)
     user = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     # Stage 1 fields: info and mashing
     name = models.CharField(_("Name"), max_length=255)
     batch_number = models.IntegerField(_("Batch Number"))
