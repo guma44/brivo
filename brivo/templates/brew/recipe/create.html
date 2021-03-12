@@ -73,7 +73,17 @@ $(document).ready(function() {
         $("#abv_info").text(data.abv);
         $("#color_info").text(data.color);
         $("#ibu_info").text(data.ibu);
+        var bitternessRatio = parseFloat(data.bitterness_ratio);
         $("#bitterness_ratio_info").text(data.bitterness_ratio);
+        if (bitternessRatio > 0 && bitternessRatio < .25) {
+            $("#bitterness_ratio_name_info").text("Sweet");
+        } else if (bitternessRatio >= .25 && bitternessRatio < .5) {
+            $("#bitterness_ratio_name_info").text("Balanced");
+        } else if (bitternessRatio >= .5 && bitternessRatio < .75) {
+            $("#bitterness_ratio_name_info").text("Bitter");
+        } else if (bitternessRatio >= .75) {
+            $("#bitterness_ratio_name_info").text("Very Bitter");
+        }
       }
     });
   });

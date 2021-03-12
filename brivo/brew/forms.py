@@ -332,6 +332,7 @@ HopInfoStatsHtml = """
    <tr>
       <td>Bitterness Ratio</td>
       <td class: "text-left" id="bitterness_ratio_info">---</td>
+      <td class: "text-left" id="bitterness_ratio_name_info">---</td>
    <tr>
 </table>
 </div>
