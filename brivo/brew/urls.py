@@ -100,4 +100,11 @@ urlpatterns = [
         views.get_recipe_data,
         name='recipe-info',
     ),
+
+    # Batches
+    path('batch/create', views.BatchView.as_view(),
+         name='batch-create'),
+    # Batches
+    path('batch/<int:pk>/update', views.BatchView.as_view(),
+         name='batch-update'),
 ]

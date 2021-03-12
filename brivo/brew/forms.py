@@ -1,18 +1,33 @@
 from django.core.exceptions import ValidationError
-from django.forms import HiddenInput, ModelChoiceField
+from django.forms import HiddenInput, ModelChoiceField, DateInput
 from django.forms.fields import ChoiceField
 from django.forms.models import ModelForm, inlineformset_factory
 from django.forms import BaseInlineFormSet
 from bootstrap_modal_forms.forms import BSModalModelForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.bootstrap import AppendedText
-from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, Row, ButtonHolder, Submit, MultiField, Column
+from crispy_forms.bootstrap import AppendedText, PrependedText
+from crispy_forms.layout import (
+    Layout,
+    Hidden,
+    Field,
+    Fieldset,
+    Div,
+    HTML,
+    Row,
+    ButtonHolder,
+    Submit,
+    MultiField,
+    Column)
 
 from measurement.measures import Volume, Weight, Temperature
 from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.brew.measurement_forms import MeasurementField
 from brivo.brew import layouts
 from brivo.brew import models
+
+
+class MyDateInput(DateInput):
+    input_type = 'date'
 
 
 class PopRequestMixin:
@@ -35,17 +50,136 @@ class BaseFormSet(BaseInlineFormSet):
         return form
 
 
-class BaseBatchForm(ModelForm):
+class BaseBatchForm(BSModalModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        required_fields = self.instance.required_fields
-        hidden_fields = self.instance.hidden_fields
-        for field in self.fields:
-            if field in required_fields:
-                self.fields.get(field).required = True
-            if field in hidden_fields:
-                self.fields.get(field).widget = HiddenInput()
+
+        if self.request.user.profile.general_units == "METRIC":
+            unit_choices = (("l", "l"),)
+        elif self.request.user.profile.general_units == "IMPERIAL":
+            unit_choices = (("us_g", "us_g"),)
+        else:
+            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+
+        self.helper = FormHelper()
+        self.helper.form_tag = True
+        self.helper.form_method = 'POST'
+        #self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-6 create-label'
+        self.helper.field_class = 'col-md-6'
+        if self.instance.stage == "INIT":
+            self.helper.layout = Layout(
+                Div(
+                    Hidden("stage", self.instance.stage),
+                    Fieldset("Base Recipe Selection",
+                        Field("recipe"),
+                    ),
+                ),
+                Div(
+                    ButtonHolder(
+                        Submit("next_stage", "Brew It!")
+                    )
+                )
+            )
+        elif self.instance.stage == "MASHING":
+            self.helper.layout = Layout(
+                Div(
+                    Hidden("stage", self.instance.stage),
+                    Fieldset("Mash",
+                        Field("name"),
+                        Field("batch_number"),
+                        Field("brewing_day"),
+                        Field("grain_temperature"),
+                        Field("sparging_temperature")
+                    ),
+                ),
+                Div(
+                    ButtonHolder(
+                        Submit("save", "Save"),
+                        Submit("next_stage", "Next")
+                    )
+                )
+            )
+        elif self.instance.stage == "BOIL":
+            self.helper.layout = Layout(
+                Div(
+                    Hidden("stage", self.instance.stage),
+                    Fieldset("Boil",
+                        Field("gravity_before_boil"),
+                    ),
+                ),
+                Div(
+                    ButtonHolder(
+                        Submit("previous_stage", "Previous", formnovalidate='formnovalidate'),
+                        Submit("save", "Save"),
+                        Submit("next_stage", "Next")
+                    )
+                )
+            )
+        elif self.instance.stage == "PRIMARY_FERMENTATION":
+            self.helper.layout = Layout(
+                Div(
+                    Hidden("stage", self.instance.stage),
+                    Fieldset("Primary Fermentation",
+                        Field("initial_gravity"),
+                        Field("wort_volume"),
+                        Field("boil_loss"),
+                        Field("primary_fermentation_start_day")
+                    ),
+                ),
+                Div(
+                    ButtonHolder(
+                        Submit("previous_stage", "Previous", formnovalidate='formnovalidate'),
+                        Submit("save", "Save"),
+                        Submit("next_stage", "Next")
+                    )
+                )
+            )
+        elif self.instance.stage == "SECONDARY_FERMENTATION":
+            self.helper.layout = Layout(
+                Div(
+                    Hidden("stage", self.instance.stage),
+                    Fieldset("Secondary Fermentation",
+                        Field("post_primary_fermentation"),
+                        Field("secondary_fermentation_start_day"),
+                    ),
+                ),
+                Div(
+                    ButtonHolder(
+                        Submit("previous_stage", "Previous", formnovalidate='formnovalidate'),
+                        Submit("save", "Save"),
+                        Submit("next_stage", "Next")
+                    )
+                )
+            )
+        elif self.instance.stage == "PACKAGING":
+            self.helper.layout = Layout(
+                Div(
+                    Hidden("stage", self.instance.stage),
+                    Fieldset("Packaging",
+                        Field("packaging_date"),
+                        Field("end_gravity"),
+                        Field("beer_volume"),
+                        Field("carbonation_type"),
+                        Field("carbonation_level"),
+                    ),
+                ),
+                Div(
+                    ButtonHolder(
+                        Submit("previous_stage", "Previous", formnovalidate='formnovalidate'),
+                        Submit("save", "Save"),
+                        Submit("finish", "Finish")
+                    )
+                )
+            )
+    class Meta:
+        widgets = {
+                'brewing_day': MyDateInput(),
+                'primary_fermentation_start_day': MyDateInput(),
+                'secondary_fermentation_start_day': MyDateInput(),
+                'packaging_date': MyDateInput()
+            }
 
 
 class FermentableModelForm(BSModalModelForm):

@@ -310,29 +310,68 @@ class YeastAutocomplete(BaseAutocomplete):
         ]
 
 class BatchView(LoginRequiredMixin, FormView):
-    template_name = 'batch/batch.html'
+    template_name = 'brew/batch/batch.html'
     batch = None
     form_class = None
+
+    def dispatch(self, request, *args, **kwargs):
+        batch_id = kwargs.get("pk", None)
+        if batch_id is None:
+            self.batch = None
+        else:
+            self.batch = Batch.objects.get(pk=batch_id)
+        # Attach the request to "self" so "form_valid()" can access it below.
+        self.request = request
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(BatchView, self).get_context_data(**kwargs)
+        context["batch"] = self.batch
+        return context
 
     def form_valid(self, form):
         current_stage = form.cleaned_data.get("stage")
         # Get the next stage after this one.
+        previous_stage = False
         if "next_stage" in form.data:
             new_stage = BATCH_STAGE_ORDER[BATCH_STAGE_ORDER.index(current_stage)+1]
-        elif "previous_stage":
+        elif "previous_stage" in form.data:
+            previous_stage = True
             try:
                 new_stage = BATCH_STAGE_ORDER[BATCH_STAGE_ORDER.index(current_stage)-1]
             except IndexError:
                 new_stage = BATCH_STAGE_ORDER[0]
+        elif "save" in form.data:
+            new_stage = current_stage
+        elif "finish" in form.data:
+            new_stage = "FINISHED"
         form.instance.stage = new_stage
-        form.save()  # This will save the underlying instance.
-        if new_stage == constants.COMPLETE:
-            return redirect(reverse("batch:finished"))
+        form.instance.user = self.request.user
+        if not previous_stage:
+            form.save()  # This will save the underlying instance.
+        else:
+            form.instance.save()
+        if new_stage == "FINISHED":
+            return redirect(reverse("brew:batch-detail"))
         # else
-        return redirect(reverse("batch:batch"))
+        return redirect(reverse("brew:batch-update", args=[form.instance.pk]))
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handle POST requests: instantiate a form instance with the passed
+        POST variables and then check if it's valid.
+        """
+        form = self.get_form()
+        if form.is_valid() or "previous_stage" in form.data:
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        raise
 
     def get_form_class(self):
-        stage = self.batch.stage if self.batch.stage else "MASHING"
+        stage = self.batch.stage if self.batch else "INIT"
         # Get the form fields appropriate to that stage.
         fields = Batch.get_fields_by_stage(stage)
         # Use those fields to dynamically create a form with "modelform_factory"
@@ -343,6 +382,7 @@ class BatchView(LoginRequiredMixin, FormView):
         # working on. Otherwise it will instantiate a new one after every submit.
         kwargs = super().get_form_kwargs()
         kwargs["instance"] = self.batch
+        kwargs.update({'request': self.request})
         return kwargs
 
 

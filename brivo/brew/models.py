@@ -24,10 +24,11 @@ FERMENTABLE_TYPE = (
 
 
 BATCH_STAGES = (
+    ("INIT", "Init"),
     ("MASHING", "Mashing"),
     ("BOIL", "Boil"),
-    ("PRIMARY FERMENTATION", "Primary Fermentation"),
-    ("SECONDARY FERMENTATION", "Secondary Fermentation"),
+    ("PRIMARY_FERMENTATION", "Primary Fermentation"),
+    ("SECONDARY_FERMENTATION", "Secondary Fermentation"),
     ("PACKAGING", "Packaging"),
     ("FINISHED", "Finished")
 )
@@ -507,6 +508,9 @@ class Recipe(RecipeCalculatorMixin, models.Model):
     def get_hops(self):
         return self.hops.all()
 
+    def __str__(self):
+        return f"{self.pk}. {self.name}"
+
 
 class FermentableIngredient(BaseFermentable):
     recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE, related_name="fermentables")
@@ -549,40 +553,40 @@ class MashStep(models.Model):
 
 class Batch(models.Model):
     # Operational fields
-    stage = models.CharField(_("Stage"), max_length=50, choices=BATCH_STAGES, default="MASHING")
+    stage = models.CharField(_("Stage"), max_length=50, choices=BATCH_STAGES, default="INIT")
     recipe = models.ForeignKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE)
     user = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # Stage 1 fields: info and mashing
-    name = models.CharField(_("Name"), max_length=255)
-    batch_number = models.IntegerField(_("Batch Number"))
-    brewing_day = models.DateField(_("Brewing Day"), auto_now=False, auto_now_add=False)
-    grain_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Grain Temperature"))
-    sparging_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Sparging Temperature"))
+    name = models.CharField(_("Name"), max_length=255, null=True)
+    batch_number = models.IntegerField(_("Batch Number"), null=True)
+    brewing_day = models.DateField(_("Brewing Day"), auto_now=False, auto_now_add=False, null=True)
+    grain_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Grain Temperature"), null=True)
+    sparging_temperature = MeasurementField(measurement=Temperature, verbose_name=_("Sparging Temperature"), null=True)
 
     # Stage 2 fields: boil
-    gravity_before_boil = MeasurementField(measurement=BeerGravity, verbose_name=_("Gravity Before Boil"))
+    gravity_before_boil = MeasurementField(measurement=BeerGravity, verbose_name=_("Gravity Before Boil"), null=True)
 
     # Stage 3 fields: primary fermentation
-    initial_gravity = MeasurementField(measurement=BeerGravity, verbose_name=_("Initial Gravity"))
-    wort_volume = MeasurementField(measurement=Volume, verbose_name=_("Wort Volume"), unit_choices=VOLUME_UNITS)
-    boil_waists = models.DecimalField(_("Boil Waists"), max_digits=5, decimal_places=2)
-    primary_fermentation_start_day = models.DateField(_("Primary Fermentation Start Day"), auto_now=False, auto_now_add=False)
+    initial_gravity = MeasurementField(measurement=BeerGravity, verbose_name=_("Initial Gravity"), null=True)
+    wort_volume = MeasurementField(measurement=Volume, verbose_name=_("Wort Volume"), null=True, unit_choices=VOLUME_UNITS)
+    boil_loss = models.DecimalField(_("Boil Waists"), max_digits=5, decimal_places=2, null=True)
+    primary_fermentation_start_day = models.DateField(_("Primary Fermentation Start Day"), null=True, auto_now=False, auto_now_add=False)
 
     # Stage 4 fields: secondary fermentation
-    secondary_fermentation_start_day = models.DateField(_("Secondary Fermentation Start Day"), auto_now=False, auto_now_add=False)
-    post_primary_fermentation = models.DecimalField(_("Post-primary Gravity"), max_digits=5, decimal_places=2)
+    secondary_fermentation_start_day = models.DateField(_("Secondary Fermentation Start Day"), null=True, auto_now=False, auto_now_add=False)
+    dry_hops_start_day = models.DateField(_("Dry Hops Start Day"), null=True, auto_now=False, auto_now_add=False)
+    post_primary_fermentation = MeasurementField(measurement=BeerGravity, verbose_name=_("Post-primary Gravity"), null=True)
 
     # Stage 4 fields: packaging
-    packaging_date = models.DateField(_("Packaging Start Day"), auto_now=False, auto_now_add=False)
-    end_gravity = MeasurementField(measurement=BeerGravity, verbose_name=_("End Gravity"))
-    beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Beer Volume"), unit_choices=VOLUME_UNITS)
-    carbonation_type = models.CharField(_("Carbonation Type"), max_length=50, choices=CARBONATION_TYPE)
-    carbonation_level = models.DecimalField(_("Carbonation Level"), max_digits=5, decimal_places=2)
+    packaging_date = models.DateField(_("Packaging Start Day"), auto_now=False, auto_now_add=False, null=True)
+    end_gravity = MeasurementField(measurement=BeerGravity, verbose_name=_("End Gravity"), null=True)
+    beer_volume = MeasurementField(measurement=Volume, verbose_name=_("Beer Volume"), null=True, unit_choices=VOLUME_UNITS)
+    carbonation_type = models.CharField(_("Carbonation Type"), max_length=50, choices=CARBONATION_TYPE, null=True)
+    carbonation_level = models.DecimalField(_("Carbonation Level"), max_digits=5, decimal_places=2, null=True)
 
     hidden_fields = ["stage"]
-    required_fields = ["recipe",]
 
     def get_expected_gravity(self):
         pass
@@ -611,11 +615,15 @@ class Batch(models.Model):
     @staticmethod
     def get_fields_by_stage(stage):
         fields = ["stage"]  # Must always be present
-        if stage == "MASHING":
+        if stage == "INIT":
+            fields.extend([
+                "recipe"
+            ])
+        elif stage == "MASHING":
             fields.extend([
                 "name",
                 "batch_number",
-                "brewing_dat",
+                "brewing_day",
                 "grain_temperature",
                 "sparging_temperature"])
         elif stage == "BOIL":
@@ -629,7 +637,7 @@ class Batch(models.Model):
             ])
         elif stage == "SECONDARY_FERMENTATION":
             fields.extend([
-                "gravity_after_secondary_fermentation",
+                "post_primary_fermentation",
                 "secondary_fermentation_start_day"
             ])
         elif stage == "PACKAGING":

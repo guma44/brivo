@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ batch.name }}{% endblock %}
+
+{% block content %}
+  {% if batch.stage == "INIT" or batch is None %}
+  <form class="form-horizontal" method="post" action="{% url 'brew:batch-create' %}">
+  {% else %}
+  <form class="form-horizontal" method="post" action="{% url 'brew:batch-update' batch.pk %}">
+  {% endif %}
+    {% csrf_token %}
+    {% crispy form %}
+  </form>
+<script>
+
+</script>
+{% endblock %}
