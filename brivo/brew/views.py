@@ -37,7 +37,7 @@ from brivo.brew.forms import (
     ExtraModelForm,
     StyleModelForm,
     RecipeModelForm,
-    FermentableIngredientFormSet)
+    IngredientFermentableFormSet)
 from brivo.brew.models import (
     Batch,
     BATCH_STAGE_ORDER,
@@ -759,16 +759,16 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(RecipeCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST, request=self.request)
-            data['hops'] = forms.HopIngredientFormSet(self.request.POST, request=self.request)
-            data['yeasts'] = forms.YeastIngredientFormSet(self.request.POST, request=self.request)
-            #data['extras'] = forms.ExtraIngredientFormSet(self.request.POST, request=self.request)
+            data['fermentables'] = forms.IngredientFermentableFormSet(self.request.POST, request=self.request)
+            data['hops'] = forms.IngredientHopFormSet(self.request.POST, request=self.request)
+            data['yeasts'] = forms.IngredientYeastFormSet(self.request.POST, request=self.request)
+            #data['extras'] = forms.IngredientExtraFormSet(self.request.POST, request=self.request)
             data['mash_steps'] = forms.MashStepFormSet(self.request.POST, request=self.request)
         else:
-            data['fermentables'] = forms.FermentableIngredientFormSet(request=self.request)
-            data['hops'] = forms.HopIngredientFormSet(request=self.request)
-            data['yeasts'] = forms.YeastIngredientFormSet(request=self.request)
-            #data['extras'] = forms.ExtraIngredientFormSet(request=self.request)
+            data['fermentables'] = forms.IngredientFermentableFormSet(request=self.request)
+            data['hops'] = forms.IngredientHopFormSet(request=self.request)
+            data['yeasts'] = forms.IngredientYeastFormSet(request=self.request)
+            #data['extras'] = forms.IngredientExtraFormSet(request=self.request)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request)
         return data
 
@@ -808,16 +808,16 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
         data.update(units)
 
         if self.request.POST:
-            data['fermentables'] = forms.FermentableIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
-            data['hops'] = forms.HopIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
-            data['yeasts'] = forms.YeastIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
-            #data['extras'] = forms.ExtraIngredientFormSet(self.request.POST, request=self.request, instance=self.object)
+            data['fermentables'] = forms.IngredientFermentableFormSet(self.request.POST, request=self.request, instance=self.object)
+            data['hops'] = forms.IngredientHopFormSet(self.request.POST, request=self.request, instance=self.object)
+            data['yeasts'] = forms.IngredientYeastFormSet(self.request.POST, request=self.request, instance=self.object)
+            #data['extras'] = forms.IngredientExtraFormSet(self.request.POST, request=self.request, instance=self.object)
             data['mash_steps'] = forms.MashStepFormSet(self.request.POST, request=self.request, instance=self.object)
         else:
-            data['fermentables'] = forms.FermentableIngredientFormSet(request=self.request, instance=self.object)
-            data['hops'] = forms.HopIngredientFormSet(request=self.request, instance=self.object)
-            data['yeasts'] = forms.YeastIngredientFormSet(request=self.request, instance=self.object)
-            #data['extras'] = forms.ExtraIngredientFormSet(request=self.request, instance=self.object)
+            data['fermentables'] = forms.IngredientFermentableFormSet(request=self.request, instance=self.object)
+            data['hops'] = forms.IngredientHopFormSet(request=self.request, instance=self.object)
+            data['yeasts'] = forms.IngredientYeastFormSet(request=self.request, instance=self.object)
+            #data['extras'] = forms.IngredientExtraFormSet(request=self.request, instance=self.object)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request, instance=self.object)
         return data
 

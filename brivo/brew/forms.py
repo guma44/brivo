@@ -83,6 +83,19 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "MASHING":
+            if self.request.user.profile.general_units == "METRIC":
+                unit_choices = (("c", "c"),)
+            elif self.request.user.profile.general_units == "IMPERIAL":
+                unit_choices = (("f", "f"),)
+            else:
+                raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+            self.fields.update({
+                "grain_temperature": MeasurementField(
+                    measurement=Temperature,
+                    unit_choices=unit_choices),
+                "sparging_temperature": MeasurementField(
+                    measurement=Temperature,
+                    unit_choices=unit_choices)})
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
@@ -102,6 +115,15 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "BOIL":
+            user_gravity_unit = self.request.user.profile.gravity_units.lower()
+            self.fields.update({
+                "gravity_before_boil": MeasurementField(
+                    measurement=BeerGravity,
+                    unit_choices=(
+                        (user_gravity_unit,
+                         user_gravity_unit),)),
+            })
+
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
@@ -118,6 +140,23 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "PRIMARY_FERMENTATION":
+            user_gravity_unit = self.request.user.profile.gravity_units.lower()
+            if self.request.user.profile.general_units == "METRIC":
+                unit_choices = (("l", "l"),)
+            elif self.request.user.profile.general_units == "IMPERIAL":
+                unit_choices = (("us_g", "us_g"),)
+            else:
+                raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+            self.fields.update({
+                "initial_gravity": MeasurementField(
+                    measurement=BeerGravity,
+                    unit_choices=(
+                        (user_gravity_unit,
+                         user_gravity_unit),)),
+                "wort_volume": MeasurementField(
+                    measurement=Volume,
+                    unit_choices=unit_choices),
+            })
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
@@ -137,11 +176,19 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "SECONDARY_FERMENTATION":
+            user_gravity_unit = self.request.user.profile.gravity_units.lower()
+            self.fields.update({
+                "post_primary_gravity": MeasurementField(
+                    measurement=BeerGravity,
+                    unit_choices=(
+                        (user_gravity_unit,
+                         user_gravity_unit),)),
+            })
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
                     Fieldset("Secondary Fermentation",
-                        Field("post_primary_fermentation"),
+                        Field("post_primary_gravity"),
                         Field("secondary_fermentation_start_day"),
                     ),
                 ),
@@ -154,6 +201,23 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "PACKAGING":
+            user_gravity_unit = self.request.user.profile.gravity_units.lower()
+            if self.request.user.profile.general_units == "METRIC":
+                unit_choices = (("l", "l"),)
+            elif self.request.user.profile.general_units == "IMPERIAL":
+                unit_choices = (("us_g", "us_g"),)
+            else:
+                raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+            self.fields.update({
+                "end_gravity": MeasurementField(
+                    measurement=BeerGravity,
+                    unit_choices=(
+                        (user_gravity_unit,
+                         user_gravity_unit),)),
+                "beer_volume": MeasurementField(
+                    measurement=Volume,
+                    unit_choices=unit_choices),
+            })
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
@@ -279,7 +343,7 @@ class StyleModelForm(BSModalModelForm):
         fields = "__all__"
 
 
-class FermentableIngredientForm(PopRequestMixin, ModelForm):
+class IngredientFermentableForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -300,18 +364,18 @@ class FermentableIngredientForm(PopRequestMixin, ModelForm):
         })
 
     class Meta:
-        model = models.FermentableIngredient
+        model = models.IngredientFermentable
         exclude = ()
 
-FermentableIngredientFormSet = inlineformset_factory(
-    models.Recipe, models.FermentableIngredient, form=FermentableIngredientForm,
+IngredientFermentableFormSet = inlineformset_factory(
+    models.Recipe, models.IngredientFermentable, form=IngredientFermentableForm,
     fields=['name', 'type', 'use', 'color', 'extraction', 'amount'],
     extra=1,
     can_delete=True,
     formset=BaseFormSet
 )
 
-class HopIngredientForm(PopRequestMixin, ModelForm):
+class IngredientHopForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -329,15 +393,15 @@ class HopIngredientForm(PopRequestMixin, ModelForm):
         })
 
     class Meta:
-        model = models.HopIngredient
+        model = models.IngredientHop
         exclude = ()
 
-HopIngredientFormSet = inlineformset_factory(
-    models.Recipe, models.HopIngredient, form=HopIngredientForm,
+IngredientHopFormSet = inlineformset_factory(
+    models.Recipe, models.IngredientHop, form=IngredientHopForm,
     fields=['name', 'use', 'alpha_acids', 'amount', 'time', 'time_unit'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
-class YeastIngredientForm(PopRequestMixin, ModelForm):
+class IngredientYeastForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -353,15 +417,15 @@ class YeastIngredientForm(PopRequestMixin, ModelForm):
         })
 
     class Meta:
-        model = models.YeastIngredient
+        model = models.IngredientYeast
         exclude = ()
 
-YeastIngredientFormSet = inlineformset_factory(
-    models.Recipe, models.YeastIngredient, form=YeastIngredientForm,
+IngredientYeastFormSet = inlineformset_factory(
+    models.Recipe, models.IngredientYeast, form=IngredientYeastForm,
     fields=['name', 'type', 'form', 'attenuation', 'amount', 'lab'], extra=1, can_delete=True, formset=BaseFormSet
 )
 
-class ExtraIngredientForm(PopRequestMixin, ModelForm):
+class IngredientExtraForm(PopRequestMixin, ModelForm):
 
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
@@ -377,11 +441,11 @@ class ExtraIngredientForm(PopRequestMixin, ModelForm):
         })
 
     class Meta:
-        model = models.ExtraIngredient
+        model = models.IngredientExtra
         exclude = ()
 
-ExtraIngredientFormSet = inlineformset_factory(
-    models.Recipe, models.ExtraIngredient, form=ExtraIngredientForm,
+IngredientExtraFormSet = inlineformset_factory(
+    models.Recipe, models.IngredientExtra, form=IngredientExtraForm,
     fields=['name', 'type', 'use', 'amount', 'time', 'time_unit'], extra=1, can_delete=True, formset=BaseFormSet
 )
 

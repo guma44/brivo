@@ -108,7 +108,7 @@ def load_recipes(user):
             data["amount"] = Weight(**{data["unit"]: data["amount"]})
             data["color"] = BeerColor(ebc=data["color"])
             del data["unit"]
-            fermentable_ingredient = models.FermentableIngredient(**data)
+            fermentable_ingredient = models.IngredientFermentable(**data)
             fermentable_ingredient.save()
             fermentables.append(fermentables)
         hops = []
@@ -118,7 +118,7 @@ def load_recipes(user):
             data["amount"] = Weight(**{data["unit"]: data["amount"]})
             del data["unit"]
             data["time_unit"] = data["time_unit"].split("(")[0]
-            hop_ingredient = models.HopIngredient(**data)
+            hop_ingredient = models.IngredientHop(**data)
             hop_ingredient.save()
             hops.append(hops)
         yeasts = []
@@ -127,7 +127,7 @@ def load_recipes(user):
             data["recipe"] = new_recipe
             data["amount"] = Weight(**{data["unit"]: data["amount"]})
             del data["unit"]
-            yeast_ingredient = models.YeastIngredient(**data)
+            yeast_ingredient = models.IngredientYeast(**data)
             yeast_ingredient.save()
             yeasts.append(yeasts)
         extras = []
@@ -137,7 +137,7 @@ def load_recipes(user):
             data["amount"] = Weight(**{data["unit"]: data["amount"]})
             del data["unit"]
             data["time_unit"] = data["time_unit"].split("(")[0]
-            extra_ingredient = models.ExtraIngredient(**data)
+            extra_ingredient = models.IngredientExtra(**data)
             extra_ingredient.save()
             extras.append(extras)
         mash_steps = []

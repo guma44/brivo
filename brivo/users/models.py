@@ -47,24 +47,30 @@ def brewery_profile_image_file_path(instance, filename):
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, username, password=None, **extra_fields):
         """Creates and saves a new user"""
         if not email or email is None:
             raise ValueError("Email is obligatory")
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
+        user.username = username
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, username, password=None):
         """Creates and saves a new user"""
-        user = self.create_user(email, password)
+        user = self.create_user(email, username, password)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
-        user.profile = UserProfile(user=user)
-        user.brewery = UserBrewery(user=user)
+        profile = UserProfile(user=user)
+        profile.save(using=self._db)
+        brewery = UserBrewery(user=user)
+        brewery.save(using=self._db)
+        user.profile = profile
+        user.brewery = brewery
+        user.save(using=self._db)
         return user
 
 
@@ -77,6 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
     USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ("username",)
 
     def get_absolute_url(self):
         """Get url for user's detail view.
