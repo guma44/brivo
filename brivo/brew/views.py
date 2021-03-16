@@ -355,7 +355,7 @@ class BatchView(LoginRequiredMixin, FormView):
         else:
             form.instance.save()
         if new_stage == "FINISHED":
-            return redirect(reverse("brew:batch-detail"))
+            return redirect(reverse("brew:batch-detail", args=(form.instance.pk, )))
         # else
         return redirect(reverse("brew:batch-update", args=[form.instance.pk]))
 
@@ -387,6 +387,49 @@ class BatchView(LoginRequiredMixin, FormView):
         kwargs["instance"] = self.batch
         kwargs.update({'request': self.request})
         return kwargs
+
+
+class BatchListView(LoginRequiredMixin, ListView):
+    model = Batch
+    template_name = "brew/batch/list.html"
+    context_object_name = 'batches'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(BatchListView, self).get_context_data(**kwargs)
+        batches = self.get_queryset()
+        page = self.request.GET.get('page')
+        paginator = Paginator(batches, self.paginate_by)
+        try:
+            batches = paginator.page(page)
+        except PageNotAnInteger:
+            batches = paginator.page(1)
+        except EmptyPage:
+            batches = paginator.page(paginator.num_pages)
+        context['batches'] = batches
+        context['user'] = User.objects.get(id=self.request.user.id)
+        context['filter'] = filters.BatchFilter(self.request.GET)
+        return context
+
+    def get_queryset(self):
+        qs = self.model.objects.filter(user=self.request.user)
+        print(qs)
+        filtered_batches = filters.BatchFilter(self.request.GET, queryset=qs)
+        print(filtered_batches)
+        return filtered_batches.qs
+
+
+class BatchDetailView(LoginRequiredMixin, BSModalReadView):
+    model = Batch
+    template_name = 'brew/batch/detail.html'
+    context_object_name = 'batch'
+
+
+class BatchDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = Batch
+    template_name = 'brew/batch/delete.html'
+    success_message = 'Batch was deleted.'
+    success_url = reverse_lazy('brew:batch-list')
 
 
 class FermentableListView(LoginRequiredMixin, ListView):

@@ -102,9 +102,14 @@ urlpatterns = [
     ),
 
     # Batches
+    path('batch', views.BatchListView.as_view(),
+         name='batch-list'),
+    path('batch/<int:pk>', views.BatchDetailView.as_view(),
+         name='batch-detail'),
     path('batch/create', views.BatchView.as_view(),
          name='batch-create'),
-    # Batches
     path('batch/<int:pk>/update', views.BatchView.as_view(),
          name='batch-update'),
+    path('batch/<int:pk>/delete', views.BatchDeleteView.as_view(),
+         name='batch-delete'),
 ]

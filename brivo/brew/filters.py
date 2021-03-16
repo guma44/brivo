@@ -60,3 +60,12 @@ class RecipeFilter(django_filters.FilterSet):
     class Meta:
         model = models.Recipe
         fields = ["name"]
+
+
+class BatchFilter(django_filters.FilterSet):
+
+    name = django_filters.CharFilter(field_name="name", lookup_expr="icontains")
+
+    class Meta:
+        model = models.Batch
+        fields = ["name"]

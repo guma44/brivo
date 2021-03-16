@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% load brew_tags %}
+
+{% block title %}Batches{% endblock title %}
+
+{% block content %}
+<h3>Batches</h3>
+<hl>
+<div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog mt-5 modal-lg">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog mt-5 modal-lg" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+<div class="container">
+    <div class="col-12 mb-3">
+    {% if user.is_authenticated %}
+    <a href="{% url 'brew:batch-create' %}"><button id="create-batch" class="btn btn-success" type="button" name="button">
+        <span class="fa fa-plus mr-2"></span>Create New Batch
+    </button></a>
+    {% endif %}
+    <button id="create-batch" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
+        Toggle Filters
+    </button>
+    </div>
+    <div id="filter-row" class="row collapse">
+        <div class="col">
+            <div class="card card-body">
+                <form method="get">
+                    {{filter.form.as_p}}
+                    <button class="btn btn-primary" name="button" type="submit"><span class="fa fa-filter mr-2"></span>Filter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<table id="Batches-table" class="table">
+    <thead>
+        <tr >
+            <th class="text-center" scope="col">Name</th>
+            <th class="text-center" scope="col">Stage</th>
+            <th class="text-center" scope="col">Brewing Day</th>
+            <th class="text-center" scope="col">Gravity [{{user.profile.gravity_units}}]</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for batch in batches %}
+        <tr style="border-left-color:{{batch.get_hex_color}};border-left-style:solid;border-left-width:10px">
+            <td class="text-center" scope="row">{{batch.name|default:"---"}}</td>
+            <td class="text-center" scope="row">{{batch.stage|title}}</td>
+            <td class="text-center" scope="row">{{batch.brewing_day|default:"---"}}</td>
+            <td class="text-center">{{batch.initial_gravity|get_obj_attr:user.profile.gravity_units|floatformat}}</td>
+            <td class="text-center">
+                <!-- Read batch buttons -->
+                <button type="button" class="bs-modal read-batch btn btn-sm btn-primary" data-form-url="{% url 'brew:batch-detail' batch.pk %}">
+                <span class="fa fa-eye"></span>
+                </button>
+                {% if user.is_staff %}
+                <!-- Update batch buttons -->
+                <a href="{% url 'brew:batch-update' batch.pk %}"><button type="button" class="update-batch btn btn-sm btn-primary" data-form-url="{% url 'brew:batch-update' batch.pk %}">
+                <span class="fa fa-edit"></span>
+                </button></a>
+                <!-- Delete batch buttons -->
+                <button type="button" class="bs-modal delete-batch btn btn-sm btn-danger" data-form-url="{% url 'brew:batch-delete' batch.pk %}">
+                <span class="fa fa-trash"></span>
+                </button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if is_paginated %}
+    {% include "pagination.html" %}
+{% endif %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+{% endblock content %}
+{% block inline_javascript %}
+<script defer type="text/javascript">
+$(document).ready(function() {
+    // Read and Delete book buttons open modal with id="modal"
+    // The formURL is retrieved from the data of the element
+    $(".bs-modal").each(function () {
+        $(this).modalForm({formURL: $(this).data("form-url")});
+    });
+
+    // Hide message
+    $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+        $(".alert").slideUp(500);
+    });
+
+});
+</script>
+{% endblock inline_javascript %}

@@ -113,6 +113,9 @@ class Batch(BaseModel):
 
     hidden_fields = ["stage"]
 
+    def get_hex_color(self):
+        pass
+
     def get_expected_gravity(self):
         pass
 
