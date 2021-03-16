@@ -327,6 +327,9 @@ class BatchView(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(BatchView, self).get_context_data(**kwargs)
         context["batch"] = self.batch
+        if self.batch is not None:
+            context["stages"] = BATCH_STAGE_ORDER
+            context["stage_index"] = BATCH_STAGE_ORDER.index(self.batch.stage)
         return context
 
     def form_valid(self, form):

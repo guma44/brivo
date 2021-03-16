@@ -4,6 +4,20 @@
 {% block title %}{{ batch.name }}{% endblock %}
 
 {% block content %}
+
+{% if batch %}
+  <div class="row mb-5">
+        <!-- Breadcrumbs-->
+        <ol id="breadcrumb">
+            <li id="step-{{stages.1|lower}}"><a href="#">1. Mashing</a></li>
+            <li id="step-{{stages.2|lower}}" class=""><a href="#">2. Boiling</a></li>
+            <li id="step-{{stages.3|lower}}" class=""><a href="#">3. Primary</a></li>
+            <li id="step-{{stages.4|lower}}" class=""><a href="#">4. Secondary</a></li>
+            <li id="step-{{stages.5|lower}}"><a href="#">5. Priming</a></li>
+        </ol>
+  </div>
+{% endif %}
+
   {% if batch.stage == "INIT" or batch is None %}
   <form class="form-horizontal" method="post" action="{% url 'brew:batch-create' %}">
   {% else %}
@@ -13,6 +27,18 @@
     {% crispy form %}
   </form>
 <script>
-
+$(document).ready(function() {
+{% if batch %}
+  {% for stage in stages %}
+    {% if stage == batch.stage %}
+      $("#step-{{stage|lower}}").find("a").addClass("active");
+    {% elif forloop.counter <= stage_index %}
+      $("#step-{{stage|lower}}").find("a").addClass("done");
+    {% else %}
+      $("#step-{{stage|lower}}").find("a").addClass("notdone");
+    {% endif %}
+  {% endfor %}
+{% endif %}
+});
 </script>
 {% endblock %}

@@ -109,8 +109,8 @@ class BaseBatchForm(BSModalModelForm):
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("save", "Save"),
-                        Submit("next_stage", "Next")
+                        Submit("save", "Save", css_class="btn-warning"),
+                        Submit("next_stage", "Next >")
                     )
                 )
             )
@@ -133,9 +133,9 @@ class BaseBatchForm(BSModalModelForm):
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "Previous", formnovalidate='formnovalidate'),
-                        Submit("save", "Save"),
-                        Submit("next_stage", "Next")
+                        Submit("previous_stage", "< Previous", formnovalidate='formnovalidate'),
+                        Submit("save", "Save", css_class="btn-warning"),
+                        Submit("next_stage", "Next >")
                     )
                 )
             )
@@ -169,9 +169,9 @@ class BaseBatchForm(BSModalModelForm):
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "Previous", formnovalidate='formnovalidate'),
-                        Submit("save", "Save"),
-                        Submit("next_stage", "Next")
+                        Submit("previous_stage", "< Previous", formnovalidate='formnovalidate'),
+                        Submit("save", "Save", css_class="btn-warning"),
+                        Submit("next_stage", "Next >")
                     )
                 )
             )
@@ -194,9 +194,9 @@ class BaseBatchForm(BSModalModelForm):
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "Previous", formnovalidate='formnovalidate'),
-                        Submit("save", "Save"),
-                        Submit("next_stage", "Next")
+                        Submit("previous_stage", "< Previous", formnovalidate='formnovalidate'),
+                        Submit("save", "Save", css_class="btn-warning"),
+                        Submit("next_stage", "Next >")
                     )
                 )
             )
@@ -231,9 +231,9 @@ class BaseBatchForm(BSModalModelForm):
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "Previous", formnovalidate='formnovalidate'),
-                        Submit("save", "Save"),
-                        Submit("finish", "Finish")
+                        Submit("previous_stage", "< Previous", formnovalidate='formnovalidate'),
+                        Submit("save", "Save", css_class="btn-warning"),
+                        Submit("finish", "Finish", css_class="btn-success")
                     )
                 )
             )
