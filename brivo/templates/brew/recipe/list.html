@@ -25,8 +25,11 @@
     <a href="{% url 'brew:recipe-create' %}"><button id="create-recipe" class="btn btn-success" type="button" name="button">
         <span class="fa fa-plus mr-2"></span>Create Recipe
     </button></a>
+    <button id="import-recipe" class="bs-modal delete-recipe btn btn-primary" data-form-url="{% url 'brew:recipe-import' %}" type="button" name="button">
+        <span class="fa fa-file-import mr-2"></span>Import Recipe
+    </button>
     {% endif %}
-    <button id="create-recipe" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
+    <button id="toggle-filters" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
         Toggle Filters
     </button>
     </div>

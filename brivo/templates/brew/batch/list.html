@@ -54,7 +54,11 @@
         {% for batch in batches %}
         <tr style="border-left-color:{{batch.get_hex_color}};border-left-style:solid;border-left-width:10px">
             <td class="text-center" scope="row">{{batch.name|default:"---"}}</td>
-            <td class="text-center" scope="row">{{batch.stage|title}}</td>
+            {% if batch.stage == "FINISHED" %}
+            <td class="text-center" scope="row"><span class="pl-2 pr-2 pb-1 pt-1 rounded bg-success text-white">{{batch.stage|title}}</span></td>
+            {% else %}
+            <td class="text-center" scope="row"><span class="pl-2 pr-2 pb-1 pt-1 rounded bg-primary text-white">{{batch.stage|title}}</span></td>
+            {% endif %}
             <td class="text-center" scope="row">{{batch.brewing_day|default:"---"}}</td>
             <td class="text-center">{{batch.initial_gravity|get_obj_attr:user.profile.gravity_units|floatformat}}</td>
             <td class="text-center">

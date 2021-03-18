@@ -100,6 +100,8 @@ urlpatterns = [
         views.get_recipe_data,
         name='recipe-info',
     ),
+    path('recipe/import', views.RecipeImportView.as_view(),
+         name='recipe-import'),
 
     # Batches
     path('batch', views.BatchListView.as_view(),

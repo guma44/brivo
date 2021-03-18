@@ -1,8 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.forms import HiddenInput, ModelChoiceField, DateInput
-from django.forms.fields import ChoiceField
+from django.forms.fields import ChoiceField, FileField
 from django.forms.models import ModelForm, inlineformset_factory
-from django.forms import BaseInlineFormSet
+from django.forms import BaseInlineFormSet, Form
 from bootstrap_modal_forms.forms import BSModalModelForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import AppendedText, PrependedText
@@ -624,3 +624,7 @@ class RecipeModelForm(BSModalModelForm):
     class Meta:
         model = models.Recipe
         exclude = ['user', ]
+
+
+class RecipeImportForm(Form):
+    json_file = FileField()

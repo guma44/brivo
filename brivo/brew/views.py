@@ -7,7 +7,7 @@ from django.db import transaction
 from django.http import request, JsonResponse, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
 from django.forms import modelform_factory
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, TemplateView, ListView
@@ -37,7 +37,9 @@ from brivo.brew.forms import (
     ExtraModelForm,
     StyleModelForm,
     RecipeModelForm,
-    IngredientFermentableFormSet)
+    RecipeImportForm,
+    IngredientFermentableFormSet
+)
 from brivo.brew.models import (
     Batch,
     BATCH_STAGE_ORDER,
@@ -47,7 +49,12 @@ from brivo.brew.models import (
     Extra,
     Style,
     Recipe,
-    RecipeCalculatorMixin)
+    RecipeCalculatorMixin,
+    IngredientFermentable,
+    IngredientHop,
+    IngredientYeast,
+    IngredientExtra,
+    MashStep)
 from brivo.users.models import User
 from brivo.brew import filters
 
@@ -369,6 +376,13 @@ class BatchView(LoginRequiredMixin, FormView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+    def get(self, request, *args, **kwargs):
+        if self.batch is not None:
+            if self.batch.stage == "FINISHED":
+                self.batch.stage = "PACKAGING"
+        return super(BatchView, self).get(request, *args, **kwargs)
+        
 
     def form_invalid(self, form):
         raise
@@ -788,7 +802,8 @@ class RecipeListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         qs = self.model.objects.filter(user=self.request.user)
         filtered_recipes = filters.RecipeFilter(self.request.GET, queryset=qs)
-        return filtered_recipes.qs
+        qs = filtered_recipes.qs.order_by("-created_at")
+        return qs
 
 
 class RecipeCreateView(LoginRequiredMixin, CreateView):
@@ -912,3 +927,85 @@ class RecipePrintView(WeasyTemplateResponseMixin, RecipeDetailView):
     # ]
     template_name = 'brew/recipe/print.html'
     pdf_attachment = False
+
+
+class RecipeImportView(LoginRequiredMixin, FormView):
+    form_class = RecipeImportForm
+    success_url = reverse_lazy('brew:recipe-list')
+    template_name = 'brew/recipe/import.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            recipes = json.load(request.FILES["json_file"])
+            for recipe in recipes:
+                recipe_data = _clean_data(recipe["fields"])
+                style = Style.objects.filter(name__icontains=recipe_data["style"])
+                recipe_data["user"] = request.user
+                if style.count() == 0:
+                    raise Exception(f"Did not fount a syle '{recipe_data['style']}' for '{recipe_data['name']}'")
+                recipe_data["style"] = style[0]
+                recipe_data["expected_beer_volume"] = Volume(
+                    **{recipe_data["expected_beer_volume_unit"]: recipe_data["expected_beer_volume"]})
+                del recipe_data["expected_beer_volume_unit"]
+                new_recipe = Recipe(**recipe_data)
+                new_recipe.save()
+                fermentables = []
+                for fermentable in recipe.get("fermentables", []):
+                    data = _clean_data(fermentable)
+                    data["recipe"] = new_recipe
+                    data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
+                    data["color"] = BeerColor(**{data["color_unit"]: data["color"]})
+                    del data["amount_unit"]
+                    del data["color_unit"]
+                    fermentable_ingredient = IngredientFermentable(**data)
+                    fermentable_ingredient.save()
+                    fermentables.append(fermentables)
+                hops = []
+                for hop in recipe.get("hops", []):
+                    data = _clean_data(hop)
+                    data["recipe"] = new_recipe
+                    data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
+                    del data["amount_unit"]
+                    data["time_unit"] = data["time_unit"].upper()
+                    hop_ingredient = IngredientHop(**data)
+                    hop_ingredient.save()
+                    hops.append(hops)
+                yeasts = []
+                for yeast in recipe.get("yeasts", []):
+                    data = _clean_data(yeast)
+                    data["recipe"] = new_recipe
+                    data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
+                    del data["amount_unit"]
+                    yeast_ingredient = IngredientYeast(**data)
+                    yeast_ingredient.save()
+                    yeasts.append(yeasts)
+                extras = []
+                for extra in recipe.get("extras", []):
+                    data = _clean_data(extra)
+                    data["recipe"] = new_recipe
+                    data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
+                    del data["amount_unit"]
+                    data["time_unit"] = data["time_unit"].upper()
+                    extra_ingredient = IngredientExtra(**data)
+                    extra_ingredient.save()
+                    extras.append(extras)
+                mash_steps = []
+                for mash in recipe.get("mashing", []):
+                    data = _clean_data(mash)
+                    data["recipe"] = new_recipe
+                    data["temperature"] = Temperature(**{data["temp_unit"]: data["temp"]})
+                    del data["temp"]
+                    del data["temp_unit"]
+                    del data["time_unit"]
+                    mash_step = MashStep(**data)
+                    mash_step.save()
+                    mash_steps.append(mash_step)
+            return redirect(self.success_url)
+        else:
+            raise
+            return render(request, self.template_name, {'form': form})
