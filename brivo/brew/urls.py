@@ -114,4 +114,6 @@ urlpatterns = [
          name='batch-update'),
     path('batch/<int:pk>/delete', views.BatchDeleteView.as_view(),
          name='batch-delete'),
+    path('batch/import', views.BatchImportView.as_view(),
+         name='batch-import'),
 ]

@@ -628,3 +628,7 @@ class RecipeModelForm(BSModalModelForm):
 
 class RecipeImportForm(Form):
     json_file = FileField()
+
+
+class BatchImportForm(Form):
+    json_file = FileField()

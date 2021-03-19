@@ -25,6 +25,9 @@
     <a href="{% url 'brew:batch-create' %}"><button id="create-batch" class="btn btn-success" type="button" name="button">
         <span class="fa fa-plus mr-2"></span>Create New Batch
     </button></a>
+    <button id="import-batch" class="bs-modal delete-batch btn btn-primary" data-form-url="{% url 'brew:batch-import' %}" type="button" name="button">
+        <span class="fa fa-file-import mr-2"></span>Import Batch
+    </button>
     {% endif %}
     <button id="create-batch" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
         Toggle Filters
@@ -40,10 +43,14 @@
             </div>
         </div>
     </div>
+    <div id="progress-bar-wrapper" class="hidden" class='progress-wrapper'>
+        <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+        <div id="progress-bar-message"></div>
+    </div>
 <table id="Batches-table" class="table">
     <thead>
         <tr >
-            <th class="text-center" scope="col">Name</th>
+            <th scope="col">Name</th>
             <th class="text-center" scope="col">Stage</th>
             <th class="text-center" scope="col">Brewing Day</th>
             <th class="text-center" scope="col">Gravity [{{user.profile.gravity_units}}]</th>
@@ -53,7 +60,7 @@
     <tbody>
         {% for batch in batches %}
         <tr style="border-left-color:{{batch.get_hex_color}};border-left-style:solid;border-left-width:10px">
-            <td class="text-center" scope="row">{{batch.name|default:"---"}}</td>
+            <td scope="row">#{{batch.batch_number}} - {{batch.name|default:"---"}}</td>
             {% if batch.stage == "FINISHED" %}
             <td class="text-center" scope="row"><span class="pl-2 pr-2 pb-1 pt-1 rounded bg-success text-white">{{batch.stage|title}}</span></td>
             {% else %}
@@ -89,6 +96,7 @@
     <div class="modal-content"></div>
   </div>
 </div>
+<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
 {% endblock content %}
 {% block inline_javascript %}
 <script defer type="text/javascript">
@@ -104,6 +112,21 @@ $(document).ready(function() {
         $(".alert").slideUp(500);
     });
 
+    {% if messages %}
+        {% for message in messages %}
+            var progressUrl = "{% url 'celery_progress:task_status' message %}";
+            CeleryProgressBar.initProgressBar(progressUrl, {
+                onSuccess: function(progressBarElement, progressBarMessageElement, result){
+                    result = this.getMessageDetails(result);
+                    progressBarElement.style.backgroundColor = this.barColors.success;
+                    progressBarMessageElement.textContent = "Uploaded " + result + " batches.";
+                    setTimeout(function () { 
+                        location.reload();
+                    }, 1 * 1000);
+                },
+            });
+        {% endfor %}
+    {% endif %}
 });
 </script>
 {% endblock inline_javascript %}

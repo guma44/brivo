@@ -1,6 +1,8 @@
 import re
+import time
 import json
 import datetime, pytz
+from django.utils.encoding import smart_str
 from django.conf import settings
 from django.templatetags.static import static
 from django.db import transaction
@@ -41,6 +43,7 @@ from brivo.brew.forms import (
     StyleModelForm,
     RecipeModelForm,
     RecipeImportForm,
+    BatchImportForm,
     IngredientFermentableFormSet
 )
 from brivo.brew.models import (
@@ -98,7 +101,9 @@ def _convert_type(data):
     """Check and convert the type of variable"""
     if isinstance(data, dict):
         return _clean_data(data)
-    if _FLOAT_REGEX.match(data) is not None:  # Floats
+    if data is None:
+        return None
+    elif _FLOAT_REGEX.match(data) is not None:  # Floats
         return float(data)
     elif _INT_REGEX.match(data) is not None:  # Integers
         return int(data)
@@ -107,7 +112,7 @@ def _convert_type(data):
     elif data == "False" or data == "false":
         return False
     else:
-        return str(data)  # The rest is string
+        return smart_str(data, encoding='utf-8', strings_only=False, errors='strict')
 
 
 def _clean_data(data):
@@ -447,6 +452,91 @@ class BatchDeleteView(LoginRequiredMixin, BSModalDeleteView):
     template_name = 'brew/batch/delete.html'
     success_message = 'Batch was deleted.'
     success_url = reverse_lazy('brew:batch-list')
+
+
+def import_batch(batch, user):
+    batch_data = _clean_data(batch)
+    recipe = Recipe.objects.filter(name__icontains=batch_data["recipe"])
+    user = User.objects.get(username=user)
+    batch_data["user"] = user
+    if "stage" not in batch_data:
+        batch_data["stage"] = "FINISHED"
+    if recipe.count() == 0:
+        raise Exception(f"Did not fount a recipe '{batch_data['recipe']}' for '{batch_data['name']}'")
+    elif recipe.count() > 1:
+        print(f"Found too many recipes with name {batch['recipe']}")
+    batch_data["recipe"] = recipe[0]
+    temp_unit = batch_data["temperature_unit"]
+    volume_unit = batch_data["volume_unit"]
+    gravity_unit = batch_data["gravity_unit"]
+    batch_data["grain_temperature"] = Temperature(**{temp_unit: batch_data["grain_temperature"]})
+    batch_data["sparging_temperature"] = Temperature(**{temp_unit: batch_data["sparging_temperature"]})
+    batch_data["gravity_before_boil"] = BeerGravity(**{gravity_unit: batch_data["gravity_before_boil"]})
+    if batch_data["end_gravity"] is not None:
+        batch_data["end_gravity"] = BeerGravity(**{gravity_unit: batch_data["end_gravity"]})
+    else:
+        del batch_data["end_gravity"]
+    if batch_data.get("post_primary_gravity") is not None:
+        batch_data["post_primary_gravity"] = BeerGravity(**{gravity_unit: batch_data["post_primary_gravity"]})
+    else:
+        del batch_data["post_primary_gravity"]
+    batch_data["initial_gravity"] = BeerGravity(**{gravity_unit: batch_data["initial_gravity"]})
+    batch_data["wort_volume"] = Volume(**{volume_unit: batch_data["wort_volume"]})
+    if batch_data["beer_volume"] is not None:
+        batch_data["beer_volume"] = Volume(**{volume_unit: batch_data["beer_volume"]})
+    else:
+        del batch_data["beer_volume"]
+    to_del = [
+        "temperature_unit",
+        "volume_unit",
+        "gravity_unit"]
+    for d in to_del:
+        del batch_data[d]
+
+    if "post_primary_gravity" not in batch_data and "end_gravity" not in batch_data:
+        batch_data["stage"] = "PRIMARY"
+    elif "post_primary_gravity" in batch_data and "end_gravity" not in batch_data:
+        batch_data["stage"] = "SECONDARY"
+    else:
+        batch_data["stage"] = "FINISHED"
+
+    new_batch = Batch(**batch_data)
+    new_batch.save()
+
+
+
+@shared_task(bind=True)
+def import_batches(self, batches, user):
+    progress_recorder = ProgressRecorder(self)
+    uploaded = 0
+    number_of_batches = len(batches)
+    for batch in batches:
+        import_batch(batch, user)
+        uploaded += 1
+        progress_recorder.set_progress(uploaded, number_of_batches, f"Uploaded {batch['name']}")
+    return uploaded
+
+
+class BatchImportView(LoginRequiredMixin, FormView):
+    form_class = BatchImportForm
+    success_url = reverse_lazy('brew:batch-list')
+    template_name = 'brew/batch/import.html'
+    success_message = 'Upload was successfully started!'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            batches = json.load(request.FILES["json_file"])
+            result = import_batches.delay(batches, request.user.username)
+            messages.success(request, result.task_id)
+            return redirect(self.success_url)
+        else:
+            raise
+            return render(request, self.template_name, {'form': form})
 
 
 class FermentableListView(LoginRequiredMixin, ListView):
