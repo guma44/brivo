@@ -26,3 +26,4 @@ django-dynamic-formsets==0.0.8
 attrdict==2.0.1
 django-weasyprint==1.1.0
 python-slugify==4.0.1
+celery-progress

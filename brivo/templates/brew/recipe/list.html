@@ -43,6 +43,11 @@
             </div>
         </div>
     </div>
+<div id="progress-bar-wrapper" class="hidden" class='progress-wrapper'>
+  <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+  <div id="progress-bar-message"></div>
+</div>
+
 <table id="recipes-table" class="table">
     <thead>
         <tr >
@@ -94,6 +99,7 @@
     <div class="modal-content"></div>
   </div>
 </div>
+<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
 {% endblock content %}
 {% block inline_javascript %}
 <script defer type="text/javascript">
@@ -108,7 +114,21 @@ $(document).ready(function() {
     $(".alert").fadeTo(2000, 500).slideUp(500, function () {
         $(".alert").slideUp(500);
     });
-
+  {% if messages %}
+    {% for message in messages %}
+        var progressUrl = "{% url 'celery_progress:task_status' message %}";
+        CeleryProgressBar.initProgressBar(progressUrl, {
+            onSuccess: function(progressBarElement, progressBarMessageElement, result){
+                result = this.getMessageDetails(result);
+                progressBarElement.style.backgroundColor = this.barColors.success;
+                progressBarMessageElement.textContent = "Uploaded " + result + " recipes.";
+                setTimeout(function () { 
+                    location.reload();
+                }, 1 * 1000);
+            },
+        });
+    {% endfor %}
+  {% endif %}
 });
 </script>
 {% endblock inline_javascript %}

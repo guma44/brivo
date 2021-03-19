@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.forms import modelform_factory
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -24,6 +25,8 @@ from bootstrap_modal_forms.generic import (
 )
 from attrdict import AttrDict
 from django_weasyprint import WeasyTemplateResponseMixin
+from celery import shared_task
+from celery_progress.backend import ProgressRecorder
 # from . import constants
 from measurement.measures import Volume, Weight, Temperature
 from brivo.utils.measures import BeerColor, BeerGravity
@@ -929,10 +932,90 @@ class RecipePrintView(WeasyTemplateResponseMixin, RecipeDetailView):
     pdf_attachment = False
 
 
+def import_recipe(recipe, user):
+    """Import recipe to DB"""
+    recipe_data = _clean_data(recipe["fields"])
+    style = Style.objects.filter(name__icontains=recipe_data["style"])
+    user = User.objects.get(username=user)
+    recipe_data["user"] = user
+    if style.count() == 0:
+        raise Exception(f"Did not fount a syle '{recipe_data['style']}' for '{recipe_data['name']}'")
+    recipe_data["style"] = style[0]
+    recipe_data["expected_beer_volume"] = Volume(
+        **{recipe_data["expected_beer_volume_unit"]: recipe_data["expected_beer_volume"]})
+    del recipe_data["expected_beer_volume_unit"]
+    new_recipe = Recipe(**recipe_data)
+    new_recipe.save()
+    fermentables = []
+    for fermentable in recipe.get("fermentables", []):
+        data = _clean_data(fermentable)
+        data["recipe"] = new_recipe
+        data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
+        data["color"] = BeerColor(**{data["color_unit"]: data["color"]})
+        del data["amount_unit"]
+        del data["color_unit"]
+        fermentable_ingredient = IngredientFermentable(**data)
+        fermentable_ingredient.save()
+        fermentables.append(fermentables)
+    hops = []
+    for hop in recipe.get("hops", []):
+        data = _clean_data(hop)
+        data["recipe"] = new_recipe
+        data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
+        del data["amount_unit"]
+        data["time_unit"] = data["time_unit"].upper()
+        hop_ingredient = IngredientHop(**data)
+        hop_ingredient.save()
+        hops.append(hops)
+    yeasts = []
+    for yeast in recipe.get("yeasts", []):
+        data = _clean_data(yeast)
+        data["recipe"] = new_recipe
+        data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
+        del data["amount_unit"]
+        yeast_ingredient = IngredientYeast(**data)
+        yeast_ingredient.save()
+        yeasts.append(yeasts)
+    extras = []
+    for extra in recipe.get("extras", []):
+        data = _clean_data(extra)
+        data["recipe"] = new_recipe
+        data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
+        del data["amount_unit"]
+        data["time_unit"] = data["time_unit"].upper()
+        extra_ingredient = IngredientExtra(**data)
+        extra_ingredient.save()
+        extras.append(extras)
+    mash_steps = []
+    for mash in recipe.get("mashing", []):
+        data = _clean_data(mash)
+        data["recipe"] = new_recipe
+        data["temperature"] = Temperature(**{data["temp_unit"]: data["temp"]})
+        del data["temp"]
+        del data["temp_unit"]
+        del data["time_unit"]
+        mash_step = MashStep(**data)
+        mash_step.save()
+        mash_steps.append(mash_step)
+
+
+@shared_task(bind=True)
+def import_recipes(self, recipes, user):
+    progress_recorder = ProgressRecorder(self)
+    uploaded = 0
+    number_of_recipes = len(recipes)
+    for recipe in recipes:
+        import_recipe(recipe, user)
+        uploaded += 1
+        progress_recorder.set_progress(uploaded, number_of_recipes, f"Uploaded {recipe['fields']['name']}")
+    return uploaded
+
+
 class RecipeImportView(LoginRequiredMixin, FormView):
     form_class = RecipeImportForm
     success_url = reverse_lazy('brew:recipe-list')
     template_name = 'brew/recipe/import.html'
+    success_message = 'Upload was successfully started!'
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -942,69 +1025,8 @@ class RecipeImportView(LoginRequiredMixin, FormView):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             recipes = json.load(request.FILES["json_file"])
-            for recipe in recipes:
-                recipe_data = _clean_data(recipe["fields"])
-                style = Style.objects.filter(name__icontains=recipe_data["style"])
-                recipe_data["user"] = request.user
-                if style.count() == 0:
-                    raise Exception(f"Did not fount a syle '{recipe_data['style']}' for '{recipe_data['name']}'")
-                recipe_data["style"] = style[0]
-                recipe_data["expected_beer_volume"] = Volume(
-                    **{recipe_data["expected_beer_volume_unit"]: recipe_data["expected_beer_volume"]})
-                del recipe_data["expected_beer_volume_unit"]
-                new_recipe = Recipe(**recipe_data)
-                new_recipe.save()
-                fermentables = []
-                for fermentable in recipe.get("fermentables", []):
-                    data = _clean_data(fermentable)
-                    data["recipe"] = new_recipe
-                    data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
-                    data["color"] = BeerColor(**{data["color_unit"]: data["color"]})
-                    del data["amount_unit"]
-                    del data["color_unit"]
-                    fermentable_ingredient = IngredientFermentable(**data)
-                    fermentable_ingredient.save()
-                    fermentables.append(fermentables)
-                hops = []
-                for hop in recipe.get("hops", []):
-                    data = _clean_data(hop)
-                    data["recipe"] = new_recipe
-                    data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
-                    del data["amount_unit"]
-                    data["time_unit"] = data["time_unit"].upper()
-                    hop_ingredient = IngredientHop(**data)
-                    hop_ingredient.save()
-                    hops.append(hops)
-                yeasts = []
-                for yeast in recipe.get("yeasts", []):
-                    data = _clean_data(yeast)
-                    data["recipe"] = new_recipe
-                    data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
-                    del data["amount_unit"]
-                    yeast_ingredient = IngredientYeast(**data)
-                    yeast_ingredient.save()
-                    yeasts.append(yeasts)
-                extras = []
-                for extra in recipe.get("extras", []):
-                    data = _clean_data(extra)
-                    data["recipe"] = new_recipe
-                    data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
-                    del data["amount_unit"]
-                    data["time_unit"] = data["time_unit"].upper()
-                    extra_ingredient = IngredientExtra(**data)
-                    extra_ingredient.save()
-                    extras.append(extras)
-                mash_steps = []
-                for mash in recipe.get("mashing", []):
-                    data = _clean_data(mash)
-                    data["recipe"] = new_recipe
-                    data["temperature"] = Temperature(**{data["temp_unit"]: data["temp"]})
-                    del data["temp"]
-                    del data["temp_unit"]
-                    del data["time_unit"]
-                    mash_step = MashStep(**data)
-                    mash_step.save()
-                    mash_steps.append(mash_step)
+            result = import_recipes.delay(recipes, request.user.username)
+            messages.success(request, result.task_id)
             return redirect(self.success_url)
         else:
             raise

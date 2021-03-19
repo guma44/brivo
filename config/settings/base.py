@@ -78,7 +78,8 @@ THIRD_PARTY_APPS = [
     "django_celery_beat",
     "fontawesome-free",
     "django_filters",
-    "dynamic_formsets"
+    "dynamic_formsets",
+    "celery_progress"
 ]
 
 LOCAL_APPS = [
