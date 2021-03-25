@@ -46,10 +46,10 @@ class Batch(BaseModel):
         _("Brewing Day"), auto_now=False, auto_now_add=False, null=True
     )
     grain_temperature = MeasurementField(
-        measurement=Temperature, verbose_name=_("Grain Temperature"), null=True
+        measurement=Temperature, verbose_name=_("Grain Temperature"), null=True, default=Temperature(c=20)
     )
     sparging_temperature = MeasurementField(
-        measurement=Temperature, verbose_name=_("Sparging Temperature"), null=True
+        measurement=Temperature, verbose_name=_("Sparging Temperature"), null=True, default=Temperature(c=78)
     )
 
     # Stage 2 fields: boil
@@ -114,7 +114,7 @@ class Batch(BaseModel):
     hidden_fields = ["stage"]
 
     def get_hex_color(self):
-        pass
+        return self.recipe.get_hex_color()
 
     def get_expected_gravity(self):
         pass

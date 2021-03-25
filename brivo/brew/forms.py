@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
-from django.forms import HiddenInput, ModelChoiceField, DateInput
-from django.forms.fields import ChoiceField, FileField
+from django.db.models.fields import CharField
+from django.utils.translation import gettext_lazy as _
+from django.forms import HiddenInput, ModelChoiceField
+from django.forms.fields import ChoiceField, FileField, IntegerField
 from django.forms.models import ModelForm, inlineformset_factory
 from django.forms import BaseInlineFormSet, Form
 from bootstrap_modal_forms.forms import BSModalModelForm
@@ -24,11 +26,6 @@ from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.brew.measurement_forms import MeasurementField
 from brivo.brew import layouts
 from brivo.brew import models
-
-
-class MyDateInput(DateInput):
-    input_type = 'date'
-
 
 class PopRequestMixin:
 
@@ -54,6 +51,7 @@ class BaseBatchForm(BSModalModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        print(kwargs)
 
         if self.request.user.profile.general_units == "METRIC":
             unit_choices = (("l", "l"),)
@@ -237,13 +235,6 @@ class BaseBatchForm(BSModalModelForm):
                     )
                 )
             )
-    class Meta:
-        widgets = {
-                'brewing_day': MyDateInput(),
-                'primary_fermentation_start_day': MyDateInput(),
-                'secondary_fermentation_start_day': MyDateInput(),
-                'packaging_date': MyDateInput()
-            }
 
 
 class FermentableModelForm(BSModalModelForm):

@@ -28,6 +28,21 @@
   </form>
 <script>
 $(document).ready(function() {
+$( function() {
+  $("#id_brewing_day" ).datepicker({
+    dateFormat: "yy-mm-dd"
+  });
+  $("#id_primary_fermentation_start_day" ).datepicker({
+    dateFormat: "yy-mm-dd"
+  });
+  $("#id_secondary_fermentation_start_day" ).datepicker({
+    dateFormat: "yy-mm-dd"
+  });
+  $("#id_packaging_date" ).datepicker({
+    dateFormat: "yy-mm-dd"
+  });
+
+});
 {% if batch %}
   {% for stage in stages %}
     {% if stage == batch.stage %}

@@ -116,17 +116,19 @@ $(document).ready(function() {
     });
   {% if messages %}
     {% for message in messages %}
-        var progressUrl = "{% url 'celery_progress:task_status' message %}";
-        CeleryProgressBar.initProgressBar(progressUrl, {
-            onSuccess: function(progressBarElement, progressBarMessageElement, result){
-                result = this.getMessageDetails(result);
-                progressBarElement.style.backgroundColor = this.barColors.success;
-                progressBarMessageElement.textContent = "Uploaded " + result + " recipes.";
-                setTimeout(function () { 
-                    location.reload();
-                }, 1 * 1000);
-            },
-        });
+        {% if message.extra_tags == "task_id" %}
+            var progressUrl = "{% url 'celery_progress:task_status' message %}";
+            CeleryProgressBar.initProgressBar(progressUrl, {
+                onSuccess: function(progressBarElement, progressBarMessageElement, result){
+                    result = this.getMessageDetails(result);
+                    progressBarElement.style.backgroundColor = this.barColors.success;
+                    progressBarMessageElement.textContent = "Uploaded " + result + " recipes.";
+                    setTimeout(function () { 
+                        location.reload();
+                    }, 1 * 1000);
+                },
+            });
+        {% endif %}
     {% endfor %}
   {% endif %}
 });

@@ -365,6 +365,13 @@ class BatchView(LoginRequiredMixin, FormView):
             new_stage = "FINISHED"
         form.instance.stage = new_stage
         form.instance.user = self.request.user
+        if not form.instance.name:
+            form.instance.name = form.instance.recipe.name
+        if not form.instance.batch_number:
+            def _get_batch_number():
+                num = Batch.objects.filter(user=self.request.user).order_by("-batch_number")[0].batch_number
+                return num + 1
+            form.instance.batch_number = _get_batch_number()
         if not previous_stage:
             form.save()  # This will save the underlying instance.
         else:
@@ -435,10 +442,9 @@ class BatchListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         qs = self.model.objects.filter(user=self.request.user)
-        print(qs)
         filtered_batches = filters.BatchFilter(self.request.GET, queryset=qs)
-        print(filtered_batches)
-        return filtered_batches.qs
+        qs = filtered_batches.qs.order_by("-updated_at")
+        return qs
 
 
 class BatchDetailView(LoginRequiredMixin, BSModalReadView):
@@ -532,7 +538,7 @@ class BatchImportView(LoginRequiredMixin, FormView):
         if form.is_valid():
             batches = json.load(request.FILES["json_file"])
             result = import_batches.delay(batches, request.user.username)
-            messages.success(request, result.task_id)
+            messages.add_message(request, messages.SUCCESS, result.task_id, extra_tags="task_id")
             return redirect(self.success_url)
         else:
             raise
@@ -1116,7 +1122,7 @@ class RecipeImportView(LoginRequiredMixin, FormView):
         if form.is_valid():
             recipes = json.load(request.FILES["json_file"])
             result = import_recipes.delay(recipes, request.user.username)
-            messages.success(request, result.task_id)
+            messages.add_message(request, messages.SUCCESS, result.task_id, extra_tags="task_id")
             return redirect(self.success_url)
         else:
             raise
