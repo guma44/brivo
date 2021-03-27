@@ -324,6 +324,24 @@ class YeastAutocomplete(BaseAutocomplete):
             } for result in context['object_list']
         ]
 
+
+class ExtraAutocomplete(BaseAutocomplete):
+    model = Extra
+
+    def get_results(self, context):
+        """Return data for the 'results' key of the response."""
+
+        return [
+            {
+                'data': {
+                    "name": result.name,
+                    "use": result.use,
+                    "type": result.type
+                },
+                'value': result.name,
+            } for result in context['object_list']
+        ]
+
 class BatchView(LoginRequiredMixin, FormView):
     template_name = 'brew/batch/batch.html'
     batch = None
@@ -922,13 +940,13 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
             data['fermentables'] = forms.IngredientFermentableFormSet(self.request.POST, request=self.request)
             data['hops'] = forms.IngredientHopFormSet(self.request.POST, request=self.request)
             data['yeasts'] = forms.IngredientYeastFormSet(self.request.POST, request=self.request)
-            #data['extras'] = forms.IngredientExtraFormSet(self.request.POST, request=self.request)
+            data['extras'] = forms.IngredientExtraFormSet(self.request.POST, request=self.request)
             data['mash_steps'] = forms.MashStepFormSet(self.request.POST, request=self.request)
         else:
             data['fermentables'] = forms.IngredientFermentableFormSet(request=self.request)
             data['hops'] = forms.IngredientHopFormSet(request=self.request)
             data['yeasts'] = forms.IngredientYeastFormSet(request=self.request)
-            #data['extras'] = forms.IngredientExtraFormSet(request=self.request)
+            data['extras'] = forms.IngredientExtraFormSet(request=self.request)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request)
         return data
 
@@ -936,10 +954,10 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
         context = self.get_context_data()
         fermentables = context['fermentables']
         hops = context['hops']
-        #extras = context['extras']
+        extras = context['extras']
         yeasts = context['yeasts']
         mash_steps = context['mash_steps']
-        formsets = [fermentables, hops, yeasts, mash_steps]
+        formsets = [fermentables, hops, yeasts, mash_steps, extras]
         with transaction.atomic():
             form.instance.user = self.request.user
             self.object = form.save()

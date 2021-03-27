@@ -540,7 +540,7 @@ class RecipeModelForm(BSModalModelForm):
         self.fields.update({
             "expected_beer_volume": MeasurementField(
                 measurement=Volume,
-                unit_choices=unit_choices),
+                unit_choices=unit_choices, initial=Volume(l=20)),
         })
 
         self.helper = FormHelper()
@@ -606,6 +606,7 @@ class RecipeModelForm(BSModalModelForm):
                     ),
                 ),
                 Fieldset("Yeasts", layouts.RecipeFormsetLayout('yeasts', "brew/recipe/yeast_formset.html")),
+                Fieldset("Extras", layouts.RecipeFormsetLayout('extras', "brew/recipe/extra_formset.html")),
                 Field('note'),
                 HTML("<br>")
             ),

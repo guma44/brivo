@@ -177,6 +177,7 @@ class Recipe(RecipeCalculatorMixin, BaseModel):
         measurement=Volume,
         verbose_name=_("Expected Beer Volume"),
         unit_choices=VOLUME_UNITS,
+        default=Volume(l=20)
     )
     boil_time = models.IntegerField(_("Boil Time"), default=60.0)
     evaporation_rate = models.DecimalField(

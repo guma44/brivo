@@ -66,6 +66,11 @@ urlpatterns = [
          name='extra-update'),
     path('extra/<int:pk>/delete', views.ExtraDeleteView.as_view(),
          name='extra-delete'),
+    path(
+        r'extra/autocomplete',
+        views.ExtraAutocomplete.as_view(),
+        name='extra-autocomplete',
+    ),
 
     # Styles
     path('style', views.StyleListView.as_view(),

@@ -7,8 +7,8 @@
     <thead>
         <tr >
             <th class="text-center" scope="col">Name</th>
+            <th class="text-center" scope="col">Type</th>
             <th class="text-center" scope="col">Use</th>
-            <th class="text-center" scope="col">Alpha Acids</th>
             <th class="text-center" scope="col">Amount</th>
             <th class="text-center" scope="col">Time</th>
             <th class="text-center" scope="col">Action</th>
@@ -25,8 +25,8 @@
                     {{ field.name.errors.as_ul }}
                     {{ form.name|as_crispy_field }}
                 </td>
+                <td>{{ field.type.errors.as_ul }}{{ form.type|as_crispy_field }}</td>
                 <td>{{ field.use.errors.as_ul }}{{ form.use|as_crispy_field }}</td>
-                <td>{{ field.alpha_acids.errors.as_ul }}{{ form.alpha_acids|as_crispy_field }}</td>
                 <td>{{ field.amount.errors.as_ul }}{{ form.amount|as_crispy_field }}</td>
                 <td>{{ field.time.errors.as_ul }}{{ form.time|as_crispy_field }}{{ form.time_unit|as_crispy_field }}</td>
                 <td class="delet-row"></td>
@@ -40,32 +40,33 @@
 <script type="text/javascript">
 $(function() {
     $('.formset_row-{{ formset.prefix }}').formset({
-        addText: '<button type="button" class="add-hop btn btn-sm btn-warning"><span class="fa fa-plus"></span> Add Hop</button>',
-        deleteText: '<button type="button" class="delete-hop btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>',
+        addText: '<button type="button" class="add-extra btn btn-sm btn-warning"><span class="fa fa-plus"></span> Add extra</button>',
+        deleteText: '<button type="button" class="delete-extra btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>',
         prefix: '{{ formset.prefix }}',
         added: function(row) {
             let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
-            console.log("Binding to " + '#id_hops-' + row_index + '-name');
-            $('#id_hops-' + row_index + '-name').autocomplete({
-                serviceUrl: '/brew/hop/autocomplete',
+            $('#id_extras-' + row_index + '-name').autocomplete({
+                serviceUrl: '/brew/extra/autocomplete',
                 noCache: false,
                 minChars: 3,
                 paramName: "q",
                 onSelect: function (suggestion) {
                     let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
-                    $('#id_hops-' + row_index + '-alpha_acids').val(suggestion.data.alpha_acids);
+                    $('#id_extras-' + row_index + '-type').val(suggestion.data.type);
+                    $('#id_extras-' + row_index + '-use').val(suggestion.data.use);
                 }
             });
         }
     });
 
-    $('#id_hops-0-name').autocomplete({
-        serviceUrl: '/brew/hop/autocomplete',
+    $('#id_extras-0-name').autocomplete({
+        serviceUrl: '/brew/extra/autocomplete',
         noCache: false,
         minChars: 3,
         paramName: "q",
         onSelect: function (suggestion) {
-            $('#id_hops-0-alpha_acids').val(suggestion.data.alpha_acids);
+            $('#id_extras-0-type').val(suggestion.data.type);
+            $('#id_extras-0-use').val(suggestion.data.use);
         }
     });
 });
