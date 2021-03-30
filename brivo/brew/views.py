@@ -518,9 +518,9 @@ def import_batch(batch, user):
         del batch_data[d]
 
     if "post_primary_gravity" not in batch_data and "end_gravity" not in batch_data:
-        batch_data["stage"] = "PRIMARY"
+        batch_data["stage"] = "PRIMARY_FERMENTATION"
     elif "post_primary_gravity" in batch_data and "end_gravity" not in batch_data:
-        batch_data["stage"] = "SECONDARY"
+        batch_data["stage"] = "SECONDARY_FERMENTATION"
     else:
         batch_data["stage"] = "FINISHED"
 
@@ -989,13 +989,13 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
             data['fermentables'] = forms.IngredientFermentableFormSet(self.request.POST, request=self.request, instance=self.object)
             data['hops'] = forms.IngredientHopFormSet(self.request.POST, request=self.request, instance=self.object)
             data['yeasts'] = forms.IngredientYeastFormSet(self.request.POST, request=self.request, instance=self.object)
-            #data['extras'] = forms.IngredientExtraFormSet(self.request.POST, request=self.request, instance=self.object)
+            data['extras'] = forms.IngredientExtraFormSet(self.request.POST, request=self.request, instance=self.object)
             data['mash_steps'] = forms.MashStepFormSet(self.request.POST, request=self.request, instance=self.object)
         else:
             data['fermentables'] = forms.IngredientFermentableFormSet(request=self.request, instance=self.object)
             data['hops'] = forms.IngredientHopFormSet(request=self.request, instance=self.object)
             data['yeasts'] = forms.IngredientYeastFormSet(request=self.request, instance=self.object)
-            #data['extras'] = forms.IngredientExtraFormSet(request=self.request, instance=self.object)
+            data['extras'] = forms.IngredientExtraFormSet(request=self.request, instance=self.object)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request, instance=self.object)
         return data
 
@@ -1003,7 +1003,7 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
         context = self.get_context_data()
         fermentables = context['fermentables']
         hops = context['hops']
-        #extras = context['extras']
+        extras = context['extras']
         yeasts = context['yeasts']
         mash_steps = context['mash_steps']
         formsets = [fermentables, hops, yeasts, mash_steps]

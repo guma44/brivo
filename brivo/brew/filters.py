@@ -68,4 +68,4 @@ class BatchFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Batch
-        fields = ["name"]
+        fields = ["name", "stage"]
