@@ -144,6 +144,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f"Successfully loaded {i} hops to DB"))
 
         with open(os.path.join(root, "data/yeasts.json")) as fin:
+            self.stdout.write(self.style.WARNING(f"Loading {i} yeasts to DB"))
             # yeasts_styles = {}
             yeasts = json.load(fin)
             i = 0
@@ -156,6 +157,7 @@ class Command(BaseCommand):
                     # if kwargs.get("styles"):
                     #     styles = [s.strip().rstrip("s") for s in kwargs.get("styles", "").split(",")]
                     #     del kwargs["styles"]
+                    print(kwargs)
                     yeast = models.Yeast(**kwargs)
                     yeast.save()
                     # if len(styles) > 0:

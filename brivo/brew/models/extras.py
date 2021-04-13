@@ -31,12 +31,12 @@ EXTRA_USE = [
 
 
 class BaseExtra(BaseModel):
-    type = models.CharField(_("Type"), max_length=255, choices=EXTRA_TYPE)
-    use = models.CharField(_("Use"), max_length=255, choices=EXTRA_USE)
+    type = models.CharField(_("Type"), max_length=1000, choices=EXTRA_TYPE)
+    use = models.CharField(_("Use"), max_length=1000, choices=EXTRA_USE)
 
 
 class Extra(BaseExtra):
-    desc = models.CharField(_("Description"), max_length=255)
+    desc = models.CharField(_("Description"), max_length=1000)
     active = models.DecimalField(_("Active"), max_digits=5, decimal_places=2)
 
 
@@ -64,4 +64,4 @@ class IngredientExtra(BaseExtra):
         measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
     )
     time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2)
-    time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
+    time_unit = models.CharField(_("Time Unit"), max_length=1000, choices=TIME_CHOICE)

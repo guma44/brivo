@@ -101,10 +101,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 class UserProfile(models.Model):
     user = models.OneToOneField("User", verbose_name=_("User"), on_delete=models.CASCADE, related_name="profile")
     image = models.ImageField(null=True, upload_to=user_profile_image_file_path, blank=True)
-    general_units = models.CharField(_("General Units"), max_length=255, choices=GENERAL_UNITS, default="METRIC")
-    temperature_units = models.CharField(_("Temperature Units"), max_length=255, choices=TEMPERATURE_UNITS, default="CELSIUS")
-    gravity_units = models.CharField(_("Gravity Units"), max_length=255, choices=GRAVITY_UNITS, default="Plato")
-    color_units = models.CharField(_("Color Units"), max_length=255, choices=COLOR_UNITS, default="SRM")
+    general_units = models.CharField(_("General Units"), max_length=1000, choices=GENERAL_UNITS, default="METRIC")
+    temperature_units = models.CharField(_("Temperature Units"), max_length=1000, choices=TEMPERATURE_UNITS, default="CELSIUS")
+    gravity_units = models.CharField(_("Gravity Units"), max_length=1000, choices=GRAVITY_UNITS, default="Plato")
+    color_units = models.CharField(_("Color Units"), max_length=1000, choices=COLOR_UNITS, default="SRM")
 
     def __str__(self):
         return f"{self.user.email} Profile"

@@ -30,31 +30,31 @@ YEAST_FORM = [
 
 
 class BaseYeast(BaseModel):
-    lab = models.CharField(_("Lab"), max_length=255)
-    type = models.CharField(_("Type"), max_length=255, choices=YEAST_TYPE)
+    lab = models.CharField(_("Lab"), max_length=1000)
+    type = models.CharField(_("Type"), max_length=1000, choices=YEAST_TYPE)
 
 
 class Yeast(BaseYeast):
-    lab_id = models.CharField(_("Lab ID"), max_length=255)
+    lab_id = models.CharField(_("Lab ID"), max_length=1000)
     atten_min = models.DecimalField(
         _("Min Attenuation"), max_digits=5, decimal_places=2, blank=True, null=True
     )
     atten_max = models.DecimalField(
         _("Max Attenuation"), max_digits=5, decimal_places=2, blank=True, null=True
     )
-    flocc = models.CharField(_("Flocculation"), max_length=255)
-    form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
+    flocc = models.CharField(_("Flocculation"), max_length=1000)
+    form = models.CharField(_("Form"), max_length=1000, choices=YEAST_FORM)
     temp_min = MeasurementField(
         measurement=Temperature, verbose_name=_("Min Temperature")
     )
     temp_max = MeasurementField(
         measurement=Temperature, verbose_name=_("Max Temperature")
     )
-    alco_toler = models.CharField(_("Alcohol Tolerance"), max_length=255)
+    alco_toler = models.CharField(_("Alcohol Tolerance"), max_length=1000)
     styles = models.CharField(_("Styles"), max_length=1000, blank=True, null=True)
-    desc = models.CharField(_("Description"), max_length=255, blank=True, null=True)
+    desc = models.TextField(_("Description"), blank=True, null=True)
     external_link = models.URLField(
-        _("External Link"), max_length=255, blank=True, null=True
+        _("External Link"), max_length=1000, blank=True, null=True
     )
     comment = models.TextField(_("Comment"), blank=True, null=True)
     active = models.BooleanField(_("Active"), default=True)
@@ -81,7 +81,7 @@ class InventoryYeast(BaseYeast):
         _("Collected At"), auto_now=False, auto_now_add=False, blank=True
     )
     generation = models.CharField(_("Generation"), max_length=50, blank=True)
-    form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
+    form = models.CharField(_("Form"), max_length=1000, choices=YEAST_FORM)
     amount = MeasurementField(
         measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
     )
@@ -106,4 +106,4 @@ class IngredientYeast(BaseYeast):
         default=75.0,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
-    form = models.CharField(_("Form"), max_length=255, choices=YEAST_FORM)
+    form = models.CharField(_("Form"), max_length=1000, choices=YEAST_FORM)

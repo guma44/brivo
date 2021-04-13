@@ -52,7 +52,7 @@ class Hop(BaseHop):
         null=True,
     )
     external_link = models.URLField(
-        _("External Link"), max_length=255, blank=True, null=True
+        _("External Link"), max_length=1000, blank=True, null=True
     )
     alpha_min = models.DecimalField(
         _("Alpha Min"), max_digits=5, decimal_places=2, blank=True, null=True
@@ -107,7 +107,7 @@ class Hop(BaseHop):
         "Hop", verbose_name=_("Substitue"), blank=True, null=True
     )
     description = models.TextField(
-        _("Description"), max_length=255, blank=True, null=True
+        _("Description"), max_length=1000, blank=True, null=True
     )
     comment = models.TextField(_("Comment"), blank=True, null=True)
     active = models.BooleanField(_("Active"), default=True)
@@ -116,7 +116,7 @@ class Hop(BaseHop):
 class InventoryHop(BaseHop):
     inventory = models.ForeignKey("brew.Inventory", verbose_name=_("Inventory"), on_delete=models.CASCADE, related_name="hops")
     year = models.IntegerField(_("Year"), validators=[MinValueValidator(0)])
-    form = models.CharField(_("Form"), max_length=255, choices=HOP_FORM)
+    form = models.CharField(_("Form"), max_length=1000, choices=HOP_FORM)
     amount = MeasurementField(
         measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
     )
@@ -130,11 +130,11 @@ class IngredientHop(BaseHop):
         on_delete=models.CASCADE,
         related_name="hops",
     )
-    use = models.CharField(_("Use"), max_length=255, choices=HOP_USE)
+    use = models.CharField(_("Use"), max_length=1000, choices=HOP_USE)
     amount = MeasurementField(
         measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
     )
     time = models.DecimalField(
         _("Time"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)]
     )
-    time_unit = models.CharField(_("Time Unit"), max_length=255, choices=TIME_CHOICE)
+    time_unit = models.CharField(_("Time Unit"), max_length=1000, choices=TIME_CHOICE)

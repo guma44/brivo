@@ -170,14 +170,14 @@ class Recipe(RecipeCalculatorMixin, BaseModel):
     style = models.ForeignKey(
         "Style", verbose_name=_("Style"), on_delete=models.DO_NOTHING
     )
-    type = models.CharField(_("Type"), max_length=255, choices=RECIPE_TYPE)
+    type = models.CharField(_("Type"), max_length=1000, choices=RECIPE_TYPE)
 
     # Batch info
     expected_beer_volume = MeasurementField(
         measurement=Volume,
         verbose_name=_("Expected Beer Volume"),
         unit_choices=VOLUME_UNITS,
-        default=Volume(l=20)
+        default=20
     )
     boil_time = models.IntegerField(_("Boil Time"), default=60.0)
     evaporation_rate = models.DecimalField(
@@ -216,7 +216,7 @@ class Recipe(RecipeCalculatorMixin, BaseModel):
         _("Liquor-To-Grist Ratio"), max_digits=5, decimal_places=2, default=3.0
     )
     # Rest
-    note = models.TextField(_("Note"), max_length=255, blank=True)
+    note = models.TextField(_("Note"), max_length=1000, blank=True)
     is_public = models.BooleanField(_("Public"), default=True)
 
     def get_fermentables(self):

@@ -13,8 +13,8 @@ __all__ = ("Style",)
 
 
 class Style(BaseModel):
-    category_id = models.CharField(_("Catetory ID"), max_length=255)
-    category = models.CharField(_("Category"), max_length=255)
+    category_id = models.CharField(_("Catetory ID"), max_length=1000)
+    category = models.CharField(_("Category"), max_length=1000)
     og_min = MeasurementField(
         measurement=BeerGravity, verbose_name=_("OG Max"), blank=True, null=True
     )
@@ -46,23 +46,23 @@ class Style(BaseModel):
         _("Alcohol Max"), max_digits=5, decimal_places=2, blank=True, null=True
     )
     ferm_type = models.CharField(
-        _("Fermentation Type"), max_length=255, blank=True, null=True
+        _("Fermentation Type"), max_length=1000, blank=True, null=True
     )
-    desc_aroma = models.TextField(_("Aroma"), max_length=255, blank=True, null=True)
-    desc_appe = models.TextField(_("Appearance"), max_length=255, blank=True, null=True)
-    desc_flavor = models.TextField(_("Flavour"), max_length=255, blank=True, null=True)
-    desc_mouth = models.TextField(_("Mouthfeel"), max_length=255, blank=True, null=True)
-    desc_overall = models.TextField(_("Overall"), max_length=255, blank=True, null=True)
+    desc_aroma = models.TextField(_("Aroma"), max_length=1000, blank=True, null=True)
+    desc_appe = models.TextField(_("Appearance"), max_length=1000, blank=True, null=True)
+    desc_flavor = models.TextField(_("Flavour"), max_length=1000, blank=True, null=True)
+    desc_mouth = models.TextField(_("Mouthfeel"), max_length=1000, blank=True, null=True)
+    desc_overall = models.TextField(_("Overall"), max_length=1000, blank=True, null=True)
     desc_comment = models.TextField(_("Comment"), blank=True, null=True)
-    desc_history = models.TextField(_("History"), max_length=255, blank=True, null=True)
+    desc_history = models.TextField(_("History"), max_length=1000, blank=True, null=True)
     desc_ingre = models.TextField(
-        _("Ingredients"), max_length=255, blank=True, null=True
+        _("Ingredients"), max_length=1000, blank=True, null=True
     )
     desc_style_comp = models.TextField(
-        _("Style Comparison"), max_length=255, blank=True, null=True
+        _("Style Comparison"), max_length=1000, blank=True, null=True
     )
     commercial_exam = models.TextField(
-        _("Examples"), max_length=255, blank=True, null=True
+        _("Examples"), max_length=1000, blank=True, null=True
     )
     tags = models.ManyToManyField("Tag")
     active = models.BooleanField(_("Active"), default=True)

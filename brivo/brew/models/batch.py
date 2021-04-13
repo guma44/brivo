@@ -46,10 +46,10 @@ class Batch(BaseModel):
         _("Brewing Day"), auto_now=False, auto_now_add=False, null=True
     )
     grain_temperature = MeasurementField(
-        measurement=Temperature, verbose_name=_("Grain Temperature"), null=True, default=Temperature(c=20)
+        measurement=Temperature, verbose_name=_("Grain Temperature"), null=True, default=273.15 + 20
     )
     sparging_temperature = MeasurementField(
-        measurement=Temperature, verbose_name=_("Sparging Temperature"), null=True, default=Temperature(c=78)
+        measurement=Temperature, verbose_name=_("Sparging Temperature"), null=True, default=273.15 + 78
     )
 
     # Stage 2 fields: boil

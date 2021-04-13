@@ -79,8 +79,8 @@ class BaseModel(models.Model):
         abstract = True
         app_label = "brew"
 
-    name = models.CharField(_("Name"), max_length=255)
-    slug = models.SlugField(max_length=100, blank=True, editable=False)
+    name = models.CharField(_("Name"), max_length=1000)
+    slug = models.SlugField(max_length=1000, blank=True, editable=False)
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Modified At"), auto_now=True)
 
@@ -96,7 +96,7 @@ class BaseModel(models.Model):
 class Tag(BaseModel): pass
 
 class Country(BaseModel):
-    code = models.CharField(_("Code"), max_length=255)
+    code = models.CharField(_("Code"), max_length=1000)
 
     def __str__(self):
         return f"{self.name} ({self.code})"
