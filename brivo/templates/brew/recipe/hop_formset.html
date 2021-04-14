@@ -51,6 +51,7 @@ $(function() {
                 noCache: false,
                 minChars: 3,
                 paramName: "q",
+                width: '300',
                 onSelect: function (suggestion) {
                     let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
                     $('#id_hops-' + row_index + '-alpha_acids').val(suggestion.data.alpha_acids);
@@ -64,6 +65,7 @@ $(function() {
         noCache: false,
         minChars: 3,
         paramName: "q",
+        width: '300',
         onSelect: function (suggestion) {
             $('#id_hops-0-alpha_acids').val(suggestion.data.alpha_acids);
         }

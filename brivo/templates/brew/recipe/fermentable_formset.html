@@ -52,6 +52,7 @@ $(function() {
                 noCache: false,
                 minChars: 3,
                 paramName: "q",
+                width: '300',
                 onSelect: function (suggestion) {
                     let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
                     console.log("Adding color to " + '#id_fermentables-' + row_index + '-color_0');
@@ -68,6 +69,7 @@ $(function() {
         noCache: false,
         minChars: 3,
         paramName: "q",
+        width: '300',
         onSelect: function (suggestion) {
             $('#id_fermentables-0-type').val(suggestion.data.type);
             $('#div_id_fermentables-0-color').find("input").val(suggestion.data.color);

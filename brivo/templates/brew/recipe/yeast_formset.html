@@ -53,6 +53,7 @@ $(function() {
                 noCache: false,
                 minChars: 3,
                 paramName: "q",
+                width: '300',
                 onSelect: function (suggestion) {
                     let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
                     $('#id_yeasts-' + row_index + '-lab').val(suggestion.data.lab);
@@ -69,6 +70,7 @@ $(function() {
         noCache: false,
         minChars: 3,
         paramName: "q",
+        width: '300',
         onSelect: function (suggestion) {
             $('#id_yeasts-0-lab').val(suggestion.data.lab);
             $('#id_yeasts-0-type').val(suggestion.data.type);
