@@ -39,12 +39,12 @@ class BaseFermentable(BaseModel):
         _("Type"),
         max_length=1000,
         choices=FERMENTABLE_TYPE,
-        help_text="Fermentable type.",
+        # help_text="Fermentable type.",
     )
     color = MeasurementField(
         measurement=BeerColor,
         verbose_name=_("Color"),
-        help_text="""The color of the item.""",
+        # help_text="""The color of the item.""",
     )
     # yield
     extraction = models.DecimalField(
@@ -52,9 +52,9 @@ class BaseFermentable(BaseModel):
         max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
-        help_text="""Percent dry yield (fine grain) 
-            for the grain, or the raw yield by weight if this is an 
-            extract adjunct or sugar.""",
+        # help_text="""Percent dry yield (fine grain) 
+        #     for the grain, or the raw yield by weight if this is an 
+        #     extract adjunct or sugar.""",
     )
 
 

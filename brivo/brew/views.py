@@ -359,6 +359,8 @@ class BatchView(LoginRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(BatchView, self).get_context_data(**kwargs)
+        units = _get_units_for_user(self.request.user)
+        context.update(units)
         context["batch"] = self.batch
         if self.batch is not None:
             context["stages"] = BATCH_STAGE_ORDER
@@ -898,7 +900,7 @@ class RecipeListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = "brew/recipe/list.html"
     context_object_name = 'recipes'
-    paginate_by = 5
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(RecipeListView, self).get_context_data(**kwargs)
@@ -924,7 +926,7 @@ class RecipeListView(LoginRequiredMixin, ListView):
 
 
 class RecipeCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'brew/recipe/create.html'
+    template_name = 'brew/recipe/edit.html'
     form_class = RecipeModelForm
     success_message = 'Recipe was successfully created.'
     success_url = reverse_lazy('brew:recipe-list')
@@ -936,6 +938,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         data = super(RecipeCreateView, self).get_context_data(**kwargs)
+        data["title"] = "Create New Recipe"
         if self.request.POST:
             data['fermentables'] = forms.IngredientFermentableFormSet(self.request.POST, request=self.request)
             data['hops'] = forms.IngredientHopFormSet(self.request.POST, request=self.request)
@@ -969,9 +972,9 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 
 
 class RecipeUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = 'brew/recipe/create.html'
+    template_name = 'brew/recipe/edit.html'
     form_class = RecipeModelForm
-    success_message = 'Recipe was successfully created.'
+    success_message = 'Recipe was successfully updated.'
     success_url = reverse_lazy('brew:recipe-list')
     model = Recipe
 
@@ -984,7 +987,7 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
         data = super(RecipeUpdateView, self).get_context_data(**kwargs)
         units = _get_units_for_user(self.request.user)
         data.update(units)
-
+        data["title"] = "Update Recipe"
         if self.request.POST:
             data['fermentables'] = forms.IngredientFermentableFormSet(self.request.POST, request=self.request, instance=self.object)
             data['hops'] = forms.IngredientHopFormSet(self.request.POST, request=self.request, instance=self.object)
@@ -997,6 +1000,7 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
             data['yeasts'] = forms.IngredientYeastFormSet(request=self.request, instance=self.object)
             data['extras'] = forms.IngredientExtraFormSet(request=self.request, instance=self.object)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request, instance=self.object)
+        # raise
         return data
 
     def form_valid(self, form):
@@ -1010,11 +1014,20 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
         with transaction.atomic():
             form.instance.user = self.request.user
             self.object = form.save()
+            formsets_valid = True
             for formset in formsets:
                 if formset.is_valid():
                     formset.instance = self.object
                     formset.save()
+                else:
+                    formsets_valid = False
+            if not formsets_valid:
+                return self.form_invalid(form)
         return super(RecipeUpdateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        """If the form is invalid, render the invalid form."""
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class RecipeDetailView(LoginRequiredMixin, BSModalReadView):

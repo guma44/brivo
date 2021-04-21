@@ -24,13 +24,21 @@ RECIPE_TYPE = [
 class RecipeCalculatorMixin:
     """Mixin used in Recipe model and recipe ajax call."""
 
+    def get_boil_loss_volume(self):
+        return self.expected_beer_volume * (float(self.boil_loss) / 100.0)
+
+    def get_trub_loss_volume(self):
+        return self.expected_beer_volume * (float(self.trub_loss) / 100.0)
+
+    def get_dry_hopping_loss_volume(self):
+        return self.expected_beer_volume * (float(self.dry_hopping_loss) / 100.0)
+
     def get_initial_volume(self):
-        volume = self.expected_beer_volume.l
-        boil_loss = volume * (float(self.boil_loss) / 100.0)
-        trub_loss = volume * (float(self.trub_loss) / 100.0)
-        dry_hopping_loss = volume * (float(self.dry_hopping_loss) / 100.0)
-        volume = volume + boil_loss + trub_loss + dry_hopping_loss
-        return Volume(l=volume)
+        boil_loss = self.get_boil_loss_volume()
+        trub_loss = self.get_trub_loss_volume()
+        dry_hopping_loss = self.get_dry_hopping_loss_volume()
+        volume = self.expected_beer_volume + boil_loss + trub_loss + dry_hopping_loss
+        return volume
 
     def get_boil_volume(self):
         initial_volume = self.get_initial_volume()
@@ -140,8 +148,6 @@ class RecipeCalculatorMixin:
         for hop in self.get_hops():
             if hop.use in ["BOIL", "AROMA", "FIRST WORT", "WHIRLPOOL"]:
                 if hop.amount.g > 0 and hop.time > 0 and hop.alpha_acids > 0:
-                    if self.name == "Just Like A Water":
-                        print(f"Adding to {self.name}")
                     added_ibus.append(
                         functions.calculate_ibu_tinseth(
                             og=self.get_gravity().sg,

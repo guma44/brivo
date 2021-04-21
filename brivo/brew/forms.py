@@ -47,6 +47,217 @@ class BaseFormSet(BaseInlineFormSet):
         return form
 
 
+mash_info_for_batch = """
+{% load brew_tags %}
+<div class="mashing mt-5 mb-5">
+    <h5>Mash information</h5>
+    <table class="table table-sm">
+    <tbody>
+        <tr>
+        <th>Boil size</th>
+        <td>{{batch.recipe.get_boil_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</td>
+        <tr>
+        <tr>
+        <th>Mash Efficiency</th>
+        <td>{{batch.recipe.mash_efficiency|floatformat}}%</td>
+        <tr>
+        <tr>
+        <th>Liquor-to-Grist Ratio</th>
+        <td>{{batch.recipe.liquor_to_grist_ratio|floatformat}} {{volume.1}}/{{big_weight.1}}</td>
+        <tr>
+    </tbody>
+    </table>
+</div>
+<div class="ingredients mt-5 mb-5">
+    <h5>Fermentables</h5>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Type</th>
+                <th class="text-left" scope="col">Use</th>
+                <th class="text-left" scope="col">Color</th>
+                <th class="text-left" scope="col">Extraction</th>
+                <th class="text-left" scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fermentable in batch.recipe.fermentables.all %}
+                <tr class="">
+                    <td class="text-left">{{ fermentable.name }}</td>
+                    <td class="text-left">{{ fermentable.type|title }}</td>
+                    <td class="text-left">{{ fermentable.use|title|default:"---" }}</td>
+                    <td class="text-left">{{ fermentable.color|get_obj_attr:color_units.0|floatformat }} {{color_units.1}}</td>
+                    <td class="text-left">{{ fermentable.extraction }}%</td>
+                    <td class="text-left">{{ fermentable.amount|get_obj_attr:big_weight.0|floatformat }} {{big_weight.1}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+"""
+
+boil_info_for_batch = """
+{% load brew_tags %}
+<div class="ingredients mt-5 mb-5">
+    <h5>Hops</h5>
+    <table class="table table-sm">
+        <thead>
+            <tr >
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Use</th>
+                <th class="text-left" scope="col">Alpha Acids</th>
+                <th class="text-left" scope="col">Amount</th>
+                <th class="text-left" scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hop in batch.recipe.hops.all %}
+                <tr>
+                    <td class="text-left">{{ hop.name }}</td>
+                    <td class="text-left">{{ hop.use|title }}</td>
+                    <td class="text-left">{{ hop.alpha_acids }}%</td>
+                    <td class="text-left">{{ hop.amount|get_obj_attr:small_weight.0 }} {{small_weight.1}}</td>
+                    <td class="text-left">{{ hop.time|floatformat }} {{hop.time_unit|lower}}(s)</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+"""
+
+boil_stats_for_batch = """
+{% load brew_tags %}
+</br>
+<table class="table" style="background:#dedede">
+   <tr>
+      <td>Expected Boil Volume:</td>
+      <td class: "text-left" id="expected_boil_volume_info">{{ batch.recipe.get_boil_volume|get_obj_attr:volume.0|floatformat }}  {{volume.1}}</td>
+   <tr>
+   <tr>
+      <td>Expected Pre-Boil Gravity:</td>
+      <td class: "text-left" id="expected_preboil_gravity_info">{{ batch.recipe.get_preboil_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
+   <tr>
+   <tr>
+      <td>Boil Time:</td>
+      <td class: "text-left" id="primary_volume_info">{{ batch.recipe.boil_time }} Min</td>
+   <tr>
+</table>
+"""
+
+primary_info_for_batch = """
+{% load brew_tags %}
+<div class="ingredients mt-5 mb-5">
+    <h5>Yeasts</h5>
+    <table class="table table-sm">
+        <thead>
+            <tr >
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Lab</th>
+                <th class="text-left" scope="col">Type</th>
+                <th class="text-left" scope="col">Attenuation</th>
+                <th class="text-left" scope="col">Form</th>
+                <th class="text-left" scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for yeast in batch.recipe.yeasts.all %}
+                <tr>
+                    <td class="text-left">{{ yeast.name }}</td>
+                    <td class="text-left">{{ yeast.lab }}</td>
+                    <td class="text-left">{{ yeast.type|title }}</td>
+                    <td class="text-left">{{ yeast.attenuation|floatformat }}%</td>
+                    <td class="text-left">{{ yeast.form|title }}</td>
+                    <td class="text-left">{{ yeast.amount|get_obj_attr:small_weight.0|floatformat }} {{small_weight.1}}</td>
+                </tr>
+            {% endfor %}
+    </table>
+</div>
+"""
+
+primary_stats_for_batch = """
+{% load brew_tags %}
+</br>
+<table class="table" style="background:#dedede">
+   <tr>
+      <td>Expected Gravity:</td>
+      <td class: "text-left" id="expected_gravity_info">{{ batch.recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
+   <tr>
+   <tr>
+      <td>Expected Volume With Trub Loss:</td>
+      <td class: "text-left" id="expected_boil_volume_with_trub_loss_info">{{ batch.recipe.get_primary_volume|get_obj_attr:volume.0|floatformat }}  {{volume.1}}</td>
+   <tr>
+   <tr>
+      <td>Expected Boil Loss:</td>
+      <td class: "text-left" id="expected_boil_loss_info">{{ batch.recipe.get_boil_loss_volume|get_obj_attr:volume.0|floatformat }}  {{volume.1}}</td>
+   <tr>
+   <tr>
+      <td>Batch IBU:</td>
+      <td class: "text-left" id="primary_volume_info">{{ batch.get_ibu|floatformat|default:"---" }}</td>
+   <tr>
+   <tr>
+      <td>Actual Mash Efficiency:</td>
+      <td class: "text-left" id="actual_mash_efficiency_info">{{ batch.get_actuall_mash_efficiency|floatformat|default:"---" }}%</td>
+   <tr>
+</table>
+"""
+
+packaging_info_for_batch = """
+<div class="mt-5 mb-5">
+    <h5>Carbonation Guidline</h5>
+    <table class="table table-sm">
+        <tr>
+        <th>British-style ales</th>
+        <td>1.7 - 2.3</th>
+        </tr>
+        <tr>
+        <th>Porter, stout</th>
+        <td>1.9 - 2.4</th>
+        </tr>
+        <tr>
+        <th>Belgian ales</th>
+        <td>2.2 - 2.7</th>
+        </tr>
+        <tr>
+        <th>European lagers</th>
+        <td>2.2 - 2.7</th>
+        </tr>
+        <tr>
+        <th>American ales and lagers</th>
+        <td>2.4 - 2.8</th>
+        </tr>
+        <tr>
+        <th>Lambic</th>
+        <td>3.0 - 4.5</th>
+        </tr>
+        <tr>
+        <th>Fruit lambic</th>
+        <td>3.3 - 4.5 </th>
+        </tr>
+    </table>
+</div>
+"""
+
+packaging_stats_for_batch = """
+{% load brew_tags %}
+</br>
+<table class="table" style="background:#dedede">
+   <tr>
+      <td>Expected Volume With Trub Loss:</td>
+      <td class: "text-left" id="expected_boil_volume_info">{{ batch.recipe.get_boil_volume|get_obj_attr:volume.0|floatformat }}  {{volume.1}}</td>
+   <tr>
+   <tr>
+      <td>Expected Original Gravity:</td>
+      <td class: "text-left" id="expected_preboil_gravity_info">{{ batch.recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
+   <tr>
+   <tr>
+      <td>Boil Time:</td>
+      <td class: "text-left" id="primary_volume_info">{{ batch.recipe.boil_time }} Min</td>
+   <tr>
+</table>
+"""
+
+
 class BaseBatchForm(BSModalModelForm):
     
     def __init__(self, *args, **kwargs):
@@ -104,11 +315,15 @@ class BaseBatchForm(BSModalModelForm):
                         Field("grain_temperature"),
                         Field("sparging_temperature")
                     ),
+                    Row(
+                        Column(HTML(mash_info_for_batch), css_class='form-group mb-0'),
+                        css_class='form-row'
+                    )
                 ),
                 Div(
                     ButtonHolder(
                         Submit("save", "Save", css_class="btn-warning"),
-                        Submit("next_stage", "Next >")
+                        Submit("next_stage", "Boil >")
                     )
                 )
             )
@@ -127,13 +342,21 @@ class BaseBatchForm(BSModalModelForm):
                     Hidden("stage", self.instance.stage),
                     Fieldset("Boil",
                         Field("gravity_before_boil"),
+                        Row(
+                            Column(HTML(boil_stats_for_batch), css_class='form-group col-md-5 mb-0'),
+                            css_class='form-row'
+                        ),
                     ),
+                    Row(
+                        Column(HTML(boil_info_for_batch), css_class='form-group mb-0'),
+                        css_class='form-row'
+                    )
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "< Previous", formnovalidate='formnovalidate'),
+                        Submit("previous_stage", "< Mash", formnovalidate='formnovalidate'),
                         Submit("save", "Save", css_class="btn-warning"),
-                        Submit("next_stage", "Next >")
+                        Submit("next_stage", "Primary >")
                     )
                 )
             )
@@ -154,6 +377,9 @@ class BaseBatchForm(BSModalModelForm):
                 "wort_volume": MeasurementField(
                     measurement=Volume,
                     unit_choices=unit_choices),
+                "boil_loss": MeasurementField(
+                    measurement=Volume,
+                    unit_choices=unit_choices),
             })
             self.helper.layout = Layout(
                 Div(
@@ -162,14 +388,22 @@ class BaseBatchForm(BSModalModelForm):
                         Field("initial_gravity"),
                         Field("wort_volume"),
                         Field("boil_loss"),
-                        Field("primary_fermentation_start_day")
+                        Field("primary_fermentation_start_day"),
+                        Row(
+                            Column(HTML(primary_stats_for_batch), css_class='form-group col-md-5 mb-0'),
+                            css_class='form-row'
+                        ),
                     ),
+                    Row(
+                        Column(HTML(primary_info_for_batch), css_class='form-group mb-0'),
+                        css_class='form-row'
+                    )
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "< Previous", formnovalidate='formnovalidate'),
+                        Submit("previous_stage", "< Boil", formnovalidate='formnovalidate'),
                         Submit("save", "Save", css_class="btn-warning"),
-                        Submit("next_stage", "Next >")
+                        Submit("next_stage", "Secondary >")
                     )
                 )
             )
@@ -178,6 +412,7 @@ class BaseBatchForm(BSModalModelForm):
             self.fields.update({
                 "post_primary_gravity": MeasurementField(
                     measurement=BeerGravity,
+                    required=False,
                     unit_choices=(
                         (user_gravity_unit,
                          user_gravity_unit),)),
@@ -188,13 +423,14 @@ class BaseBatchForm(BSModalModelForm):
                     Fieldset("Secondary Fermentation",
                         Field("post_primary_gravity"),
                         Field("secondary_fermentation_start_day"),
+                        Field("dry_hops_start_day"),
                     ),
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "< Previous", formnovalidate='formnovalidate'),
+                        Submit("previous_stage", "< Primary", formnovalidate='formnovalidate'),
                         Submit("save", "Save", css_class="btn-warning"),
-                        Submit("next_stage", "Next >")
+                        Submit("next_stage", "Packaging >")
                     )
                 )
             )
@@ -226,10 +462,14 @@ class BaseBatchForm(BSModalModelForm):
                         Field("carbonation_type"),
                         Field("carbonation_level"),
                     ),
+                    Row(
+                        Column(HTML(packaging_info_for_batch), css_class='form-group mb-0'),
+                        css_class='form-row col-md-4 mb-0'
+                    )
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "< Previous", formnovalidate='formnovalidate'),
+                        Submit("previous_stage", "< Secondary", formnovalidate='formnovalidate'),
                         Submit("save", "Save", css_class="btn-warning"),
                         Submit("finish", "Finish", css_class="btn-success")
                     )

@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from brivo.brew.models import BaseModel, VOLUME_UNITS
 from brivo.utils.measures import BeerGravity
+from brivo.utils import functions
 
 from django_measurement.models import MeasurementField
 from measurement.measures import Volume, Temperature
@@ -67,8 +68,9 @@ class Batch(BaseModel):
         null=True,
         unit_choices=VOLUME_UNITS,
     )
-    boil_loss = models.DecimalField(
-        _("Boil Waists"), max_digits=5, decimal_places=2, null=True
+    boil_loss = MeasurementField(
+        measurement=Volume,
+        verbose_name=_("Boil Waists"), null=True, unit_choices=VOLUME_UNITS
     )
     primary_fermentation_start_day = models.DateField(
         _("Primary Fermentation Start Day"),
@@ -81,14 +83,15 @@ class Batch(BaseModel):
     secondary_fermentation_start_day = models.DateField(
         _("Secondary Fermentation Start Day"),
         null=True,
+        blank=True,
         auto_now=False,
         auto_now_add=False,
     )
     dry_hops_start_day = models.DateField(
-        _("Dry Hops Start Day"), null=True, auto_now=False, auto_now_add=False
+        _("Dry Hops Start Day"), null=True, blank=True, auto_now=False, auto_now_add=False
     )
     post_primary_gravity = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("Post-primary Gravity"), null=True
+        measurement=BeerGravity, verbose_name=_("Post-primary Gravity"), null=True, blank=True
     )
 
     # Stage 4 fields: packaging
@@ -116,20 +119,44 @@ class Batch(BaseModel):
     def get_hex_color(self):
         return self.recipe.get_hex_color()
 
-    def get_expected_gravity(self):
-        pass
-
     def get_size_with_trub_loss(self):
         pass
 
-    def get_estimated_boil_loss(self):
-        pass
-
     def get_actuall_mash_efficiency(self):
-        pass
+        try:
+            vol = self.wort_volume.l + self.boil_loss.l
+            grain_sugars = self.recipe.get_grain_sugars().kg * 100.0
+            other_sugars = self.recipe.get_other_sugars().kg * 100.0
+            grain_gravity = grain_sugars / (
+                vol - grain_sugars / 145.0 + grain_sugars / 100.0
+            )
+            other_gravity = other_sugars / (
+                vol - other_sugars / 145.0 + other_sugars / 100.0
+            )
+            max_gravity = BeerGravity(plato=(grain_gravity + other_gravity))
+            return ((self.initial_gravity.plato * vol) / (max_gravity.plato * self.recipe.get_primary_volume().l)) * 100.0
+        except AttributeError:
+            return None
 
-    def get_batch_bitterness(self):
-        pass
+    def get_ibu(self):
+        added_ibus = []
+        try:
+            for hop in self.recipe.get_hops():
+                if hop.use in ["BOIL", "AROMA", "FIRST WORT", "WHIRLPOOL"]:
+                    if hop.amount.g > 0 and hop.time > 0 and hop.alpha_acids > 0:
+                        added_ibus.append(
+                            functions.calculate_ibu_tinseth(
+                                og=self.initial_gravity.sg,
+                                time=float(hop.time),
+                                type="PELLETS",
+                                alpha=float(hop.alpha_acids),
+                                weight=hop.amount.g,
+                                volume=self.wort_volume.l + self.boil_loss.l,
+                            )
+                        )
+        except AttributeError:
+            return None
+        return sum(added_ibus)
 
     def get_abv(self):
         pass
@@ -167,7 +194,7 @@ class Batch(BaseModel):
                 ]
             )
         elif stage == "SECONDARY_FERMENTATION":
-            fields.extend(["post_primary_gravity", "secondary_fermentation_start_day"])
+            fields.extend(["post_primary_gravity", "secondary_fermentation_start_day", "dry_hops_start_day"])
         elif stage == "PACKAGING":
             fields.extend(
                 [

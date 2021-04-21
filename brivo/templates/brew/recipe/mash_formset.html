@@ -15,15 +15,15 @@
         {% for form in formset.forms %}
             {{ form.media }}
             <tr class="{% cycle 'row1' 'row2' 'row3' 'row4' 'row5' %} formset_row-{{ formset.prefix }}">
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
                 <td>
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
                     {{ field.name.errors.as_ul }}
                     {{ form.temperature|as_crispy_field }}
                 </td>
                 <td>{{ field.type.errors.as_ul }}{{ form.time|as_crispy_field }}</td>
-                <td class="delet-row"></td>
+                <td class="delet-row">{{ form.DELETE }}</td>
             </tr>
         {% endfor %}
 </table>
@@ -35,7 +35,11 @@ $(function() {
     $('.formset_row-{{ formset.prefix }}').formset({
         addText: '<button type="button" class="add-mash_step btn btn-sm btn-warning"><span class="fa fa-plus"></span> Add Mash Step</button>',
         deleteText: '<button type="button" class="delete-mash_step btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>',
-        prefix: '{{ formset.prefix }}'
+        prefix: '{{ formset.prefix }}',
+        {% if formset.request.method == "GET" %} hideLastAddForm: true, {% endif %} 
+        addCssClass: '{{ formset.prefix }}-add-row',          // CSS class applied to the add link
+        deleteCssClass: '{{ formset.prefix }}-delete-row',    // CSS class applied to the delete link
+        formCssClass: '{{ formset.prefix }}-dynamic-form', 
     });
 });
 </script>

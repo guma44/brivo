@@ -92,7 +92,7 @@
                         del.val('on');
                         row.hide();
                         forms = $('.' + options.formCssClass).not(':hidden');
-                        totalForms.val(forms.length);
+                        // totalForms.val(forms.length);
                     } else {
                         row.remove();
                         // Update the TOTAL_FORMS count:
@@ -164,7 +164,12 @@
             } else {
                 // Otherwise, use the last form in the formset; this works much better if you've got
                 // extra (>= 1) forms (thnaks to justhamade for pointing this out):
-                if (options.hideLastAddForm) $('.' + options.formCssClass + ':last').hide();
+                if (options.hideLastAddForm) {
+                    var row= $('.' + options.formCssClass + ':last');
+                    var del = row.find('input:hidden[id $= "-DELETE"]');
+                    del.val('on');
+                    row.hide();
+                };
                 template = $('.' + options.formCssClass + ':last').clone(true).removeAttr('id');
                 template.find('input:hidden[id $= "-DELETE"]').remove();
                 // Clear all cloned fields, except those the user wants to keep (thanks to brunogola for the suggestion):

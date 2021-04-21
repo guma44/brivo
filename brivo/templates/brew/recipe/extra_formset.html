@@ -18,10 +18,10 @@
         {% for form in formset.forms %}
             {{ form.media }}
             <tr class="{% cycle 'row1' 'row2' 'row3' 'row4' 'row5' %} formset_row-{{ formset.prefix }}">
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
                 <td>
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
                     {{ field.name.errors.as_ul }}
                     {{ form.name|as_crispy_field }}
                 </td>
@@ -29,7 +29,7 @@
                 <td>{{ field.use.errors.as_ul }}{{ form.use|as_crispy_field }}</td>
                 <td>{{ field.amount.errors.as_ul }}{{ form.amount|as_crispy_field }}</td>
                 <td>{{ field.time.errors.as_ul }}{{ form.time|as_crispy_field }}{{ form.time_unit|as_crispy_field }}</td>
-                <td class="delet-row"></td>
+                <td class="delet-row">{{ form.DELETE }}</td>
             </tr>
         {% endfor %}
 </table>
@@ -43,6 +43,10 @@ $(function() {
         addText: '<button type="button" class="add-extra btn btn-sm btn-warning"><span class="fa fa-plus"></span> Add extra</button>',
         deleteText: '<button type="button" class="delete-extra btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>',
         prefix: '{{ formset.prefix }}',
+        {% if formset.request.method == "GET" %} hideLastAddForm: true, {% endif %} 
+        addCssClass: '{{ formset.prefix }}-add-row',          // CSS class applied to the add link
+        deleteCssClass: '{{ formset.prefix }}-delete-row',    // CSS class applied to the delete link
+        formCssClass: '{{ formset.prefix }}-dynamic-form', 
         added: function(row) {
             let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
             $('#id_extras-' + row_index + '-name').autocomplete({
