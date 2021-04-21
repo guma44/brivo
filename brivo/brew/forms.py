@@ -271,6 +271,16 @@ class BaseBatchForm(BSModalModelForm):
         else:
             raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
 
+        if "recipe" in self.fields:
+            grav_unit = self.request.user.profile.gravity_units.lower()
+            if grav_unit == "plato":
+                prec = 1
+                un = "°P"
+            else:
+                prec = 4
+                un = grav_unit.upper()
+            self.fields["recipe"].queryset = models.Recipe.objects.filter(user=self.request.user)
+            self.fields['recipe'].label_from_instance = lambda obj: "%s (%s, %s %s, %.0f IBU)" % (obj.name, obj.style, f"{round(getattr(obj.get_gravity(), grav_unit), prec)}", un, obj.get_ibu())
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.form_method = 'POST'

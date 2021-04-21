@@ -73,7 +73,7 @@
                 <button type="button" class="bs-modal read-batch btn btn-sm btn-primary" data-form-url="{% url 'brew:batch-detail' batch.pk %}">
                 <span class="fa fa-eye"></span>
                 </button>
-                {% if user.is_staff %}
+                {% if user.is_authenticated %}
                 <!-- Update batch buttons -->
                 <a href="{% url 'brew:batch-update' batch.pk %}"><button type="button" class="update-batch btn btn-sm btn-primary" data-form-url="{% url 'brew:batch-update' batch.pk %}">
                 <span class="fa fa-edit"></span>

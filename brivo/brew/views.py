@@ -389,8 +389,13 @@ class BatchView(LoginRequiredMixin, FormView):
             form.instance.name = form.instance.recipe.name
         if not form.instance.batch_number:
             def _get_batch_number():
-                num = Batch.objects.filter(user=self.request.user).order_by("-batch_number")[0].batch_number
-                return num + 1
+                batches = Batch.objects.filter(user=self.request.user).order_by("-batch_number")
+                if len(batches) > 0:
+                    num = batches[0].batch_number
+                    return num + 1
+                else:
+                    # this is the first batch ever
+                    return 1
             form.instance.batch_number = _get_batch_number()
         if not previous_stage:
             form.save()  # This will save the underlying instance.
