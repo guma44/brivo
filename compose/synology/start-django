@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+export DJANGO_READ_DOT_ENV_FILE=True
+export DJANGO_SETTINGS_MODULE="config.settings.synology"
+
+
+python /app/manage.py migrate --noinput
+python /app/manage.py collectstatic --noinput
+/usr/local/bin/gunicorn --bind 0.0.0.0:5000 config.wsgi_synology --chdir=/app --access-logfile /var/log/django/access.log --error-logfile /var/log/django/error.log
