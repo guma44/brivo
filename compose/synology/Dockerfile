@@ -35,7 +35,7 @@ RUN addgroup --system django \
 COPY --chown=django:django ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt && rm -rf /requirements
 
-COPY --chown=django:django . /app
+RUN git clone https://github.com/guma44/brivo && mv brivo /app && chown -R django:django /app
 
 RUN \
   mkdir -p /var/log/celery && \
@@ -62,7 +62,6 @@ COPY --chown=django:django ./compose/synology/start-django /start-django
 RUN sed -i 's/\r$//g' /start-django
 RUN chmod +x /start-django
 
-ENV DJANGO_READ_DOT_ENV_FILE=True
 ENV DJANGO_SETTINGS_MODULE="config.settings.synology"
 
 COPY --chown=django:django ./compose/synology/supervisor.conf /etc/supervisord.conf
