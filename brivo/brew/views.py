@@ -29,6 +29,7 @@ from attrdict import AttrDict
 from django_weasyprint import WeasyTemplateResponseMixin
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
+from celery.exceptions import SoftTimeLimitExceeded
 # from . import constants
 from measurement.measures import Volume, Weight, Temperature
 from brivo.utils.measures import BeerColor, BeerGravity
@@ -68,6 +69,10 @@ from brivo.brew import filters
 _FLOAT_REGEX = re.compile(r"^-?(?:\d+())?(?:\.\d*())?(?:e-?\d+())?(?:\2|\1\3)$")
 _INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
 _EMAIL_REGEX = re.compile(r"(.+@[a-zA-Z0-9\.]+,?){1,}")
+
+
+CELERY_TASK_SOFT_TIME_LIMIT = 3540
+CELERY_TASK_TIME_LIMIT = 3600
 
 
 def _get_units_for_user(user):
