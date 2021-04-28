@@ -35,7 +35,9 @@ RUN addgroup --system django \
 COPY --chown=django:django ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt && rm -rf /requirements
 
-RUN git clone https://github.com/guma44/brivo && mv brivo /app && chown -R django:django /app
+# RUN echo "VERSION: 1.0.4"
+# RUN git clone https://github.com/guma44/brivo && mv brivo /app && chown -R django:django /app
+COPY --chown=django:django . /app
 
 RUN \
   mkdir -p /var/log/celery && \

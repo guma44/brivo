@@ -71,10 +71,6 @@ _INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
 _EMAIL_REGEX = re.compile(r"(.+@[a-zA-Z0-9\.]+,?){1,}")
 
 
-CELERY_TASK_SOFT_TIME_LIMIT = 3540
-CELERY_TASK_TIME_LIMIT = 3600
-
-
 def _get_units_for_user(user):
     data = {}
     if user.profile.general_units.lower() == "metric":

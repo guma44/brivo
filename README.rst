@@ -106,7 +106,6 @@ Deployment
 The following details how to deploy this application.
 
 
-
 Docker
 ^^^^^^
 
@@ -116,3 +115,24 @@ See detailed `cookiecutter-django Docker documentation`_.
 
 
 
+Install on Synology
+^^^^^^^^^^^^^^^^^^^
+
+Create directories:
+ * docker/brivo/log/celery
+ * docker/brivo/log/redis
+ * docker/brivo/log/django
+ * docker/brivo/log/supervisor
+ * docker/brivo/run
+ * docker/brivo/web/media
+ * docker/brivo/web/data
+ * docker/brivo/web/redis-data
+
+Start container `guma44/brivo:latest`
+network - bridge
+directory mount
+add previliges to directories
+
+login to shell and do:
+python manage.py createsuperuser
+python manage.py load_db_data

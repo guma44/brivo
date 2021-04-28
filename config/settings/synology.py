@@ -149,3 +149,5 @@ LOGGING = {
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+CELERY_TASK_SOFT_TIME_LIMIT = 3540
+CELERY_TASK_TIME_LIMIT = 3600
