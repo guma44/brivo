@@ -425,7 +425,7 @@ class BatchView(LoginRequiredMixin, FormView):
         
 
     def form_invalid(self, form):
-        raise
+        return render(request, self.template_name, {'form': form})
 
     def get_form_class(self):
         stage = self.batch.stage if self.batch else "INIT"
@@ -566,7 +566,6 @@ class BatchImportView(LoginRequiredMixin, FormView):
             messages.add_message(request, messages.SUCCESS, result.task_id, extra_tags="task_id")
             return redirect(self.success_url)
         else:
-            raise
             return render(request, self.template_name, {'form': form})
 
 
@@ -1005,7 +1004,6 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
             data['yeasts'] = forms.IngredientYeastFormSet(request=self.request, instance=self.object)
             data['extras'] = forms.IngredientExtraFormSet(request=self.request, instance=self.object)
             data['mash_steps'] = forms.MashStepFormSet(request=self.request, instance=self.object)
-        # raise
         return data
 
     def form_valid(self, form):
@@ -1161,5 +1159,4 @@ class RecipeImportView(LoginRequiredMixin, FormView):
             messages.add_message(request, messages.SUCCESS, result.task_id, extra_tags="task_id")
             return redirect(self.success_url)
         else:
-            raise
             return render(request, self.template_name, {'form': form})
