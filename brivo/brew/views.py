@@ -432,7 +432,7 @@ class BatchView(UserPassesTestMixin, FormView):
         
 
     def form_invalid(self, form):
-        return render(request, self.template_name, {'form': form})
+        return self.render_to_response(self.get_context_data(form=form))
 
     def get_form_class(self):
         stage = self.batch.stage if self.batch else "INIT"
