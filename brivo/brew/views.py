@@ -243,6 +243,12 @@ class StaffRequiredMixin(UserPassesTestMixin):
         return self.request.user.is_staff
 
 
+class LoginAndOwnershipRequiredMixin(UserPassesTestMixin, LoginRequiredMixin):
+    def test_func(self):
+        obj = self.get_object()
+        return self.request.user == obj.user
+
+
 class BaseAutocomplete(LoginRequiredMixin, ListView):
     http_method_allowed = ('GET', 'POST')
 
@@ -343,7 +349,7 @@ class ExtraAutocomplete(BaseAutocomplete):
             } for result in context['object_list']
         ]
 
-class BatchView(LoginRequiredMixin, FormView):
+class BatchView(UserPassesTestMixin, FormView):
     template_name = 'brew/batch/batch.html'
     batch = None
     form_class = None
@@ -443,6 +449,11 @@ class BatchView(LoginRequiredMixin, FormView):
         kwargs.update({'request': self.request})
         return kwargs
 
+    def test_func(self):
+        if self.batch is not None:
+            return self.request.user == self.batch.user
+        return True
+
 
 class BatchListView(LoginRequiredMixin, ListView):
     model = Batch
@@ -473,13 +484,13 @@ class BatchListView(LoginRequiredMixin, ListView):
         return qs
 
 
-class BatchDetailView(LoginRequiredMixin, BSModalReadView):
+class BatchDetailView(LoginAndOwnershipRequiredMixin, BSModalReadView):
     model = Batch
     template_name = 'brew/batch/detail.html'
     context_object_name = 'batch'
 
 
-class BatchDeleteView(LoginRequiredMixin, BSModalDeleteView):
+class BatchDeleteView(LoginAndOwnershipRequiredMixin, BSModalDeleteView):
     model = Batch
     template_name = 'brew/batch/delete.html'
     success_message = 'Batch was deleted.'
@@ -976,7 +987,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
         return super(RecipeCreateView, self).form_valid(form)
 
 
-class RecipeUpdateView(LoginRequiredMixin, UpdateView):
+class RecipeUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
     template_name = 'brew/recipe/edit.html'
     form_class = RecipeModelForm
     success_message = 'Recipe was successfully updated.'
@@ -1034,7 +1045,7 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-class RecipeDetailView(LoginRequiredMixin, BSModalReadView):
+class RecipeDetailView(LoginAndOwnershipRequiredMixin, BSModalReadView):
     model = Recipe
     template_name = 'brew/recipe/detail.html'
     context_object_name = 'recipe'
@@ -1046,7 +1057,7 @@ class RecipeDetailView(LoginRequiredMixin, BSModalReadView):
         return data
 
 
-class RecipeDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
+class RecipeDeleteView(LoginAndOwnershipRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Recipe
     template_name = 'brew/recipe/delete.html'
     success_message = 'Recipe was deleted.'
