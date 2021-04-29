@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
+from django.utils.safestring import mark_safe
+from string import Template
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from allauth.account.forms import SignupForm
@@ -89,38 +91,45 @@ class BrivoSignupForm(SignupForm):
         user.save()
 
 
-# class UserForm(forms.ModelForm):
-#     """A form for updating users. Includes all the fields on
-#     the user, but replaces the password field with admin's
-#     password hash display field.
-#     """
-
-#     class Meta:
-#         model = User
-#         fields = ('username', 'email',)
+class ImagePreviewWidget(forms.widgets.FileInput):
+    def render(self, name, value, attrs=None, **kwargs):
+        input_html = super().render(name, value, attrs=None, **kwargs)
+        img_html = mark_safe(f'<br><br><img style="width: 200px; height: 200px;" class="img-thumbnail" src="/media/{value}"/>')
+        return f'{input_html}{img_html}'
 
 
-# class UserProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = UserProfile
-#         fields = (
-#             "image",
-#             "general_units",
-#             "temperature_units",
-#             "gravity_units",
-#             "color_units",
-#             "ibu_type"
-#         )
+class UserForm(forms.ModelForm):
+    """A form for updating users. Includes all the fields on
+    the user, but replaces the password field with admin's
+    password hash display field.
+    """
+
+    class Meta:
+        model = User
+        fields = ('username', 'email',)
 
 
-# class UserBreweryForm(forms.ModelForm):
-    
-#     class Meta:
-#         model = UserBrewery
-#         fields = (
-#             "image",
-#             "name",
-#             "external_link",
-#             "number_of_batches"
-#         )
+class UserProfileForm(forms.ModelForm):
+    image = forms.ImageField(widget=ImagePreviewWidget)
+    class Meta:
+        model = UserProfile
+        fields = (
+            "image",
+            "general_units",
+            "temperature_units",
+            "gravity_units",
+            "color_units",
+        )
+
+
+class UserBreweryForm(forms.ModelForm):
+    image = forms.ImageField(widget=ImagePreviewWidget)
+    class Meta:
+        model = UserBrewery
+        fields = (
+            "image",
+            "name",
+            "external_link",
+            "number_of_batches"
+        )
 

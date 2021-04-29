@@ -86,13 +86,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ("username",)
 
     def get_absolute_url(self):
-        """Get url for user's detail view.
+        """Get url for user's settings view.
 
         Returns:
-            str: URL for user detail.
+            str: URL for user settings.
 
         """
-        return reverse("users:detail", kwargs={"email": self.email})
+        return reverse("users:settings", kwargs={"email": self.email})
 
     def __str__(self):
         return self.username
@@ -108,7 +108,6 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.email} Profile"
-    
 
 
 class UserBrewery(models.Model):

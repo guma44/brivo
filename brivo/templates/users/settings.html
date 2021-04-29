@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags i18n %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+  <h1 class="mt-3 mb-3">Settings</h1>
+  <h3>User</h3>
+  <form class="form-horizontal mb-5" method="post" action=".">
+    {% csrf_token %}
+    {{ user_form|crispy }}
+    <div class="control-group">
+      <div class="controls">
+        <button class="btn btn-primary" type="submit" name="user_form"><i
+                class="fas fa-save"></i> {% trans 'Save' %}</button>
+      </div>
+    </div>
+  </form>
+  <h3>Profile</h3>
+  <form class="form-horizontal mb-5" method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ profile_form|crispy }}
+    <div class="control-group">
+      <div class="controls">
+        <button class="btn btn-primary" type="submit" name="profile_form"><i
+                class="fas fa-save"></i> {% trans 'Save' %}</button>
+      </div>
+    </div>
+  </form>
+  <h3>Brewery</h3>
+  <form class="form-horizontal mb-5" method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ brewery_form|crispy }}
+    <div class="control-group">
+      <div class="controls">
+        <button class="btn btn-primary" type="submit" name="brewery_form"><i
+                class="fas fa-save"></i> {% trans 'Save' %}</button>
+      </div>
+    </div>
+  </form>
+
+{% endblock %}

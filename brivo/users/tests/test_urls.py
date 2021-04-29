@@ -6,12 +6,12 @@ from brivo.users.models import User
 pytestmark = pytest.mark.django_db
 
 
-def test_detail(user: User):
+def test_settings(user: User):
     assert (
-        reverse("users:detail", kwargs={"username": user.username})
+        reverse("users:settings", kwargs={"username": user.username})
         == f"/users/{user.username}/"
     )
-    assert resolve(f"/users/{user.username}/").view_name == "users:detail"
+    assert resolve(f"/users/{user.username}/").view_name == "users:settings"
 
 
 def test_update():
