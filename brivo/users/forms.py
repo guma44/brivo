@@ -124,6 +124,10 @@ class UserProfileForm(forms.ModelForm):
             "color_units",
         )
 
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
+
 
 class UserBreweryForm(forms.ModelForm):
     image = forms.ImageField(widget=ImagePreviewWidget)
@@ -135,4 +139,8 @@ class UserBreweryForm(forms.ModelForm):
             "external_link",
             "number_of_batches"
         )
+
+    def __init__(self, *args, **kwargs):
+        super(UserBreweryForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
 
