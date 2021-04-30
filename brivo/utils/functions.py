@@ -1,6 +1,33 @@
 import math
 
 
+def get_units_for_user(user):
+    data = {}
+    if user.profile.general_units.lower() == "metric":
+        data["small_weight"] = ("g", "g")
+        data["big_weight"] = ("kg", "kg")
+        data["volume"] = ("l", "l")
+    else:
+        data["small_weight"] = ("oz", "g")
+        data["big_weight"] = ("lb", "lb")
+        data["volume"] = ("us_g", "US Gal")
+    if user.profile.gravity_units.lower() == "plato":
+        data["gravity_units"] = ("Plato", "°P")
+    else:
+        data["gravity_units"] = ("SG", "SG")
+    if user.profile.color_units.lower() == "ebc":
+        data["color_units"] = ("EBC", "EBC")
+    else:
+        data["color_units"] = ("SRM", "SRM")
+    if user.profile.temperature_units.lower() == "celsius":
+        data["temp_units"] = ("c", "°C")
+    elif user.profile.temperature_units.lower() == "fahrenheit":
+        data["temp_units"] = ("f", "°F")
+    else:
+        data["temp_units"] = ("k", "K")
+    return data
+
+
 def to_plato(sg):
     """Convert SG to plato"""
     return ((182.4601 * sg - 775.6821) * sg + 1262.7794) * sg - 669.5622

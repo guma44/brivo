@@ -71,33 +71,6 @@ _INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
 _EMAIL_REGEX = re.compile(r"(.+@[a-zA-Z0-9\.]+,?){1,}")
 
 
-def _get_units_for_user(user):
-    data = {}
-    if user.profile.general_units.lower() == "metric":
-        data["small_weight"] = ("g", "g")
-        data["big_weight"] = ("kg", "kg")
-        data["volume"] = ("l", "l")
-    else:
-        data["small_weight"] = ("oz", "g")
-        data["big_weight"] = ("lb", "lb")
-        data["volume"] = ("us_g", "US Gal")
-    if user.profile.gravity_units.lower() == "plato":
-        data["gravity_units"] = ("Plato", "°P")
-    else:
-        data["gravity_units"] = ("SG", "SG")
-    if user.profile.color_units.lower() == "ebc":
-        data["color_units"] = ("EBC", "EBC")
-    else:
-        data["color_units"] = ("SRM", "SRM")
-    if user.profile.temperature_units.lower() == "celsius":
-        data["temp_units"] = ("c", "°C")
-    elif user.profile.temperature_units.lower() == "fahrenheit":
-        data["temp_units"] = ("f", "°F")
-    else:
-        data["temp_units"] = ("k", "K")
-    return data
-
-
 def _convert_type(data):
     """Check and convert the type of variable"""
     if isinstance(data, dict):
@@ -366,7 +339,7 @@ class BatchView(UserPassesTestMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(BatchView, self).get_context_data(**kwargs)
-        units = _get_units_for_user(self.request.user)
+        units = functions.get_units_for_user(self.request.user)
         context.update(units)
         context["batch"] = self.batch
         if self.batch is not None:
@@ -1001,7 +974,7 @@ class RecipeUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         data = super(RecipeUpdateView, self).get_context_data(**kwargs)
-        units = _get_units_for_user(self.request.user)
+        units = functions.get_units_for_user(self.request.user)
         data.update(units)
         data["title"] = "Update Recipe"
         if self.request.POST:
@@ -1052,7 +1025,7 @@ class RecipeDetailView(LoginAndOwnershipRequiredMixin, BSModalReadView):
 
     def get_context_data(self, **kwargs):
         data = super(RecipeDetailView, self).get_context_data(**kwargs)
-        units = _get_units_for_user(self.request.user)
+        units = functions.get_units_for_user(self.request.user)
         data.update(units)
         return data
 
