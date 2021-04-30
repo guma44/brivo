@@ -625,7 +625,7 @@ class IngredientHopForm(PopRequestMixin, ModelForm):
             unit_choices = (("oz", "oz"),)
         else:
             raise ValueError(f"No unit choice {request.user.profile.general_units}")
-        time_choices = (("MINUTE", "MINUTE"), ("day", "day"))
+        time_choices = (("MINUTE", "minute"), ("DAY", "day"))
         self.fields.update({
             "amount": MeasurementField(
                 measurement=Weight,
