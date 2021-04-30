@@ -94,8 +94,11 @@ class BrivoSignupForm(SignupForm):
 class ImagePreviewWidget(forms.widgets.FileInput):
     def render(self, name, value, attrs=None, **kwargs):
         input_html = super().render(name, value, attrs=None, **kwargs)
-        img_html = mark_safe(f'<br><br><img style="width: 200px; height: 200px;" class="img-thumbnail" src="/media/{value}"/>')
-        return f'{input_html}{img_html}'
+        if value:
+            img_html = mark_safe(f'<br><br><img style="width: 200px; height: 200px;" class="img-thumbnail" src="/media/{value}"/>')
+            return f'{img_html}{input_html}'
+        else:
+            return input_html
 
 
 class UserForm(forms.ModelForm):
