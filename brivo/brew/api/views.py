@@ -36,14 +36,16 @@ class YeastViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, Generic
     lookup_field = "pk"
     permission_classes = (IsAdminUserOrReadOnly,)
 
-    def get_serializer_context(self):
-        context = super(YeastViewSet, self).get_serializer_context()
-        context.update({"request": self.request})
-        return context
-
 
 class HopViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
     serializer_class = serializers.HopSerializer
     queryset = models.Hop.objects.all()
+    lookup_field = "pk"
+    permission_classes = (IsAdminUserOrReadOnly,)
+
+
+class StyleViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
+    serializer_class = serializers.StyleSerializer
+    queryset = models.Style.objects.all()
     lookup_field = "pk"
     permission_classes = (IsAdminUserOrReadOnly,)
