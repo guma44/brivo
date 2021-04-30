@@ -60,7 +60,7 @@
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'home' %}">Brivo</a>
+        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/Logo-flat.png' %}" alt="Logo" style="height:30px;"> </a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
@@ -123,7 +123,7 @@
 
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-bottom: 2.5rem;">
 
       {% if messages %}
           {% for message in messages %}
@@ -132,11 +132,19 @@
       {% endif %}
 
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+        <p>Fill me.</p>
       {% endblock content %}
-
     </div> <!-- /container -->
 
+    <!-- Footer -->
+    <footer class="footer">
+      <!-- Copyright -->
+      <div class="text-center py-3">© 2021 Copyright: Rafal Gumienny
+      </div>
+      <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
     {% block modal %}{% endblock modal %}
 
     {% block inline_javascript %}

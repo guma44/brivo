@@ -1,1 +1,13 @@
 {% extends "base.html" %}
+{% load static i18n %}
+
+{% block content %}
+<div>
+    <div class="d-flex justify-content-center">
+    <img src="{% static 'images/Logo-flat.png' %}" alt="Logo" style="height:200px;">
+    </div>
+    <div class="d-flex justify-content-center">
+    <h3>{% trans "Open source brewing manager" %}</h3>
+    </div>
+</div>
+{% endblock %}
