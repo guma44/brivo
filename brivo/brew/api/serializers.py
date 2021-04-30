@@ -2,7 +2,7 @@ import re
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from measurement.measures import Weight, Temperature
+from measurement.measures import Weight, Temperature, Volume
 
 from brivo.utils.functions import get_units_for_user
 from brivo.utils.measures import BeerColor, BeerGravity
@@ -99,3 +99,71 @@ class StyleSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "url": {"view_name": "api:style-detail", "lookup_field": "id"}
         }
+
+
+class StyleNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Style
+        fields = ["id", "name"]
+
+
+class RecipeSerializer(serializers.ModelSerializer):
+    style = StyleNameSerializer()
+    expected_beer_volume = measurement_field_factory(Volume, "volume")()
+    initial_volume = measurement_field_factory(Volume, "volume")(source="get_initial_volume")
+    boil_volume = measurement_field_factory(Volume, "volume")(source="get_boil_volume")
+    preboil_gravity = measurement_field_factory(BeerGravity, "gravity_units")(source="get_preboil_gravity")
+    primary_volume = measurement_field_factory(Volume, "volume")(source="get_primary_volume")
+    secondary_volume = measurement_field_factory(Volume, "volume")(source="get_secondary_volume")
+    color = measurement_field_factory(BeerColor, "color_units")(source="get_color")
+    gravity = measurement_field_factory(BeerGravity, "gravity_units")(source="get_gravity")
+    biterness_ratio = serializers.DecimalField(5, 1, source="get_bitterness_ratio")
+    abv = serializers.DecimalField(5, 1, source="get_abv")
+    ibu = serializers.DecimalField(5, 1, source="get_ibu")
+    class Meta:
+        model = models.Recipe
+        fields = [
+            "style",
+            "type",
+            "expected_beer_volume",
+            "boil_time",
+            "evaporation_rate",
+            "boil_loss",
+            "trub_loss",
+            "dry_hopping_loss",
+            "mash_efficiency",
+            "liquor_to_grist_ratio",
+            "note",
+            "is_public",
+            "ibu",
+            "expected_beer_volume",
+            "initial_volume",
+            "boil_volume",
+            "preboil_gravity",
+            "primary_volume",
+            "secondary_volume",
+            "color",
+            "abv",
+            "gravity",
+            "biterness_ratio",
+        ]
+        read_only_fields = [
+            "user",
+            "created_at",
+            "updated_at",
+            "ibu",
+            "expected_beer_volume",
+            "initial_volume",
+            "boil_volume",
+            "preboil_gravity",
+            "primary_volume",
+            "secondary_volume",
+            "color",
+            "abv",
+            "gravity",
+            "biterness_ratio",
+        ]
+        extra_kwargs = {
+            "url": {"view_name": "api:recipe-detail", "lookup_field": "id"}
+        }
+
