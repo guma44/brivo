@@ -998,7 +998,7 @@ class RecipeUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
         extras = context['extras']
         yeasts = context['yeasts']
         mash_steps = context['mash_steps']
-        formsets = [fermentables, hops, yeasts, mash_steps]
+        formsets = [fermentables, hops, yeasts, extras, mash_steps]
         with transaction.atomic():
             form.instance.user = self.request.user
             self.object = form.save()
