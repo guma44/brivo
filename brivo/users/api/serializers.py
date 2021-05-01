@@ -28,6 +28,11 @@ class UserBrewerySerializer(serializers.ModelSerializer):
             "number_of_batches"]
 
 
+class UserNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username"]
+
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(required=True)
     brewery_profile = UserBrewerySerializer(required=True)
