@@ -72,7 +72,8 @@ THIRD_PARTY_APPS = [
     "fontawesome-free",
     "django_filters",
     "dynamic_formsets",
-    "celery_progress"
+    "celery_progress",
+    "drf_spectacular"
 ]
 
 LOCAL_APPS = [
@@ -310,11 +311,16 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
-
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Brivo API',
+    'DESCRIPTION': 'Open Source Home Brewery Manager',
+    'VERSION': '1.0.0',
+}
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
 

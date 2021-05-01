@@ -30,4 +30,5 @@ celery-progress
 # Django REST Framework
 djangorestframework==3.12.4  # https://github.com/encode/django-rest-framework
 django-cors-headers==3.7.0 # https://github.com/adamchainz/django-cors-headers
+drf-spectacular==0.15.1
 

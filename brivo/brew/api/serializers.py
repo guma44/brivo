@@ -33,14 +33,24 @@ def measurement_field_factory(mclass, munit):
     return MeasurementField
 
 
-class CountrySerializer(serializers.ModelSerializer):
+class CustomSerializer(serializers.ModelSerializer):
+
+    def get_field_names(self, declared_fields, info):
+        expanded_fields = super(CustomSerializer, self).get_field_names(declared_fields, info)
+
+        if getattr(self.Meta, 'extra_fields', None):
+            return expanded_fields + self.Meta.extra_fields
+        else:
+            return expanded_fields
+
+class CountrySerializer(CustomSerializer):
     class Meta:
         model = models.Country
         fields = ("id", "name", "code")
         read_only_fields = ["created_at", "updated_at"]
 
 
-class FermentableSerializer(serializers.ModelSerializer):
+class FermentableSerializer(CustomSerializer):
     color = measurement_field_factory(BeerColor, "color_units")()
     class Meta:
         model = models.Fermentable
@@ -52,7 +62,7 @@ class FermentableSerializer(serializers.ModelSerializer):
         }
 
 
-class ExtraSerializer(serializers.ModelSerializer):
+class ExtraSerializer(CustomSerializer):
     class Meta:
         model = models.Extra
         fields = "__all__"
@@ -62,7 +72,7 @@ class ExtraSerializer(serializers.ModelSerializer):
         }
 
 
-class YeastSerializer(serializers.ModelSerializer):
+class YeastSerializer(CustomSerializer):
     temp_min = measurement_field_factory(Temperature, "temp_units")()
     temp_max = measurement_field_factory(Temperature, "temp_units")()
     class Meta:
@@ -74,7 +84,7 @@ class YeastSerializer(serializers.ModelSerializer):
         }
 
 
-class HopSerializer(serializers.ModelSerializer):
+class HopSerializer(CustomSerializer):
     country = CountrySerializer()
     class Meta:
         model = models.Hop
@@ -85,29 +95,40 @@ class HopSerializer(serializers.ModelSerializer):
         }
 
 
-class StyleSerializer(serializers.ModelSerializer):
+class TagSerializer(CustomSerializer):
+    class Meta:
+        model = models.Tag
+        fields = ["id", "name"]
+        extra_kwargs = {
+            "url": {"view_name": "api:hop-detail", "lookup_field": "pk"}
+        }
+
+
+class StyleSerializer(CustomSerializer):
     og_min = measurement_field_factory(BeerGravity, "gravity_units")()
     og_max = measurement_field_factory(BeerGravity, "gravity_units")()
     fg_min = measurement_field_factory(BeerGravity, "gravity_units")()
     fg_max = measurement_field_factory(BeerGravity, "gravity_units")()
     color_min = measurement_field_factory(BeerColor, "color_units")()
     color_max = measurement_field_factory(BeerColor, "color_units")()
+    tags = TagSerializer(many=True)
     class Meta:
         model = models.Style
         fields = "__all__"
+        extra_fields = ["url"]
         read_only_fields = ["created_at", "updated_at"]
         extra_kwargs = {
             "url": {"view_name": "api:style-detail", "lookup_field": "id"}
         }
 
 
-class StyleNameSerializer(serializers.ModelSerializer):
+class StyleNameSerializer(CustomSerializer):
     class Meta:
         model = models.Style
         fields = ["id", "name"]
 
 
-class RecipeSerializer(serializers.ModelSerializer):
+class RecipeSerializer(CustomSerializer):
     style = StyleNameSerializer()
     expected_beer_volume = measurement_field_factory(Volume, "volume")()
     initial_volume = measurement_field_factory(Volume, "volume")(source="get_initial_volume")
