@@ -16,6 +16,7 @@ router.register("extras", brewery_views.ExtraViewSet)
 router.register("yeasts", brewery_views.YeastViewSet)
 router.register("styles", brewery_views.StyleViewSet)
 router.register("recipes", brewery_views.RecipeViewSet)
+router.register("mashsteps", brewery_views.MashStepViewSet)
 
 app_name = "api"
 urlpatterns = router.urls

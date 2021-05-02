@@ -1,4 +1,5 @@
 import re
+from collections import OrderedDict
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -8,6 +9,13 @@ from brivo.utils.functions import get_units_for_user
 from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.brew import models
 from brivo.users.api.serializers import UserNameSerializer
+
+
+# Non-field imports, but public API
+from rest_framework.fields import (  # NOQA # isort:skip
+    CreateOnlyDefault, CurrentUserDefault, SkipField, empty
+)
+from rest_framework.relations import Hyperlink, PKOnlyObject  # NOQA # isort:skip
 
 
 def measurement_field_factory(mclass, munit):
@@ -23,13 +31,18 @@ def measurement_field_factory(mclass, munit):
 
         def to_internal_value(self, data):
             units = mclass.UNITS.keys() | mclass.ALIAS.keys()
+            if str(mclass).split(".")[-1][:-2] == "Mass":
+                units = units | {"kg", "kilogram"}
             pattern = re.compile(r'^(?P<value>(\d+|\d+\.\d+))\s?(?P<unit>(%s))$' % '|'.join(units))
-            print(pattern)
             match = pattern.match(data)
             if match is None:
                 raise serializers.ValidationError("%s is not a valid %s" % (data, mclass.__name__))
             kwargs = {match.group('unit').lower(): match.group('value')}
             return mclass(**kwargs)
+
+        # def get_attribute(self, obj):
+        #     return obj
+
     return MeasurementField
 
 
@@ -43,6 +56,21 @@ class CustomSerializer(serializers.ModelSerializer):
         else:
             return expanded_fields
 
+
+class AddIDMixin:
+    def to_internal_value(self, data):
+        ret = super(AddIDMixin, self).to_internal_value(data)
+
+        id_attr = getattr(self.Meta, 'update_lookup_field', 'id')
+        request_method = getattr(getattr(self.context.get('view'), 'request'), 'method', '')
+
+        if request_method in ('PUT', 'PATCH') and id_attr:
+            id_field = self.fields[id_attr]
+            id_value = id_field.get_value(data)
+            ret[id_attr] = id_value
+
+        return ret
+
 class CountrySerializer(CustomSerializer):
     class Meta:
         model = models.Country
@@ -54,23 +82,15 @@ class FermentableSerializer(CustomSerializer):
     class Meta:
         model = models.Fermentable
         fields = "__all__"
-        extra_fields = ["url"]
         read_only_fields = ["created_at", "updated_at", "slug"]
 
-        extra_kwargs = {
-            "url": {"view_name": "api:fermentable-detail", "lookup_field": "pk"}
-        }
 
 
 class ExtraSerializer(CustomSerializer):
     class Meta:
         model = models.Extra
         fields = "__all__"
-        extra_fields = ["url"]
         read_only_fields = ["created_at", "updated_at", "slug"]
-        extra_kwargs = {
-            "url": {"view_name": "api:extras-detail", "lookup_field": "id"}
-        }
 
 
 class YeastSerializer(CustomSerializer):
@@ -79,11 +99,7 @@ class YeastSerializer(CustomSerializer):
     class Meta:
         model = models.Yeast
         fields = "__all__"
-        extra_fields = ["url"]
         read_only_fields = ["created_at", "updated_at", "slug"]
-        extra_kwargs = {
-            "url": {"view_name": "api:yeast-detail", "lookup_field": "pk"}
-        }
 
 
 class HopSerializer(CustomSerializer):
@@ -91,20 +107,13 @@ class HopSerializer(CustomSerializer):
     class Meta:
         model = models.Hop
         fields = "__all__"
-        extra_fields = ["url"]
         read_only_fields = ["created_at", "updated_at", "slug"]
-        extra_kwargs = {
-            "url": {"view_name": "api:hop-detail", "lookup_field": "pk"}
-        }
 
 
 class TagSerializer(CustomSerializer):
     class Meta:
         model = models.Tag
-        fields = ["id", "name", "url"]
-        extra_kwargs = {
-            "url": {"view_name": "api:hop-detail", "lookup_field": "pk"}
-        }
+        fields = ["id", "name"]
 
 
 class StyleSerializer(CustomSerializer):
@@ -118,11 +127,7 @@ class StyleSerializer(CustomSerializer):
     class Meta:
         model = models.Style
         fields = "__all__"
-        extra_fields = ["url"]
         read_only_fields = ["created_at", "updated_at", "slug"]
-        extra_kwargs = {
-            "url": {"view_name": "api:style-detail", "lookup_field": "id"}
-        }
 
 
 class StyleNameSerializer(CustomSerializer):
@@ -131,53 +136,50 @@ class StyleNameSerializer(CustomSerializer):
         fields = ["id", "name"]
 
 
-class IngredientFermentableSerializer(CustomSerializer):
+class IngredientFermentableSerializer(AddIDMixin, CustomSerializer):
     amount = measurement_field_factory(Weight, "big_weight")()
     color = measurement_field_factory(BeerColor, "color_units")()
     class Meta:
         model = models.IngredientFermentable
-        fields = ["name", "amount", "use", "type", "color", "extraction"]
+        fields = ["id", "name", "amount", "use", "type", "color", "extraction"]
 
 
-class IngredientHopSerializer(CustomSerializer):
+class IngredientHopSerializer(AddIDMixin, CustomSerializer):
     amount = measurement_field_factory(Weight, "big_weight")()
     class Meta:
         model = models.IngredientHop
-        fields = ["name", "amount", "use", "alpha_acids", "time", "time_unit"]
+        fields = ["id", "name", "amount", "use", "alpha_acids", "time", "time_unit"]
 
 
-class IngredientYeastSerializer(CustomSerializer):
+class IngredientYeastSerializer(AddIDMixin, CustomSerializer):
     amount = measurement_field_factory(Weight, "big_weight")()
     class Meta:
         model = models.IngredientYeast
-        fields = ["name", "amount", "type", "lab", "attenuation", "form"]
+        fields = ["id", "name", "amount", "type", "lab", "attenuation", "form"]
 
 
-
-class IngredientExtraSerializer(CustomSerializer):
+class IngredientExtraSerializer(AddIDMixin, CustomSerializer):
     amount = measurement_field_factory(Weight, "big_weight")()
     class Meta:
         model = models.IngredientExtra
-        fields = ["name", "amount", "type", "use", "time", "time_unit"]
+        fields = ["id", "name", "amount", "type", "use", "time", "time_unit"]
 
 
-class MashStepSerializer(CustomSerializer):
+class MashStepSerializer(AddIDMixin, CustomSerializer):
     temperature = measurement_field_factory(Temperature, "temp_units")()
     class Meta:
         model = models.MashStep
-        fields = ["temperature", "time", "note"]
+        fields = ["id", "temperature", "time", "note"]
 
 
 
 class RecipeSerializer(CustomSerializer):
-    style = StyleNameSerializer()
-    user = UserNameSerializer()
     fermentables = IngredientFermentableSerializer(many=True)
     hops = IngredientHopSerializer(many=True)
     yeasts = IngredientYeastSerializer(many=True)
     extras = IngredientExtraSerializer(many=True)
     mash_steps = MashStepSerializer(many=True)
-    expected_beer_volume = measurement_field_factory(Volume, "volume")(read_only=True)
+    expected_beer_volume = measurement_field_factory(Volume, "volume")()
     initial_volume = measurement_field_factory(Volume, "volume")(source="get_initial_volume", read_only=True)
     boil_volume = measurement_field_factory(Volume, "volume")(source="get_boil_volume", read_only=True)
     preboil_gravity = measurement_field_factory(BeerGravity, "gravity_units")(source="get_preboil_gravity", read_only=True)
@@ -210,7 +212,6 @@ class RecipeSerializer(CustomSerializer):
             "liquor_to_grist_ratio",
             "note",
             "is_public",
-            "url",
             "ibu",
             "expected_beer_volume",
             "initial_volume",
@@ -227,46 +228,82 @@ class RecipeSerializer(CustomSerializer):
             "id"
             "user",
             "created_at",
-            "updated_at",
-            "ibu",
-            "expected_beer_volume",
-            "initial_volume",
-            "boil_volume",
-            "preboil_gravity",
-            "primary_volume",
-            "secondary_volume",
-            "color",
-            "abv",
-            "gravity",
-            "biterness_ratio",
+            "updated_at"
         ]
-        extra_kwargs = {
-            "url": {"view_name": "api:recipe-detail", "lookup_field": "id"}
-        }
 
+    def create(self, validated_data):
+        user = self.context["request"].user
+        fermentables_data = validated_data.pop('fermentables', [])
+        hops_data = validated_data.pop('hops', [])
+        yeasts_data = validated_data.pop('yeasts', [])
+        extras_data = validated_data.pop('extras', [])
+        mash_steps_data = validated_data.pop('mash_steps', [])
+        validated_data["user"] = user
+        recipe = models.Recipe.objects.create(**validated_data)
+        for fermentable_data in fermentables_data:
+            fermentable_data["recipe"] = recipe
+            models.IngredientFermentable.objects.create(**fermentable_data)
+        for hop_data in hops_data:
+            hop_data["recipe"] = recipe
+            models.IngredientHop.objects.create(**hop_data)
+        for yeast_data in yeasts_data:
+            yeast_data["recipe"] = recipe
+            models.IngredientYeast.objects.create(**yeast_data)
+        for extra_data in extras_data:
+            extra_data["recipe"] = recipe
+            models.IngredientExtra.objects.create(**extra_data)
+        for mash_step_data in mash_steps_data:
+            mash_step_data["recipe"] = recipe
+            models.MashStep.objects.create(**mash_step_data)    
+        return recipe
+
+    def _update_ingredient(self, instance, data, attr, iclass):
+
+        item_ids = [item["id"] for item in data] # if "id" in item]
+        # Delete items not included in the request
+        for item in getattr(instance, attr).all():
+            if item.id not in item_ids:
+                item.delete()
+        # Create or update page instances that are in the request
+        for item_data in data:
+            item_data.update({"recipe": instance})
+            if "id" in item_data:
+                obj_id = item_data.pop("id")
+                try:
+                    obj = iclass.objects.get(id=obj_id, recipe=instance)
+                    for field, value in item_data.items():
+                        setattr(obj, field, value)
+                    obj.save(update_fields=item_data.keys())
+                except iclass.DoesNotExist:
+                    item = iclass(**item_data)
+                    item.save()
+            else:
+                item = iclass(**item_data)
+                item.save()
 
     def update(self, instance, validated_data):
-        if validated_data.get('fermentables'):
-            fermentables = tuple({f.id: f for f in (instance.fermentables).all()})
-            fermentables_data = validated_data.pop('fermentable')
-            updated_fermentables = []
-            for fermentable_data in fermentables_data:
-                ingredient_fermentable_serializer = IngredientFermentableSerializer(data=fermentable_data)
-                if ingredient_fermentable_serializer.id in fermentables:
-                    if ingredient_fermentable_serializer.is_valid():
-                        fermentable = ingredient_fermentable_serializer.update(
-                            instance=fermentables[ingredient_fermentable_serializer.id],
-                            validated_data=ingredient_fermentable_serializer.validated_data)
-                        updated_fermentables.append(fermentable)
-                else:
-                    if ingredient_fermentable_serializer.is_valid():
-                        fermentable = ingredient_fermentable_serializer.create(
-                            validated_data=ingredient_fermentable_serializer.validated_data)
-                        updated_fermentables.append(fermentable)
-            validated_data['fermentables'] = updated_fermentables
-
-        # instance.username = validated_data.get("username", instance.username)
-        # instance.email = validated_data.get("email", instance.email)
-        instance.save()
+        if 'fermentables' in validated_data:
+            fermentables_data = validated_data.pop('fermentables')
+            self._update_ingredient(instance, fermentables_data, "fermentables", models.IngredientFermentable)
+        if 'hops' in validated_data:
+            hops_data = validated_data.pop('hops')
+            self._update_ingredient(instance, hops_data, "hops", models.IngredientHop)
+        if 'yeasts' in validated_data:
+            yeasts_data = validated_data.pop('yeasts')
+            self._update_ingredient(instance, yeasts_data, "yeasts", models.IngredientYeast)
+        if 'extras' in validated_data:
+            extras_data = validated_data.pop('extras')
+            self._update_ingredient(instance, extras_data, "extras", models.IngredientExtra)
+        if 'mash_steps' in validated_data:
+            mash_steps_data = validated_data.pop('mash_steps')
+            self._update_ingredient(instance, mash_steps_data, "mash_steps", models.MashStep)
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        instance.save(update_fields=validated_data.keys())
         return instance
+
+
+class RecipeReadSerializer(RecipeSerializer):
+    style = StyleNameSerializer()
+    user = UserNameSerializer()
 
