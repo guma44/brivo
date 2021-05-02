@@ -9,7 +9,7 @@ if settings.DEBUG:
 else:
     router = SimpleRouter()
 
-router.register("users", UserViewSet)
+# router.register("users", UserViewSet)
 router.register("hops", brewery_views.HopViewSet)
 router.register("fermentables", brewery_views.FermentableViewSet)
 router.register("extras", brewery_views.ExtraViewSet)

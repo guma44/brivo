@@ -39,11 +39,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["pk", "username", "email", "url", "profile", "brewery_profile"]
+        fields = ["pk", "username", "email", "profile", "brewery_profile"]
 
-        extra_kwargs = {
-            "url": {"view_name": "api:user-detail", "lookup_field": "username"}
-        }
+        # extra_kwargs = {
+        #     "url": {"view_name": "api:user-detail", "lookup_field": "username"}
+        # }
 
     def update(self, instance, validated_data):
         if validated_data.get('profile'):

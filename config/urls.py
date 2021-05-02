@@ -30,6 +30,8 @@ urlpatterns = [
 urlpatterns += [
     # API base url
     path("api/", include("config.api_router", namespace="api")),
+    path('api/auth/', include('dj_rest_auth.urls')),
+    path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
     # DRF auth token
     path("auth-token/", obtain_auth_token),
 ]

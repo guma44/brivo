@@ -65,9 +65,11 @@ THIRD_PARTY_APPS = [
     'bootstrap_modal_forms',
     "allauth",
     "allauth.account",
+    "dj_rest_auth.registration",
     "django_celery_beat",
     "rest_framework",
     "rest_framework.authtoken",
+    "dj_rest_auth",
     "corsheaders",
     "fontawesome-free",
     "django_filters",
@@ -292,7 +294,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_REQUIRED = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "optional"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_ADAPTER = "brivo.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
@@ -316,6 +318,9 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'brivo.users.api.serializers.UserSerializer'
+}
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Brivo API',
     'DESCRIPTION': 'Open Source Home Brewery Manager',
@@ -326,3 +331,4 @@ CORS_URLS_REGEX = r"^/api/.*$"
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+SITE_ID = 1
