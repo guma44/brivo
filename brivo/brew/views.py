@@ -498,6 +498,7 @@ def import_batch(batch, user):
         del batch_data["post_primary_gravity"]
     batch_data["initial_gravity"] = BeerGravity(**{gravity_unit: batch_data["initial_gravity"]})
     batch_data["wort_volume"] = Volume(**{volume_unit: batch_data["wort_volume"]})
+    batch_data["boil_loss"] = Volume(**{volume_unit: batch_data["boil_loss"] if batch_data["boil_loss"] is not None else 0})
     if batch_data["beer_volume"] is not None:
         batch_data["beer_volume"] = Volume(**{volume_unit: batch_data["beer_volume"]})
     else:
