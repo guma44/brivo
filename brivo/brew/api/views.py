@@ -78,4 +78,10 @@ class RecipeViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, Create
         if self.request.method in ['GET']:
             return serializers.RecipeReadSerializer
         return serializers.RecipeSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+        kwargs['user'] = self.request.user
+        return serializer_class(*args, **kwargs)
     

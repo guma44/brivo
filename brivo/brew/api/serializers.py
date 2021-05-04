@@ -62,9 +62,12 @@ class AddIDMixin:
         ret = super(AddIDMixin, self).to_internal_value(data)
 
         id_attr = getattr(self.Meta, 'update_lookup_field', 'id')
-        request_method = getattr(getattr(self.context.get('view'), 'request'), 'method', '')
+        try:
+            method = getattr(self.context["request"], "method", "")
+        except KeyError:
+            method = ""
 
-        if request_method in ('PUT', 'PATCH') and id_attr:
+        if method in ('PUT', 'PATCH') and id_attr:
             id_field = self.fields[id_attr]
             id_value = id_field.get_value(data)
             ret[id_attr] = id_value
@@ -194,7 +197,7 @@ class RecipeSerializer(CustomSerializer):
         model = models.Recipe
         fields = [
             "id",
-            "user",
+            "name",
             "style",
             "type",
             "expected_beer_volume",
@@ -226,19 +229,22 @@ class RecipeSerializer(CustomSerializer):
         ]
         read_only_fields = [
             "id"
-            "user",
             "created_at",
             "updated_at"
         ]
 
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+
     def create(self, validated_data):
-        user = self.context["request"].user
         fermentables_data = validated_data.pop('fermentables', [])
         hops_data = validated_data.pop('hops', [])
         yeasts_data = validated_data.pop('yeasts', [])
         extras_data = validated_data.pop('extras', [])
         mash_steps_data = validated_data.pop('mash_steps', [])
-        validated_data["user"] = user
+        validated_data["user"] = self.user
         recipe = models.Recipe.objects.create(**validated_data)
         for fermentable_data in fermentables_data:
             fermentable_data["recipe"] = recipe
@@ -307,3 +313,5 @@ class RecipeReadSerializer(RecipeSerializer):
     style = StyleNameSerializer()
     user = UserNameSerializer()
 
+    class Meta(RecipeSerializer.Meta):
+        fields = RecipeSerializer.Meta.fields + ["user"]

@@ -28,6 +28,31 @@ def get_units_for_user(user):
     return data
 
 
+def get_clean_units_for_user(user):
+    data = {}
+    if user.profile.general_units.lower() == "metric":
+        data["mass_units"] = "g"
+        data["volume_units"] = "l"
+    else:
+        data["mass_units"] = "ox"
+        data["volume_units"] = "us_g"
+    if user.profile.gravity_units.lower() == "plato":
+        data["gravity_units"] = "plato"
+    else:
+        data["gravity_units"] = "sg"
+    if user.profile.color_units.lower() == "ebc":
+        data["color_units"] = "ebc"
+    else:
+        data["color_units"] = "srm"
+    if user.profile.temperature_units.lower() == "celsius":
+        data["temperature_units"] = "c"
+    elif user.profile.temperature_units.lower() == "fahrenheit":
+        data["temperature_units"] = "f"
+    else:
+        data["temperature_units"] = "k"
+    return data
+
+
 def to_plato(sg):
     """Convert SG to plato"""
     return ((182.4601 * sg - 775.6821) * sg + 1262.7794) * sg - 669.5622

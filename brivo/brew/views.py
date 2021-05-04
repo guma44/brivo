@@ -62,6 +62,7 @@ from brivo.brew.models import (
     IngredientYeast,
     IngredientExtra,
     MashStep)
+from brivo.brew.api.serializers import RecipeSerializer
 from brivo.users.models import User
 from brivo.brew import filters
 
@@ -92,7 +93,13 @@ def _convert_type(data):
 def _clean_data(data):
     new_data = {}
     for k, v in data.items():
-        new_data[k] = _convert_type(v)
+        if isinstance(v, list):
+            l = []
+            for d in v:
+                l.append(_convert_type(d))
+            new_data[k] = l
+        else:
+            new_data[k] = _convert_type(v)
     return new_data
 
 measures_map = {
@@ -1050,69 +1057,19 @@ class RecipePrintView(WeasyTemplateResponseMixin, RecipeDetailView):
 
 def import_recipe(recipe, user):
     """Import recipe to DB"""
-    recipe_data = _clean_data(recipe["fields"])
-    style = Style.objects.filter(name__icontains=recipe_data["style"])
+    recipe_data = _clean_data(recipe)
     user = User.objects.get(username=user)
-    recipe_data["user"] = user
+    if isinstance(recipe_data["style"], str): # this is probably name not pk
+        style = Style.objects.filter(name__icontains=recipe_data["style"])
     if style.count() == 0:
         raise Exception(f"Did not fount a syle '{recipe_data['style']}' for '{recipe_data['name']}'")
-    recipe_data["style"] = style[0]
-    recipe_data["expected_beer_volume"] = Volume(
-        **{recipe_data["expected_beer_volume_unit"]: recipe_data["expected_beer_volume"]})
-    del recipe_data["expected_beer_volume_unit"]
-    new_recipe = Recipe(**recipe_data)
-    new_recipe.save()
-    fermentables = []
-    for fermentable in recipe.get("fermentables", []):
-        data = _clean_data(fermentable)
-        data["recipe"] = new_recipe
-        data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
-        data["color"] = BeerColor(**{data["color_unit"]: data["color"]})
-        del data["amount_unit"]
-        del data["color_unit"]
-        fermentable_ingredient = IngredientFermentable(**data)
-        fermentable_ingredient.save()
-        fermentables.append(fermentables)
-    hops = []
-    for hop in recipe.get("hops", []):
-        data = _clean_data(hop)
-        data["recipe"] = new_recipe
-        data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
-        del data["amount_unit"]
-        data["time_unit"] = data["time_unit"].upper()
-        hop_ingredient = IngredientHop(**data)
-        hop_ingredient.save()
-        hops.append(hops)
-    yeasts = []
-    for yeast in recipe.get("yeasts", []):
-        data = _clean_data(yeast)
-        data["recipe"] = new_recipe
-        data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
-        del data["amount_unit"]
-        yeast_ingredient = IngredientYeast(**data)
-        yeast_ingredient.save()
-        yeasts.append(yeasts)
-    extras = []
-    for extra in recipe.get("extras", []):
-        data = _clean_data(extra)
-        data["recipe"] = new_recipe
-        data["amount"] = Weight(**{data["amount_unit"]: data["amount"]})
-        del data["amount_unit"]
-        data["time_unit"] = data["time_unit"].upper()
-        extra_ingredient = IngredientExtra(**data)
-        extra_ingredient.save()
-        extras.append(extras)
-    mash_steps = []
-    for mash in recipe.get("mashing", []):
-        data = _clean_data(mash)
-        data["recipe"] = new_recipe
-        data["temperature"] = Temperature(**{data["temp_unit"]: data["temp"]})
-        del data["temp"]
-        del data["temp_unit"]
-        del data["time_unit"]
-        mash_step = MashStep(**data)
-        mash_step.save()
-        mash_steps.append(mash_step)
+    recipe_data["style"] = style[0].id
+    serializer = RecipeSerializer(data=recipe_data, user=user)
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        raise Exception(serializer.errors)
+
 
 
 @shared_task(bind=True)
@@ -1123,7 +1080,7 @@ def import_recipes(self, recipes, user):
     for recipe in recipes:
         import_recipe(recipe, user)
         uploaded += 1
-        progress_recorder.set_progress(uploaded, number_of_recipes, f"Uploaded {recipe['fields']['name']}")
+        progress_recorder.set_progress(uploaded, number_of_recipes, f"Uploaded {recipe['name']}")
     return uploaded
 
 
