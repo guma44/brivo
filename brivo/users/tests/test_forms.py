@@ -4,15 +4,15 @@ Module for all Form Tests.
 import pytest
 from django.utils.translation import ugettext_lazy as _
 
-from brivo.users.forms import UserCreationForm
+from brivo.users.forms import BrivoSignupForm
 from brivo.users.models import User
 
 pytestmark = pytest.mark.django_db
 
 
-class TestUserCreationForm:
+class TestBrivoSignupForm:
     """
-    Test class for all tests related to the UserCreationForm
+    Test class for all tests related to the BrivoSignupForm
     """
 
     def test_username_validation_error_msg(self, user: User):
@@ -25,15 +25,16 @@ class TestUserCreationForm:
 
         # The user already exists,
         # hence cannot be created.
-        form = UserCreationForm(
+        form = BrivoSignupForm(
             {
                 "username": user.username,
+                "email": user.email,
                 "password1": user.password,
                 "password2": user.password,
             }
         )
 
         assert not form.is_valid()
-        assert len(form.errors) == 1
+        assert len(form.errors) == 2
         assert "username" in form.errors
-        assert form.errors["username"][0] == _("This username has already been taken.")
+        assert "email" in form.errors

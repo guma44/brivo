@@ -7,63 +7,63 @@ from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory
 from django.urls import reverse
 
-from brivo.users.forms import UserChangeForm
+# from brivo.users.forms import UserChangeForm
 from brivo.users.models import User
 from brivo.users.tests.factories import UserFactory
 from brivo.users.views import (
     UserRedirectView,
-    UserUpdateView,
-    user_detail_view,
+    # UserUpdateView,
+    # user_detail_view,
 )
 
 pytestmark = pytest.mark.django_db
 
 
-class TestUserUpdateView:
-    """
-    TODO:
-        extracting view initialization code as class-scoped fixture
-        would be great if only pytest-django supported non-function-scoped
-        fixture db access -- this is a work-in-progress for now:
-        https://github.com/pytest-dev/pytest-django/pull/258
-    """
+# class TestUserUpdateView:
+#     """
+#     TODO:
+#         extracting view initialization code as class-scoped fixture
+#         would be great if only pytest-django supported non-function-scoped
+#         fixture db access -- this is a work-in-progress for now:
+#         https://github.com/pytest-dev/pytest-django/pull/258
+#     """
 
-    def test_get_success_url(self, user: User, rf: RequestFactory):
-        view = UserUpdateView()
-        request = rf.get("/fake-url/")
-        request.user = user
+#     def test_get_success_url(self, user: User, rf: RequestFactory):
+#         view = UserUpdateView()
+#         request = rf.get("/fake-url/")
+#         request.user = user
 
-        view.request = request
+#         view.request = request
 
-        assert view.get_success_url() == f"/users/{user.username}/"
+#         assert view.get_success_url() == f"/users/{user.username}/"
 
-    def test_get_object(self, user: User, rf: RequestFactory):
-        view = UserUpdateView()
-        request = rf.get("/fake-url/")
-        request.user = user
+#     def test_get_object(self, user: User, rf: RequestFactory):
+#         view = UserUpdateView()
+#         request = rf.get("/fake-url/")
+#         request.user = user
 
-        view.request = request
+#         view.request = request
 
-        assert view.get_object() == user
+#         assert view.get_object() == user
 
-    def test_form_valid(self, user: User, rf: RequestFactory):
-        view = UserUpdateView()
-        request = rf.get("/fake-url/")
+#     def test_form_valid(self, user: User, rf: RequestFactory):
+#         view = UserUpdateView()
+#         request = rf.get("/fake-url/")
 
-        # Add the session/message middleware to the request
-        SessionMiddleware().process_request(request)
-        MessageMiddleware().process_request(request)
-        request.user = user
+#         # Add the session/message middleware to the request
+#         SessionMiddleware().process_request(request)
+#         MessageMiddleware().process_request(request)
+#         request.user = user
 
-        view.request = request
+#         view.request = request
 
-        # Initialize the form
-        form = UserChangeForm()
-        form.cleaned_data = []
-        view.form_valid(form)
+#         # Initialize the form
+#         form = UserChangeForm()
+#         form.cleaned_data = []
+#         view.form_valid(form)
 
-        messages_sent = [m.message for m in messages.get_messages(request)]
-        assert messages_sent == ["Information successfully updated"]
+#         messages_sent = [m.message for m in messages.get_messages(request)]
+#         assert messages_sent == ["Information successfully updated"]
 
 
 class TestUserRedirectView:
@@ -77,21 +77,21 @@ class TestUserRedirectView:
         assert view.get_redirect_url() == f"/users/{user.username}/"
 
 
-class TestUserDetailView:
-    def test_authenticated(self, user: User, rf: RequestFactory):
-        request = rf.get("/fake-url/")
-        request.user = UserFactory()
+# class TestUserDetailView:
+#     def test_authenticated(self, user: User, rf: RequestFactory):
+#         request = rf.get("/fake-url/")
+#         request.user = UserFactory()
 
-        response = user_detail_view(request, username=user.username)
+#         response = user_detail_view(request, username=user.username)
 
-        assert response.status_code == 200
+#         assert response.status_code == 200
 
-    def test_not_authenticated(self, user: User, rf: RequestFactory):
-        request = rf.get("/fake-url/")
-        request.user = AnonymousUser()
+#     def test_not_authenticated(self, user: User, rf: RequestFactory):
+#         request = rf.get("/fake-url/")
+#         request.user = AnonymousUser()
 
-        response = user_detail_view(request, username=user.username)
-        login_url = reverse(settings.LOGIN_URL)
+#         response = user_detail_view(request, username=user.username)
+#         login_url = reverse(settings.LOGIN_URL)
 
-        assert response.status_code == 302
-        assert response.url == f"{login_url}?next=/fake-url/"
+#         assert response.status_code == 302
+#         assert response.url == f"{login_url}?next=/fake-url/"

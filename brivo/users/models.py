@@ -92,7 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             str: URL for user settings.
 
         """
-        return reverse("users:settings", kwargs={"email": self.email})
+        return reverse("users:settings", kwargs={"username": self.username})
 
     def __str__(self):
         return self.username
