@@ -799,7 +799,7 @@ class RecipeModelForm(BSModalModelForm):
         self.helper.field_class = 'col-md-6'
         self.helper.layout = Layout(
             Div(
-                Fieldset("Recipe Information", Field("type"), Field("name"), Field("style")),
+                Fieldset("Recipe Information", Field("type"), Field("name"), Field("style"), Field('is_public')),
                 Fieldset("Batch Information",
                     Row(
                         Column(Field("expected_beer_volume"), css_class='form-group col-md-6 mb-0'),
