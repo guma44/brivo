@@ -59,7 +59,7 @@ class RecipeFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Recipe
-        fields = ["name"]
+        fields = ["name", "style"]
 
 
 class BatchFilter(django_filters.FilterSet):
