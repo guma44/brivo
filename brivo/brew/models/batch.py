@@ -72,6 +72,12 @@ class Batch(BaseModel):
         measurement=Volume,
         verbose_name=_("Boil Waists"), null=True, unit_choices=VOLUME_UNITS
     )
+    primary_fermentation_temperature = MeasurementField(
+        measurement=Temperature,
+        verbose_name=_("Primary Fermentation Temperature"),
+        null=True,
+        blank=True
+    )
     primary_fermentation_start_day = models.DateField(
         _("Primary Fermentation Start Day"),
         null=True,
@@ -80,6 +86,12 @@ class Batch(BaseModel):
     )
 
     # Stage 4 fields: secondary fermentation
+    secondary_fermentation_temperature = MeasurementField(
+        measurement=Temperature,
+        verbose_name=_("Secondary Fermentation Temperature"),
+        null=True,
+        blank=True
+    )
     secondary_fermentation_start_day = models.DateField(
         _("Secondary Fermentation Start Day"),
         null=True,
@@ -88,10 +100,17 @@ class Batch(BaseModel):
         auto_now_add=False,
     )
     dry_hops_start_day = models.DateField(
-        _("Dry Hops Start Day"), null=True, blank=True, auto_now=False, auto_now_add=False
+        _("Dry Hops Start Day"),
+        null=True,
+        blank=True,
+        auto_now=False,
+        auto_now_add=False
     )
     post_primary_gravity = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("Post-primary Gravity"), null=True, blank=True
+        measurement=BeerGravity,
+        verbose_name=_("Post-primary Gravity"),
+        null=True,
+        blank=True
     )
 
     # Stage 4 fields: packaging
@@ -190,11 +209,15 @@ class Batch(BaseModel):
                     "initial_gravity",
                     "wort_volume",
                     "boil_loss",
+                    "primary_fermentation_temperature",
                     "primary_fermentation_start_day",
                 ]
             )
         elif stage == "SECONDARY_FERMENTATION":
-            fields.extend(["post_primary_gravity", "secondary_fermentation_start_day", "dry_hops_start_day"])
+            fields.extend([
+                "post_primary_gravity",
+                "secondary_fermentation_start_day",
+                "dry_hops_start_day"])
         elif stage == "PACKAGING":
             fields.extend(
                 [

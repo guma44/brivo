@@ -257,19 +257,38 @@ packaging_stats_for_batch = """
 </table>
 """
 
+def _get_unit_choices(profile):
+    # 
+    if profile.general_units == "METRIC":
+        volume_unit_choices = (("l", "l"),)
+    elif profile.general_units == "IMPERIAL":
+        volume_unit_choices = (("us_g", "us_g"),)
+    else:
+        raise ValueError(f"No unit choice {profile.general_units}")
+    if profile.temperature_units == "CELSIUS":
+        temp_unit_choices = (("c", "c"),)
+    elif profile.temperature_units == "FAHRENHEIT":
+        temp_unit_choices = (("f", "f"),)
+    elif profile.temperature_units == "KELVIN":
+        temp_unit_choices = (("k", "k"),)
+    else:
+        raise ValueError(f"No unit choice {profile.temperature_units}")
+    gravity_unit_choices = (
+        (
+            profile.gravity_units.lower(),
+            profile.gravity_units.lower()
+        ),
+    )
+    return (volume_unit_choices, temp_unit_choices, gravity_unit_choices)
+
 
 class BaseBatchForm(BSModalModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        print(kwargs)
-
-        if self.request.user.profile.general_units == "METRIC":
-            unit_choices = (("l", "l"),)
-        elif self.request.user.profile.general_units == "IMPERIAL":
-            unit_choices = (("us_g", "us_g"),)
-        else:
-            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
+        volume_unit_choices, temp_unit_choices, gravity_unit_choices = _get_unit_choices(
+            self.request.user.profile
+        )
 
         if "recipe" in self.fields:
             grav_unit = self.request.user.profile.gravity_units.lower()
@@ -302,19 +321,13 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "MASHING":
-            if self.request.user.profile.general_units == "METRIC":
-                unit_choices = (("c", "c"),)
-            elif self.request.user.profile.general_units == "IMPERIAL":
-                unit_choices = (("f", "f"),)
-            else:
-                raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
             self.fields.update({
                 "grain_temperature": MeasurementField(
                     measurement=Temperature,
-                    unit_choices=unit_choices),
+                    unit_choices=temp_unit_choices),
                 "sparging_temperature": MeasurementField(
                     measurement=Temperature,
-                    unit_choices=unit_choices)})
+                    unit_choices=temp_unit_choices)})
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
@@ -338,13 +351,10 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "BOIL":
-            user_gravity_unit = self.request.user.profile.gravity_units.lower()
             self.fields.update({
                 "gravity_before_boil": MeasurementField(
                     measurement=BeerGravity,
-                    unit_choices=(
-                        (user_gravity_unit,
-                         user_gravity_unit),)),
+                    unit_choices=gravity_unit_choices),
             })
 
             self.helper.layout = Layout(
@@ -371,25 +381,19 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "PRIMARY_FERMENTATION":
-            user_gravity_unit = self.request.user.profile.gravity_units.lower()
-            if self.request.user.profile.general_units == "METRIC":
-                unit_choices = (("l", "l"),)
-            elif self.request.user.profile.general_units == "IMPERIAL":
-                unit_choices = (("us_g", "us_g"),)
-            else:
-                raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
             self.fields.update({
+                "primary_fermentation_temperature": MeasurementField(
+                    measurement=Temperature,
+                    unit_choices=temp_unit_choices),
                 "initial_gravity": MeasurementField(
                     measurement=BeerGravity,
-                    unit_choices=(
-                        (user_gravity_unit,
-                         user_gravity_unit),)),
+                    unit_choices=gravity_unit_choices),
                 "wort_volume": MeasurementField(
                     measurement=Volume,
-                    unit_choices=unit_choices),
+                    unit_choices=volume_unit_choices),
                 "boil_loss": MeasurementField(
                     measurement=Volume,
-                    unit_choices=unit_choices),
+                    unit_choices=volume_unit_choices),
             })
             self.helper.layout = Layout(
                 Div(
@@ -398,6 +402,7 @@ class BaseBatchForm(BSModalModelForm):
                         Field("initial_gravity"),
                         Field("wort_volume"),
                         Field("boil_loss"),
+                        Field("primary_fermentation_temperature"),
                         Field("primary_fermentation_start_day"),
                         Row(
                             Column(HTML(primary_stats_for_batch), css_class='form-group col-md-5 mb-0'),
@@ -418,20 +423,21 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "SECONDARY_FERMENTATION":
-            user_gravity_unit = self.request.user.profile.gravity_units.lower()
             self.fields.update({
+                "secondary_fermentation_temperature": MeasurementField(
+                    measurement=Temperature,
+                    unit_choices=temp_unit_choices),
                 "post_primary_gravity": MeasurementField(
                     measurement=BeerGravity,
                     required=False,
-                    unit_choices=(
-                        (user_gravity_unit,
-                         user_gravity_unit),)),
+                    unit_choices=gravity_unit_choices),
             })
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
                     Fieldset("Secondary Fermentation",
                         Field("post_primary_gravity"),
+                        Field("secondary_fermentation_temperature"),
                         Field("secondary_fermentation_start_day"),
                         Field("dry_hops_start_day"),
                     ),
@@ -445,22 +451,13 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "PACKAGING":
-            user_gravity_unit = self.request.user.profile.gravity_units.lower()
-            if self.request.user.profile.general_units == "METRIC":
-                unit_choices = (("l", "l"),)
-            elif self.request.user.profile.general_units == "IMPERIAL":
-                unit_choices = (("us_g", "us_g"),)
-            else:
-                raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
             self.fields.update({
                 "end_gravity": MeasurementField(
                     measurement=BeerGravity,
-                    unit_choices=(
-                        (user_gravity_unit,
-                         user_gravity_unit),)),
+                    unit_choices=gravity_unit_choices),
                 "beer_volume": MeasurementField(
                     measurement=Volume,
-                    unit_choices=unit_choices),
+                    unit_choices=volume_unit_choices),
             })
             self.helper.layout = Layout(
                 Div(
