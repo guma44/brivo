@@ -72,6 +72,12 @@ $(document).ready(function() {
         $("#gravity_info").text(data.gravity);
         $("#abv_info").text(data.abv);
         $("#color_info").text(data.color);
+        $("#color_info").css("background-color", data.color_hex);
+        if (parseFloat(data.color) > 30.0) {
+          $("#color_info").css("color", "white");
+        } else {
+          $("#color_info").css("color", "black");
+        }
         $("#ibu_info").text(data.ibu);
         var bitternessRatio = parseFloat(data.bitterness_ratio);
         $("#bitterness_ratio_info").text(data.bitterness_ratio);
