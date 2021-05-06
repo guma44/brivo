@@ -78,6 +78,8 @@ def _convert_type(data):
         return _clean_data(data)
     if data is None:
         return None
+    elif isinstance(data, (float, int, bool)):
+        return data
     elif _FLOAT_REGEX.match(data) is not None:  # Floats
         return float(data)
     elif _INT_REGEX.match(data) is not None:  # Integers
@@ -961,11 +963,20 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
         with transaction.atomic():
             form.instance.user = self.request.user
             self.object = form.save()
+            formsets_valid = True
             for formset in formsets:
                 if formset.is_valid():
                     formset.instance = self.object
                     formset.save()
+                else:
+                    formsets_valid = False
+            if not formsets_valid:
+                return self.form_invalid(form)
         return super(RecipeCreateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        """If the form is invalid, render the invalid form."""
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class RecipeUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
@@ -1059,8 +1070,11 @@ def import_recipe(recipe, user):
     """Import recipe to DB"""
     recipe_data = _clean_data(recipe)
     user = User.objects.get(username=user)
+    style = []
     if isinstance(recipe_data["style"], str): # this is probably name not pk
         style = Style.objects.filter(name__icontains=recipe_data["style"])
+    else:
+        style = Style.objects.filter(pk=recipe_data["style"])
     if style.count() == 0:
         raise Exception(f"Did not fount a syle '{recipe_data['style']}' for '{recipe_data['name']}'")
     recipe_data["style"] = style[0].id
