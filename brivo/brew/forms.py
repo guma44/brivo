@@ -384,6 +384,7 @@ class BaseBatchForm(BSModalModelForm):
             self.fields.update({
                 "primary_fermentation_temperature": MeasurementField(
                     measurement=Temperature,
+                    required=False,
                     unit_choices=temp_unit_choices),
                 "initial_gravity": MeasurementField(
                     measurement=BeerGravity,
@@ -426,6 +427,7 @@ class BaseBatchForm(BSModalModelForm):
             self.fields.update({
                 "secondary_fermentation_temperature": MeasurementField(
                     measurement=Temperature,
+                    required=False,
                     unit_choices=temp_unit_choices),
                 "post_primary_gravity": MeasurementField(
                     measurement=BeerGravity,
