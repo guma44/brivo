@@ -23,7 +23,7 @@ def measurement_field_factory(mclass, munit):
     class MeasurementField(serializers.Field):
 
         def to_representation(self, obj):
-            user = self.context["request"].user
+            user = self.root.user
             display_unit = get_units_for_user(user)
             unit = display_unit[munit][0].lower()
             value = getattr(obj, unit)
@@ -47,6 +47,31 @@ def measurement_field_factory(mclass, munit):
 
 
 class CustomSerializer(serializers.ModelSerializer):
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+    # Add user also to ListSerializer
+    @classmethod
+    def many_init(cls, *args, **kwargs):
+        allow_empty = kwargs.pop('allow_empty', None)
+        child_serializer = cls(*args, **kwargs)
+        list_kwargs = {
+            'child': child_serializer,
+        }
+        if allow_empty is not None:
+            list_kwargs['allow_empty'] = allow_empty
+        list_kwargs.update({
+            key: value for key, value in kwargs.items()
+            if key in serializers.LIST_SERIALIZER_KWARGS
+        })
+        meta = getattr(cls, 'Meta', None)
+        list_serializer_class = getattr(meta, 'list_serializer_class', serializers.ListSerializer)
+        lserializer = list_serializer_class(*args, **list_kwargs)
+        lserializer.user = child_serializer.user
+        return lserializer
+
 
     def get_field_names(self, declared_fields, info):
         expanded_fields = super(CustomSerializer, self).get_field_names(declared_fields, info)
@@ -233,10 +258,6 @@ class RecipeSerializer(CustomSerializer):
             "updated_at"
         ]
 
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        super().__init__(*args, **kwargs)
 
     def create(self, validated_data):
         fermentables_data = validated_data.pop('fermentables', [])

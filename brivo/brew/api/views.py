@@ -16,48 +16,57 @@ class IsAdminUserOrReadOnly(IsAdminUser):
         return (request.method in SAFE_METHODS or is_admin) and request.user.is_authenticated
 
 
-class FermentableViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
+class AddUserMixin:
+
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+        kwargs['user'] = self.request.user
+        return serializer_class(*args, **kwargs)
+
+
+class FermentableViewSet(AddUserMixin, RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
     serializer_class = serializers.FermentableSerializer
     queryset = models.Fermentable.objects.all()
     lookup_field = "id"
     permission_classes = (IsAdminUserOrReadOnly,)
 
 
-class ExtraViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
+class ExtraViewSet(AddUserMixin, RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
     serializer_class = serializers.ExtraSerializer
     queryset = models.Extra.objects.all()
     lookup_field = "id"
     permission_classes = (IsAdminUserOrReadOnly,)
 
 
-class YeastViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
+class YeastViewSet(AddUserMixin, RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
     serializer_class = serializers.YeastSerializer
     queryset = models.Yeast.objects.all()
     lookup_field = "id"
     permission_classes = (IsAdminUserOrReadOnly,)
 
 
-class HopViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
+class HopViewSet(AddUserMixin, RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
     serializer_class = serializers.HopSerializer
     queryset = models.Hop.objects.all()
     lookup_field = "id"
     permission_classes = (IsAdminUserOrReadOnly,)
 
 
-class StyleViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
+class StyleViewSet(AddUserMixin, RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
     serializer_class = serializers.StyleSerializer
     queryset = models.Style.objects.all()
     lookup_field = "id"
     permission_classes = (IsAdminUserOrReadOnly,)
 
 
-class MashStepViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
+class MashStepViewSet(AddUserMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = serializers.MashStepSerializer
     queryset = models.MashStep.objects.all()
     lookup_field = "id"
 
 
-class RecipeViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
+class RecipeViewSet(AddUserMixin, RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
     serializer_class = serializers.RecipeSerializer
     queryset = models.Recipe.objects.all()
     lookup_field = "id"
@@ -84,4 +93,3 @@ class RecipeViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, Create
         kwargs['context'] = self.get_serializer_context()
         kwargs['user'] = self.request.user
         return serializer_class(*args, **kwargs)
-    
