@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from measurement.measures import Weight, Temperature, Volume
 
-from brivo.utils.functions import get_units_for_user
+from brivo.utils.functions import get_user_units
 from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.brew import models
 from brivo.users.api.serializers import UserNameSerializer
@@ -23,9 +23,7 @@ def measurement_field_factory(mclass, munit):
     class MeasurementField(serializers.Field):
 
         def to_representation(self, obj):
-            user = self.root.user
-            display_unit = get_units_for_user(user)
-            unit = display_unit[munit][0].lower()
+            unit = get_user_units(self.root.user)[munit]
             value = getattr(obj, unit)
             return f"{value} {unit}"
 
@@ -122,8 +120,8 @@ class ExtraSerializer(CustomSerializer):
 
 
 class YeastSerializer(CustomSerializer):
-    temp_min = measurement_field_factory(Temperature, "temp_units")()
-    temp_max = measurement_field_factory(Temperature, "temp_units")()
+    temp_min = measurement_field_factory(Temperature, "temperature_units")()
+    temp_max = measurement_field_factory(Temperature, "temperature_units")()
     class Meta:
         model = models.Yeast
         fields = "__all__"
@@ -165,7 +163,7 @@ class StyleNameSerializer(CustomSerializer):
 
 
 class IngredientFermentableSerializer(AddIDMixin, CustomSerializer):
-    amount = measurement_field_factory(Weight, "big_weight")()
+    amount = measurement_field_factory(Weight, "mass_units")()
     color = measurement_field_factory(BeerColor, "color_units")()
     class Meta:
         model = models.IngredientFermentable
@@ -173,32 +171,31 @@ class IngredientFermentableSerializer(AddIDMixin, CustomSerializer):
 
 
 class IngredientHopSerializer(AddIDMixin, CustomSerializer):
-    amount = measurement_field_factory(Weight, "big_weight")()
+    amount = measurement_field_factory(Weight, "mass_units")()
     class Meta:
         model = models.IngredientHop
         fields = ["id", "name", "amount", "use", "alpha_acids", "time", "time_unit"]
 
 
 class IngredientYeastSerializer(AddIDMixin, CustomSerializer):
-    amount = measurement_field_factory(Weight, "big_weight")()
+    amount = measurement_field_factory(Weight, "mass_units")()
     class Meta:
         model = models.IngredientYeast
         fields = ["id", "name", "amount", "type", "lab", "attenuation", "form"]
 
 
 class IngredientExtraSerializer(AddIDMixin, CustomSerializer):
-    amount = measurement_field_factory(Weight, "big_weight")()
+    amount = measurement_field_factory(Weight, "mass_units")()
     class Meta:
         model = models.IngredientExtra
         fields = ["id", "name", "amount", "type", "use", "time", "time_unit"]
 
 
 class MashStepSerializer(AddIDMixin, CustomSerializer):
-    temperature = measurement_field_factory(Temperature, "temp_units")()
+    temperature = measurement_field_factory(Temperature, "temperature_units")()
     class Meta:
         model = models.MashStep
         fields = ["id", "temperature", "time", "note"]
-
 
 
 class RecipeSerializer(CustomSerializer):
@@ -207,12 +204,12 @@ class RecipeSerializer(CustomSerializer):
     yeasts = IngredientYeastSerializer(many=True)
     extras = IngredientExtraSerializer(many=True)
     mash_steps = MashStepSerializer(many=True)
-    expected_beer_volume = measurement_field_factory(Volume, "volume")()
-    initial_volume = measurement_field_factory(Volume, "volume")(source="get_initial_volume", read_only=True)
-    boil_volume = measurement_field_factory(Volume, "volume")(source="get_boil_volume", read_only=True)
+    expected_beer_volume = measurement_field_factory(Volume, "volume_units")()
+    initial_volume = measurement_field_factory(Volume, "volume_units")(source="get_initial_volume", read_only=True)
+    boil_volume = measurement_field_factory(Volume, "volume_units")(source="get_boil_volume", read_only=True)
     preboil_gravity = measurement_field_factory(BeerGravity, "gravity_units")(source="get_preboil_gravity", read_only=True)
-    primary_volume = measurement_field_factory(Volume, "volume")(source="get_primary_volume", read_only=True)
-    secondary_volume = measurement_field_factory(Volume, "volume")(source="get_secondary_volume", read_only=True)
+    primary_volume = measurement_field_factory(Volume, "volume_units")(source="get_primary_volume", read_only=True)
+    secondary_volume = measurement_field_factory(Volume, "volume_units")(source="get_secondary_volume", read_only=True)
     color = measurement_field_factory(BeerColor, "color_units")(source="get_color", read_only=True)
     gravity = measurement_field_factory(BeerGravity, "gravity_units")(source="get_gravity", read_only=True)
     biterness_ratio = serializers.DecimalField(5, 1, source="get_bitterness_ratio", read_only=True)

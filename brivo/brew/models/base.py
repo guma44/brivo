@@ -3,6 +3,7 @@ from django.db.models.base import ModelBase
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext_lazy as _
 
+from modelcluster.models import ClusterableModel
 from slugify import slugify as pyslugify
 
 
@@ -72,7 +73,7 @@ def uuslug(s, instance, entities=True, decimal=True, hexadecimal=True,
     return new_slug
 ###########################################################################################
 
-class BaseModel(models.Model):
+class BaseModel(ClusterableModel):
     """Base model for all beer related models"""
 
     class Meta:

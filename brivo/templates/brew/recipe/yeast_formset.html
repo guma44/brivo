@@ -51,7 +51,6 @@ $(function() {
         formCssClass: '{{ formset.prefix }}-dynamic-form', 
         added: function(row) {
             let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
-            console.log("Binding to " + '#id_yeasts-' + row_index + '-name');
             $('#id_yeasts-' + row_index + '-name').autocomplete({
                 serviceUrl: '/brew/yeast/autocomplete',
                 noCache: false,

@@ -1,14 +1,54 @@
+import re
 import math
 
+from django.utils.encoding import smart_str
 
-def get_units_for_user(user):
+_FLOAT_REGEX = re.compile(r"^-?(?:\d+())?(?:\.\d*())?(?:e-?\d+())?(?:\2|\1\3)$")
+_INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
+_EMAIL_REGEX = re.compile(r"(.+@[a-zA-Z0-9\.]+,?){1,}")
+
+
+def convert_type(data):
+    """Check and convert the type of variable"""
+    if isinstance(data, dict):
+        return clean_data(data)
+    if data is None:
+        return None
+    elif isinstance(data, (float, int, bool)):
+        return data
+    elif _FLOAT_REGEX.match(data) is not None:  # Floats
+        return float(data)
+    elif _INT_REGEX.match(data) is not None:  # Integers
+        return int(data)
+    elif data == "True" or data == "true":
+        return True
+    elif data == "False" or data == "false":
+        return False
+    else:
+        return smart_str(data, encoding="utf-8", strings_only=False, errors="strict")
+
+
+def clean_data(data):
+    new_data = {}
+    for k, v in data.items():
+        if isinstance(v, list):
+            l = []
+            for d in v:
+                l.append(convert_type(d))
+            new_data[k] = l
+        else:
+            new_data[k] = convert_type(v)
+    return new_data
+
+
+def get_user_units_with_repr(user):
     data = {}
     if user.profile.general_units.lower() == "metric":
         data["small_weight"] = ("g", "g")
         data["big_weight"] = ("kg", "kg")
         data["volume"] = ("l", "l")
     else:
-        data["small_weight"] = ("oz", "g")
+        data["small_weight"] = ("oz", "oz")
         data["big_weight"] = ("lb", "lb")
         data["volume"] = ("us_g", "US Gal")
     if user.profile.gravity_units.lower() == "plato":
@@ -28,13 +68,13 @@ def get_units_for_user(user):
     return data
 
 
-def get_clean_units_for_user(user):
+def get_user_units(user):
     data = {}
     if user.profile.general_units.lower() == "metric":
         data["mass_units"] = "g"
         data["volume_units"] = "l"
     else:
-        data["mass_units"] = "ox"
+        data["mass_units"] = "oz"
         data["volume_units"] = "us_g"
     if user.profile.gravity_units.lower() == "plato":
         data["gravity_units"] = "plato"

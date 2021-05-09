@@ -7,11 +7,12 @@ from brivo.brew.models import BaseModel, VOLUME_UNITS
 from brivo.utils import functions
 from brivo.utils.measures import BeerColor, BeerGravity
 
+from modelcluster.fields import ParentalKey
 from django_measurement.models import MeasurementField
 from measurement.measures import Volume, Weight
 
 
-__all__ = ("RecipeCalculatorMixin", "Recipe")
+__all__ = ("Recipe",)
 
 
 RECIPE_TYPE = [
@@ -21,8 +22,60 @@ RECIPE_TYPE = [
 ]
 
 
-class RecipeCalculatorMixin:
-    """Mixin used in Recipe model and recipe ajax call."""
+class Recipe(BaseModel):
+    user = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
+    # Recipe info
+    style = ParentalKey(
+        "Style", verbose_name=_("Style"), on_delete=models.DO_NOTHING
+    )
+    type = models.CharField(_("Type"), max_length=1000, choices=RECIPE_TYPE)
+
+    # Batch info
+    expected_beer_volume = MeasurementField(
+        measurement=Volume,
+        verbose_name=_("Expected Beer Volume"),
+        unit_choices=VOLUME_UNITS,
+        default=20
+    )
+    boil_time = models.IntegerField(_("Boil Time"), default=60.0)
+    evaporation_rate = models.DecimalField(
+        _("Evaporation Rate"),
+        max_digits=5,
+        decimal_places=2,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=10.0,
+    )
+    boil_loss = models.DecimalField(
+        _("Boil Loss"),
+        max_digits=5,
+        decimal_places=2,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=10.0,
+    )
+    trub_loss = models.DecimalField(
+        _("Trub Loss"),
+        max_digits=5,
+        decimal_places=2,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=5.0,
+    )
+    dry_hopping_loss = models.DecimalField(
+        _("Dry Hopping Loss"),
+        max_digits=5,
+        decimal_places=2,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=0,
+    )
+    # Mashing
+    mash_efficiency = models.DecimalField(
+        _("Mash Efficiency"), max_digits=5, decimal_places=2, default=75.0
+    )
+    liquor_to_grist_ratio = models.DecimalField(
+        _("Liquor-To-Grist Ratio"), max_digits=5, decimal_places=2, default=3.0
+    )
+    # Rest
+    note = models.TextField(_("Note"), max_length=1000, blank=True)
+    is_public = models.BooleanField(_("Public"), default=True)
 
     def get_boil_loss_volume(self):
         return self.expected_beer_volume * (float(self.boil_loss) / 100.0)
@@ -75,7 +128,7 @@ class RecipeCalculatorMixin:
 
     def get_color(self):
         added_colors = []
-        for fermentable in self.get_fermentables():
+        for fermentable in self.fermentables.all():
             if fermentable.color.srm > 0 and fermentable.amount.kg > 0:
                 added_colors.append(
                     functions.calculate_mcu(
@@ -97,7 +150,7 @@ class RecipeCalculatorMixin:
 
     def get_max_attenuation(self):
         min_val = 101
-        for yeast in self.get_yeasts():
+        for yeast in self.yeasts.all():
             if yeast.attenuation < min_val:
                 min_val = yeast.attenuation
         if min_val > 100:
@@ -116,7 +169,7 @@ class RecipeCalculatorMixin:
 
     def get_grain_sugars(self):
         sugars = Weight(kg=0.0)
-        for fermentable in self.get_fermentables():
+        for fermentable in self.fermentables.all():
             if fermentable.type != "GRAIN":
                 continue
             sugars += self.get_fermentable_sugar(fermentable)
@@ -124,7 +177,7 @@ class RecipeCalculatorMixin:
 
     def get_other_sugars(self):
         sugars = Weight(kg=0.0)
-        for fermentable in self.get_fermentables():
+        for fermentable in self.fermentables.all():
             if fermentable.type == "GRAIN":
                 continue
             sugars += self.get_fermentable_sugar(fermentable)
@@ -145,7 +198,7 @@ class RecipeCalculatorMixin:
 
     def get_ibu(self):
         added_ibus = []
-        for hop in self.get_hops():
+        for hop in self.hops.all():
             if hop.use in ["BOIL", "AROMA", "FIRST WORT", "WHIRLPOOL"]:
                 if hop.amount.g > 0 and hop.time > 0 and hop.alpha_acids > 0:
                     added_ibus.append(
@@ -161,78 +214,16 @@ class RecipeCalculatorMixin:
         return sum(added_ibus)
 
     def get_bitterness_ratio(self):
-        return self.get_ibu() / ((float(self.get_gravity().sg) - 1) * 1e3)
+        try:
+            return self.get_ibu() / ((float(self.get_gravity().sg) - 1) * 1e3)
+        except ZeroDivisionError:
+            return None
 
     def get_mash_size(self):
         pass
 
     def get_total_mash_volume(self):
         pass
-
-
-class Recipe(RecipeCalculatorMixin, BaseModel):
-    user = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
-    # Recipe info
-    style = models.ForeignKey(
-        "Style", verbose_name=_("Style"), on_delete=models.DO_NOTHING
-    )
-    type = models.CharField(_("Type"), max_length=1000, choices=RECIPE_TYPE)
-
-    # Batch info
-    expected_beer_volume = MeasurementField(
-        measurement=Volume,
-        verbose_name=_("Expected Beer Volume"),
-        unit_choices=VOLUME_UNITS,
-        default=20
-    )
-    boil_time = models.IntegerField(_("Boil Time"), default=60.0)
-    evaporation_rate = models.DecimalField(
-        _("Evaporation Rate"),
-        max_digits=5,
-        decimal_places=2,
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
-        default=10.0,
-    )
-    boil_loss = models.DecimalField(
-        _("Boil Loss"),
-        max_digits=5,
-        decimal_places=2,
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
-        default=10.0,
-    )
-    trub_loss = models.DecimalField(
-        _("Trub Loss"),
-        max_digits=5,
-        decimal_places=2,
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
-        default=5.0,
-    )
-    dry_hopping_loss = models.DecimalField(
-        _("Dry Hopping Loss"),
-        max_digits=5,
-        decimal_places=2,
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
-        default=0,
-    )
-    # Mashing
-    mash_efficiency = models.DecimalField(
-        _("Mash Efficiency"), max_digits=5, decimal_places=2, default=75.0
-    )
-    liquor_to_grist_ratio = models.DecimalField(
-        _("Liquor-To-Grist Ratio"), max_digits=5, decimal_places=2, default=3.0
-    )
-    # Rest
-    note = models.TextField(_("Note"), max_length=1000, blank=True)
-    is_public = models.BooleanField(_("Public"), default=True)
-
-    def get_fermentables(self):
-        return self.fermentables.all()
-
-    def get_yeasts(self):
-        return self.yeasts.all()
-
-    def get_hops(self):
-        return self.hops.all()
 
     def __str__(self):
         return f"{self.pk}. {self.name}"

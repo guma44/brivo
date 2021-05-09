@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from brivo.brew.models import BaseModel, MASS_UNITS
 
+from modelcluster.fields import ParentalKey
 from django_measurement.models import MeasurementField
 from measurement.measures import Weight, Temperature
 
@@ -89,7 +90,7 @@ class InventoryYeast(BaseYeast):
 
 
 class IngredientYeast(BaseYeast):
-    recipe = models.ForeignKey(
+    recipe = ParentalKey(
         "brew.Recipe",
         verbose_name=_("brew.models.Recipe"),
         on_delete=models.CASCADE,

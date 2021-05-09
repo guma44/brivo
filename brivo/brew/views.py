@@ -2,7 +2,6 @@ import re
 import time
 import json
 import datetime, pytz
-from django.utils.encoding import smart_str
 from django.conf import settings
 from django.templatetags.static import static
 from django.db import transaction
@@ -23,13 +22,13 @@ from bootstrap_modal_forms.generic import (
     BSModalCreateView,
     BSModalUpdateView,
     BSModalReadView,
-    BSModalDeleteView
+    BSModalDeleteView,
 )
-from attrdict import AttrDict
 from django_weasyprint import WeasyTemplateResponseMixin
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 from celery.exceptions import SoftTimeLimitExceeded
+
 # from . import constants
 from measurement.measures import Volume, Weight, Temperature
 from brivo.utils.measures import BeerColor, BeerGravity
@@ -45,7 +44,7 @@ from brivo.brew.forms import (
     RecipeModelForm,
     RecipeImportForm,
     BatchImportForm,
-    IngredientFermentableFormSet
+    IngredientFermentableFormSet,
 )
 from brivo.brew.models import (
     Batch,
@@ -56,155 +55,113 @@ from brivo.brew.models import (
     Extra,
     Style,
     Recipe,
-    RecipeCalculatorMixin,
     IngredientFermentable,
     IngredientHop,
     IngredientYeast,
     IngredientExtra,
-    MashStep)
+    MashStep,
+)
 from brivo.brew.api.serializers import RecipeSerializer
 from brivo.users.models import User
 from brivo.brew import filters
 
 
-_FLOAT_REGEX = re.compile(r"^-?(?:\d+())?(?:\.\d*())?(?:e-?\d+())?(?:\2|\1\3)$")
-_INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
-_EMAIL_REGEX = re.compile(r"(.+@[a-zA-Z0-9\.]+,?){1,}")
-
-
-def _convert_type(data):
-    """Check and convert the type of variable"""
-    if isinstance(data, dict):
-        return _clean_data(data)
-    if data is None:
-        return None
-    elif isinstance(data, (float, int, bool)):
-        return data
-    elif _FLOAT_REGEX.match(data) is not None:  # Floats
-        return float(data)
-    elif _INT_REGEX.match(data) is not None:  # Integers
-        return int(data)
-    elif data == "True" or data == "true":
-        return True
-    elif data == "False" or data == "false":
-        return False
-    else:
-        return smart_str(data, encoding='utf-8', strings_only=False, errors='strict')
-
-
-def _clean_data(data):
-    new_data = {}
-    for k, v in data.items():
-        if isinstance(v, list):
-            l = []
-            for d in v:
-                l.append(_convert_type(d))
-            new_data[k] = l
-        else:
-            new_data[k] = _convert_type(v)
-    return new_data
-
-measures_map = {
-    "temperature": Temperature,
-    "amount": Weight,
-    "volume": Volume,
-    "color": BeerColor
+ingredients_map = {
+    "fermentables": IngredientFermentable,
+    "hops": IngredientHop,
+    "extras": IngredientExtra,
+    "mash_steps": MashStep,
+    "yeasts": IngredientYeast,
 }
 
-def _convert_to_measure(d):
-    for k, v in d.items():
-        if k.endswith("_unit") and k not in ["time_unit"]:
-            new_k = "_".join(k.split("_")[:-1])
-            if d[new_k]:
-                d[new_k] = measures_map[new_k](**{v: d[new_k]})
-    return d
 
 def _is_valid(v):
-    return v.get("amount", "") != ""
+    return v.get("name", "") != ""
 
 
-class DummyRecipe(RecipeCalculatorMixin, AttrDict):
-    def get_fermentables(self):
-        return self.fermentables
-
-    def get_yeasts(self):
-        return self.yeasts
-
-    def get_hops(self):
-        return self.hops
+def get_repr(obj, attr=None, prec=1, repr_="", default="---"):
+    try:
+        if attr is not None:
+            data = f"{round(getattr(obj, attr), prec)} {repr_}"
+        else:
+            data = f"{round(obj, prec)} {repr_}"
+    except Exception as exc:
+        data = default
+    return data
 
 
 def get_recipe_data(request):
-    form = request.POST.get('form', None)
-    input_data = _clean_data(json.loads(form))
-    for f in ["fermentables", "hops", "extras", "mash_steps", "yeasts"]:
-        input_data[f] = [_convert_to_measure(v) for v in input_data[f].values() if _is_valid(v)]
-    if input_data["general_units"] == "METRIC":
-        volume_unit = "l"
-    else:
-        volume_unit = "us_g"
-    
-    input_data["expected_beer_volume"] = Volume(**{volume_unit: input_data["expected_beer_volume"]})
-    input_data = DummyRecipe(input_data)
+    form = request.POST.get("form", None)
+    data = functions.clean_data(json.loads(form))
+    for f in ingredients_map.keys():
+        data[f] = [v for v in data[f].values() if _is_valid(v)]
+    if not data["name"]:
+        data["name"] = "tmpname"
+    if not data["style"] or not data["type"]:
+        return JsonResponse(
+            {
+                "boil_volume": "---",
+                "primary_volume": "---",
+                "secondary_volume": "---",
+                "color": "---",
+                "color_hex": "---",
+                "preboil_gravity": "---",
+                "gravity": "---",
+                "abv": "---",
+                "ibu": "---",
+                "bitterness_ratio": "---",
+            }
+        )
+    serializer = RecipeSerializer(data=data, user=request.user)
+    if not serializer.is_valid():
+        raise Exception(serializer.errors)
+    ingredients = {}
+    for f, c in ingredients_map.items():
+        serializer.validated_data[f] = [c(**v) for v in serializer.validated_data[f]]
+        # del serializer.validated_data[f]
+    recipe = Recipe(user=request.user, **serializer.validated_data)
+    user_units = functions.get_user_units(request.user)
+    boil_volume = get_repr(
+        obj=recipe.get_boil_volume(),
+        attr=user_units["volume_units"],
+        prec=2,
+        repr_=user_units["volume_units"],
+    )
+    primary_volume = get_repr(
+        obj=recipe.get_primary_volume(),
+        attr=user_units["volume_units"],
+        prec=2,
+        repr_=user_units["volume_units"],
+    )
+    secondary_volume = get_repr(
+        obj=recipe.get_secondary_volume(),
+        attr=user_units["volume_units"],
+        prec=2,
+        repr_=user_units["volume_units"],
+    )
+    color = get_repr(
+        obj=recipe.get_color(),
+        attr=user_units["color_units"],
+        prec=1,
+        repr_=user_units["color_units"].upper(),
+    )
     try:
-        boil_volume = f"{round(getattr(input_data.get_boil_volume(), volume_unit.lower()), 2)} {volume_unit.lower()}"
+        color_hex = functions.get_hex_color_from_srm(recipe.get_color().srm)
     except Exception as exc:
-        print(exc)
-        boil_volume = "---"
-    try:
-        primary_volume = f"{round(getattr(input_data.get_primary_volume(), volume_unit.lower()), 2)} {volume_unit.lower()}"
-    except Exception as exc:
-        print(exc)
-        primary_volume = "---"
-    try:
-        secondary_volume = f"{round(getattr(input_data.get_secondary_volume(), volume_unit.lower()), 2)} {volume_unit.lower()}"
-    except Exception as exc:
-        print(exc)
-        secondary_volume = "---"
-    try:
-        color_hex = functions.get_hex_color_from_srm(input_data.get_color().srm)
-        color = f"{round(getattr(input_data.get_color(), input_data.color_units.lower()), 1)} {input_data.color_units}"
-    except Exception as exc:
-        print(exc)
         color_hex = "#FFFFFF"
-        color = "---"
-    try:
-        if input_data.gravity_units.lower() == "plato":
-            prec = 1
-            un = "°P"
-        else:
-            prec = 4
-            un = input_data.gravity_units.upper()
-        preboil_gravity = f"{round(getattr(input_data.get_preboil_gravity(), input_data.gravity_units.lower()), prec)} {un}"
-    except Exception as exc:
-        print(exc)
-        preboil_gravity = "---"
-    try:
-        if input_data.gravity_units.lower() == "plato":
-            prec = 1
-            un = "°P"
-        else:
-            prec = 4
-            un = input_data.gravity_units.upper()
-        gravity = f"{round(getattr(input_data.get_gravity(), input_data.gravity_units.lower()), prec)} {un}"
-    except Exception as exc:
-        print(exc)
-        gravity = "---"
-    try:
-        abv = f"{round(input_data.get_abv(), 1)} %"
-    except Exception as exc:
-        print(exc)
-        abv = "---"
-    try:
-        ibu = f"{round(input_data.get_ibu(), 1)} IBU"
-    except Exception as exc:
-        print(exc)
-        ibu = "---"
-    try:
-        bitterness_ratio = f"{round(input_data.get_bitterness_ratio(), 1)}"
-    except Exception as exc:
-        print(exc)
-        bitterness_ratio = "---"
+    if user_units["gravity_units"] == "plato":
+        preboil_gravity = get_repr(
+            obj=recipe.get_preboil_gravity(), attr="plato", prec=1, repr_="°P"
+        )
+        gravity = get_repr(obj=recipe.get_gravity(), attr="plato", prec=1, repr_="°P")
+    else:
+        preboil_gravity = get_repr(
+            obj=recipe.get_preboil_gravity(), attr="sg", prec=1, repr_="SG"
+        )
+        gravity = get_repr(obj=recipe.get_gravity(), attr="sg", prec=1, repr_="")
+    abv = get_repr(obj=recipe.get_abv(), prec=1, repr_="%")
+    ibu = get_repr(obj=recipe.get_ibu(), prec=1, repr_="IBU")
+    bitterness_ratio = get_repr(obj=recipe.get_bitterness_ratio(), prec=1, repr_="")
     data = {
         "boil_volume": boil_volume,
         "primary_volume": primary_volume,
@@ -232,13 +189,13 @@ class LoginAndOwnershipRequiredMixin(UserPassesTestMixin, LoginRequiredMixin):
 
 
 class BaseAutocomplete(LoginRequiredMixin, ListView):
-    http_method_allowed = ('GET', 'POST')
+    http_method_allowed = ("GET", "POST")
 
     def dispatch(self, request, *args, **kwargs):
         if request.method.upper() not in self.http_method_allowed:
             return HttpResponseNotAllowed(self.http_method_allowed)
 
-        self.q = request.GET.get('q', '')
+        self.q = request.GET.get("q", "")
         return super(ListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -254,11 +211,13 @@ class BaseAutocomplete(LoginRequiredMixin, ListView):
 
         return JsonResponse(
             {
-                'suggestions': self.get_results(context),
-            })
+                "suggestions": self.get_results(context),
+            }
+        )
 
     def get_results(self, context):
         raise NotImplementedError
+
 
 class FermentableAutocomplete(BaseAutocomplete):
     model = Fermentable
@@ -267,14 +226,17 @@ class FermentableAutocomplete(BaseAutocomplete):
         """Return data for the 'results' key of the response."""
         return [
             {
-                'data': {
+                "data": {
                     "name": result.name,
                     "type": result.type,
-                    "color": getattr(result.color, self.request.user.profile.color_units.lower()),
-                    "extraction": result.extraction
+                    "color": getattr(
+                        result.color, self.request.user.profile.color_units.lower()
+                    ),
+                    "extraction": result.extraction,
                 },
-                'value': result.name,
-            } for result in context['object_list']
+                "value": result.name,
+            }
+            for result in context["object_list"]
         ]
 
 
@@ -285,12 +247,10 @@ class HopAutocomplete(BaseAutocomplete):
         """Return data for the 'results' key of the response."""
         return [
             {
-                'data': {
-                    "name": result.name,
-                    "alpha_acids": result.alpha_acids
-                },
-                'value': result.name,
-            } for result in context['object_list']
+                "data": {"name": result.name, "alpha_acids": result.alpha_acids},
+                "value": result.name,
+            }
+            for result in context["object_list"]
         ]
 
 
@@ -302,15 +262,16 @@ class YeastAutocomplete(BaseAutocomplete):
 
         return [
             {
-                'data': {
+                "data": {
                     "name": result.name,
                     "lab": result.lab,
                     "attenuation": result.get_average_attenuation(),
                     "form": result.form,
-                    "type": result.type
+                    "type": result.type,
                 },
-                'value': result.name,
-            } for result in context['object_list']
+                "value": result.name,
+            }
+            for result in context["object_list"]
         ]
 
 
@@ -322,17 +283,15 @@ class ExtraAutocomplete(BaseAutocomplete):
 
         return [
             {
-                'data': {
-                    "name": result.name,
-                    "use": result.use,
-                    "type": result.type
-                },
-                'value': result.name,
-            } for result in context['object_list']
+                "data": {"name": result.name, "use": result.use, "type": result.type},
+                "value": result.name,
+            }
+            for result in context["object_list"]
         ]
 
+
 class BatchView(UserPassesTestMixin, FormView):
-    template_name = 'brew/batch/batch.html'
+    template_name = "brew/batch/batch.html"
     batch = None
     form_class = None
 
@@ -348,7 +307,7 @@ class BatchView(UserPassesTestMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(BatchView, self).get_context_data(**kwargs)
-        units = functions.get_units_for_user(self.request.user)
+        units = functions.get_user_units_with_repr(self.request.user)
         context.update(units)
         context["batch"] = self.batch
         if self.batch is not None:
@@ -361,11 +320,13 @@ class BatchView(UserPassesTestMixin, FormView):
         # Get the next stage after this one.
         previous_stage = False
         if "next_stage" in form.data:
-            new_stage = BATCH_STAGE_ORDER[BATCH_STAGE_ORDER.index(current_stage)+1]
+            new_stage = BATCH_STAGE_ORDER[BATCH_STAGE_ORDER.index(current_stage) + 1]
         elif "previous_stage" in form.data:
             previous_stage = True
             try:
-                new_stage = BATCH_STAGE_ORDER[BATCH_STAGE_ORDER.index(current_stage)-1]
+                new_stage = BATCH_STAGE_ORDER[
+                    BATCH_STAGE_ORDER.index(current_stage) - 1
+                ]
             except IndexError:
                 new_stage = BATCH_STAGE_ORDER[0]
         elif "save" in form.data:
@@ -377,21 +338,25 @@ class BatchView(UserPassesTestMixin, FormView):
         if not form.instance.name:
             form.instance.name = form.instance.recipe.name
         if not form.instance.batch_number:
+
             def _get_batch_number():
-                batches = Batch.objects.filter(user=self.request.user).order_by("-batch_number")
+                batches = Batch.objects.filter(user=self.request.user).order_by(
+                    "-batch_number"
+                )
                 if len(batches) > 0:
                     num = batches[0].batch_number
                     return num + 1
                 else:
                     # this is the first batch ever
                     return 1
+
             form.instance.batch_number = _get_batch_number()
         if not previous_stage:
             form.save()  # This will save the underlying instance.
         else:
             form.instance.save()
         if new_stage == "FINISHED":
-            return redirect(reverse("brew:batch-detail", args=(form.instance.pk, )))
+            return redirect(reverse("brew:batch-detail", args=(form.instance.pk,)))
         # else
         return redirect(reverse("brew:batch-update", args=[form.instance.pk]))
 
@@ -411,7 +376,6 @@ class BatchView(UserPassesTestMixin, FormView):
             if self.batch.stage == "FINISHED":
                 self.batch.stage = "PACKAGING"
         return super(BatchView, self).get(request, *args, **kwargs)
-        
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
@@ -422,13 +386,13 @@ class BatchView(UserPassesTestMixin, FormView):
         fields = Batch.get_fields_by_stage(stage)
         # Use those fields to dynamically create a form with "modelform_factory"
         return modelform_factory(Batch, BaseBatchForm, fields)
-    
+
     def get_form_kwargs(self):
         # Make sure Django uses the same Batch instance we've already been
         # working on. Otherwise it will instantiate a new one after every submit.
         kwargs = super().get_form_kwargs()
         kwargs["instance"] = self.batch
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def test_func(self):
@@ -440,13 +404,13 @@ class BatchView(UserPassesTestMixin, FormView):
 class BatchListView(LoginRequiredMixin, ListView):
     model = Batch
     template_name = "brew/batch/list.html"
-    context_object_name = 'batches'
+    context_object_name = "batches"
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(BatchListView, self).get_context_data(**kwargs)
         batches = self.get_queryset()
-        page = self.request.GET.get('page')
+        page = self.request.GET.get("page")
         paginator = Paginator(batches, self.paginate_by)
         try:
             batches = paginator.page(page)
@@ -454,9 +418,9 @@ class BatchListView(LoginRequiredMixin, ListView):
             batches = paginator.page(1)
         except EmptyPage:
             batches = paginator.page(paginator.num_pages)
-        context['batches'] = batches
-        context['user'] = User.objects.get(id=self.request.user.id)
-        context['filter'] = filters.BatchFilter(self.request.GET)
+        context["batches"] = batches
+        context["user"] = User.objects.get(id=self.request.user.id)
+        context["filter"] = filters.BatchFilter(self.request.GET)
         return context
 
     def get_queryset(self):
@@ -468,54 +432,71 @@ class BatchListView(LoginRequiredMixin, ListView):
 
 class BatchDetailView(LoginAndOwnershipRequiredMixin, BSModalReadView):
     model = Batch
-    template_name = 'brew/batch/detail.html'
-    context_object_name = 'batch'
+    template_name = "brew/batch/detail.html"
+    context_object_name = "batch"
 
 
 class BatchDeleteView(LoginAndOwnershipRequiredMixin, BSModalDeleteView):
     model = Batch
-    template_name = 'brew/batch/delete.html'
-    success_message = 'Batch was deleted.'
-    success_url = reverse_lazy('brew:batch-list')
+    template_name = "brew/batch/delete.html"
+    success_message = "Batch was deleted."
+    success_url = reverse_lazy("brew:batch-list")
 
 
 def import_batch(batch, user):
-    batch_data = _clean_data(batch)
+    batch_data = functions.clean_data(batch)
     recipe = Recipe.objects.filter(name__icontains=batch_data["recipe"])
     user = User.objects.get(username=user)
     batch_data["user"] = user
     if "stage" not in batch_data:
         batch_data["stage"] = "FINISHED"
     if recipe.count() == 0:
-        raise Exception(f"Did not fount a recipe '{batch_data['recipe']}' for '{batch_data['name']}'")
+        raise Exception(
+            f"Did not fount a recipe '{batch_data['recipe']}' for '{batch_data['name']}'"
+        )
     elif recipe.count() > 1:
         print(f"Found too many recipes with name {batch['recipe']}")
     batch_data["recipe"] = recipe[0]
     temp_unit = batch_data["temperature_unit"]
     volume_unit = batch_data["volume_unit"]
     gravity_unit = batch_data["gravity_unit"]
-    batch_data["grain_temperature"] = Temperature(**{temp_unit: batch_data["grain_temperature"]})
-    batch_data["sparging_temperature"] = Temperature(**{temp_unit: batch_data["sparging_temperature"]})
-    batch_data["gravity_before_boil"] = BeerGravity(**{gravity_unit: batch_data["gravity_before_boil"]})
+    batch_data["grain_temperature"] = Temperature(
+        **{temp_unit: batch_data["grain_temperature"]}
+    )
+    batch_data["sparging_temperature"] = Temperature(
+        **{temp_unit: batch_data["sparging_temperature"]}
+    )
+    batch_data["gravity_before_boil"] = BeerGravity(
+        **{gravity_unit: batch_data["gravity_before_boil"]}
+    )
     if batch_data["end_gravity"] is not None:
-        batch_data["end_gravity"] = BeerGravity(**{gravity_unit: batch_data["end_gravity"]})
+        batch_data["end_gravity"] = BeerGravity(
+            **{gravity_unit: batch_data["end_gravity"]}
+        )
     else:
         del batch_data["end_gravity"]
     if batch_data.get("post_primary_gravity") is not None:
-        batch_data["post_primary_gravity"] = BeerGravity(**{gravity_unit: batch_data["post_primary_gravity"]})
+        batch_data["post_primary_gravity"] = BeerGravity(
+            **{gravity_unit: batch_data["post_primary_gravity"]}
+        )
     else:
         del batch_data["post_primary_gravity"]
-    batch_data["initial_gravity"] = BeerGravity(**{gravity_unit: batch_data["initial_gravity"]})
+    batch_data["initial_gravity"] = BeerGravity(
+        **{gravity_unit: batch_data["initial_gravity"]}
+    )
     batch_data["wort_volume"] = Volume(**{volume_unit: batch_data["wort_volume"]})
-    batch_data["boil_loss"] = Volume(**{volume_unit: batch_data["boil_loss"] if batch_data["boil_loss"] is not None else 0})
+    batch_data["boil_loss"] = Volume(
+        **{
+            volume_unit: batch_data["boil_loss"]
+            if batch_data["boil_loss"] is not None
+            else 0
+        }
+    )
     if batch_data["beer_volume"] is not None:
         batch_data["beer_volume"] = Volume(**{volume_unit: batch_data["beer_volume"]})
     else:
         del batch_data["beer_volume"]
-    to_del = [
-        "temperature_unit",
-        "volume_unit",
-        "gravity_unit"]
+    to_del = ["temperature_unit", "volume_unit", "gravity_unit"]
     for d in to_del:
         del batch_data[d]
 
@@ -530,7 +511,6 @@ def import_batch(batch, user):
     new_batch.save()
 
 
-
 @shared_task(bind=True)
 def import_batches(self, batches, user):
     progress_recorder = ProgressRecorder(self)
@@ -539,41 +519,45 @@ def import_batches(self, batches, user):
     for batch in batches:
         import_batch(batch, user)
         uploaded += 1
-        progress_recorder.set_progress(uploaded, number_of_batches, f"Uploaded {batch['name']}")
+        progress_recorder.set_progress(
+            uploaded, number_of_batches, f"Uploaded {batch['name']}"
+        )
     return uploaded
 
 
 class BatchImportView(LoginRequiredMixin, FormView):
     form_class = BatchImportForm
-    success_url = reverse_lazy('brew:batch-list')
-    template_name = 'brew/batch/import.html'
-    success_message = 'Upload was successfully started!'
+    success_url = reverse_lazy("brew:batch-list")
+    template_name = "brew/batch/import.html"
+    success_message = "Upload was successfully started!"
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             batches = json.load(request.FILES["json_file"])
             result = import_batches.delay(batches, request.user.username)
-            messages.add_message(request, messages.SUCCESS, result.task_id, extra_tags="task_id")
+            messages.add_message(
+                request, messages.SUCCESS, result.task_id, extra_tags="task_id"
+            )
             return redirect(self.success_url)
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {"form": form})
 
 
 class FermentableListView(LoginRequiredMixin, ListView):
     model = Fermentable
     template_name = "brew/fermentable/list.html"
-    context_object_name = 'fermentables'
+    context_object_name = "fermentables"
     paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(FermentableListView, self).get_context_data(**kwargs)
         fermentables = self.get_queryset()
-        page = self.request.GET.get('page')
+        page = self.request.GET.get("page")
         paginator = Paginator(fermentables, self.paginate_by)
         try:
             fermentables = paginator.page(page)
@@ -581,9 +565,9 @@ class FermentableListView(LoginRequiredMixin, ListView):
             fermentables = paginator.page(1)
         except EmptyPage:
             fermentables = paginator.page(paginator.num_pages)
-        context['fermentables'] = fermentables
-        context['user'] = User.objects.get(id=self.request.user.id)
-        context['filter'] = filters.FermentableFilter(self.request.GET)
+        context["fermentables"] = fermentables
+        context["user"] = User.objects.get(id=self.request.user.id)
+        context["filter"] = filters.FermentableFilter(self.request.GET)
         return context
 
     def get_queryset(self):
@@ -593,47 +577,49 @@ class FermentableListView(LoginRequiredMixin, ListView):
 
 
 class FermentableCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
-    template_name = 'brew/fermentable/create.html'
+    template_name = "brew/fermentable/create.html"
     form_class = FermentableModelForm
-    success_message = 'Fermentable was successfully created.'
-    success_url = reverse_lazy('brew:fermentable-list')
+    success_message = "Fermentable was successfully created."
+    success_url = reverse_lazy("brew:fermentable-list")
 
 
 class FermentableDetailView(LoginRequiredMixin, BSModalReadView):
     model = Fermentable
-    template_name = 'brew/fermentable/detail.html'
-    context_object_name = 'fermentable'
+    template_name = "brew/fermentable/detail.html"
+    context_object_name = "fermentable"
 
 
 class FermentableUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
     model = Fermentable
     form_class = FermentableModelForm
-    template_name = 'brew/fermentable/update.html'
-    success_message = 'Success: Fermentable was updated.'
-    context_object_name = 'fermentable'
-    success_url = reverse_lazy('brew:fermentable-list')
+    template_name = "brew/fermentable/update.html"
+    success_message = "Success: Fermentable was updated."
+    context_object_name = "fermentable"
+    success_url = reverse_lazy("brew:fermentable-list")
 
 
 class FermentableDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Fermentable
-    template_name = 'brew/fermentable/delete.html'
-    success_message = 'Fermentable was deleted.'
-    success_url = reverse_lazy('brew:fermentable-list')
+    template_name = "brew/fermentable/delete.html"
+    success_message = "Fermentable was deleted."
+    success_url = reverse_lazy("brew:fermentable-list")
+
 
 #
 # HOPS
 #
 
+
 class HopListView(LoginRequiredMixin, ListView):
     model = Hop
     template_name = "brew/hop/list.html"
-    context_object_name = 'hops'
+    context_object_name = "hops"
     paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(HopListView, self).get_context_data(**kwargs)
         hops = self.get_queryset()
-        page = self.request.GET.get('page')
+        page = self.request.GET.get("page")
         paginator = Paginator(hops, self.paginate_by)
         try:
             hops = paginator.page(page)
@@ -641,9 +627,9 @@ class HopListView(LoginRequiredMixin, ListView):
             hops = paginator.page(1)
         except EmptyPage:
             hops = paginator.page(paginator.num_pages)
-        context['hops'] = hops
-        context['user'] = User.objects.get(id=self.request.user.id)
-        context['filter'] = filters.HopFilter(self.request.GET)
+        context["hops"] = hops
+        context["user"] = User.objects.get(id=self.request.user.id)
+        context["filter"] = filters.HopFilter(self.request.GET)
         return context
 
     def get_queryset(self):
@@ -653,32 +639,32 @@ class HopListView(LoginRequiredMixin, ListView):
 
 
 class HopCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
-    template_name = 'brew/hop/create.html'
+    template_name = "brew/hop/create.html"
     form_class = HopModelForm
-    success_message = 'Hop was successfully created.'
-    success_url = reverse_lazy('brew:hop-list')
+    success_message = "Hop was successfully created."
+    success_url = reverse_lazy("brew:hop-list")
 
 
 class HopDetailView(LoginRequiredMixin, BSModalReadView):
     model = Hop
-    template_name = 'brew/hop/detail.html'
-    context_object_name = 'hop'
+    template_name = "brew/hop/detail.html"
+    context_object_name = "hop"
 
 
 class HopUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
     model = Hop
     form_class = HopModelForm
-    template_name = 'brew/hop/update.html'
-    success_message = 'Success: Hop was updated.'
-    context_object_name = 'hop'
-    success_url = reverse_lazy('brew:hop-list')
+    template_name = "brew/hop/update.html"
+    success_message = "Success: Hop was updated."
+    context_object_name = "hop"
+    success_url = reverse_lazy("brew:hop-list")
 
 
 class HopDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Hop
-    template_name = 'brew/hop/delete.html'
-    success_message = 'Hop was deleted.'
-    success_url = reverse_lazy('brew:hop-list')
+    template_name = "brew/hop/delete.html"
+    success_message = "Hop was deleted."
+    success_url = reverse_lazy("brew:hop-list")
 
 
 #
@@ -687,13 +673,13 @@ class HopDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
 class YeastListView(LoginRequiredMixin, ListView):
     model = Yeast
     template_name = "brew/yeast/list.html"
-    context_object_name = 'yeasts'
+    context_object_name = "yeasts"
     paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(YeastListView, self).get_context_data(**kwargs)
         yeasts = self.get_queryset()
-        page = self.request.GET.get('page')
+        page = self.request.GET.get("page")
         paginator = Paginator(yeasts, self.paginate_by)
         try:
             yeasts = paginator.page(page)
@@ -701,9 +687,9 @@ class YeastListView(LoginRequiredMixin, ListView):
             yeasts = paginator.page(1)
         except EmptyPage:
             yeasts = paginator.page(paginator.num_pages)
-        context['yeasts'] = yeasts
-        context['user'] = User.objects.get(id=self.request.user.id)
-        context['filter'] = filters.YeastFilter(self.request.GET)
+        context["yeasts"] = yeasts
+        context["user"] = User.objects.get(id=self.request.user.id)
+        context["filter"] = filters.YeastFilter(self.request.GET)
         return context
 
     def get_queryset(self):
@@ -713,32 +699,32 @@ class YeastListView(LoginRequiredMixin, ListView):
 
 
 class YeastCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
-    template_name = 'brew/yeast/create.html'
+    template_name = "brew/yeast/create.html"
     form_class = YeastModelForm
-    success_message = 'Yeast was successfully created.'
-    success_url = reverse_lazy('brew:yeast-list')
+    success_message = "Yeast was successfully created."
+    success_url = reverse_lazy("brew:yeast-list")
 
 
 class YeastDetailView(LoginRequiredMixin, BSModalReadView):
     model = Yeast
-    template_name = 'brew/yeast/detail.html'
-    context_object_name = 'yeast'
+    template_name = "brew/yeast/detail.html"
+    context_object_name = "yeast"
 
 
 class YeastUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
     model = Yeast
     form_class = YeastModelForm
-    template_name = 'brew/yeast/update.html'
-    success_message = 'Success: Yeast was updated.'
-    context_object_name = 'yeast'
-    success_url = reverse_lazy('brew:yeast-list')
+    template_name = "brew/yeast/update.html"
+    success_message = "Success: Yeast was updated."
+    context_object_name = "yeast"
+    success_url = reverse_lazy("brew:yeast-list")
 
 
 class YeastDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Yeast
-    template_name = 'brew/yeast/delete.html'
-    success_message = 'Yeast was deleted.'
-    success_url = reverse_lazy('brew:yeast-list')
+    template_name = "brew/yeast/delete.html"
+    success_message = "Yeast was deleted."
+    success_url = reverse_lazy("brew:yeast-list")
 
 
 #
@@ -747,13 +733,13 @@ class YeastDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView)
 class ExtraListView(LoginRequiredMixin, ListView):
     model = Extra
     template_name = "brew/extra/list.html"
-    context_object_name = 'extras'
+    context_object_name = "extras"
     paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(ExtraListView, self).get_context_data(**kwargs)
         extras = self.get_queryset()
-        page = self.request.GET.get('page')
+        page = self.request.GET.get("page")
         paginator = Paginator(extras, self.paginate_by)
         try:
             extras = paginator.page(page)
@@ -761,9 +747,9 @@ class ExtraListView(LoginRequiredMixin, ListView):
             extras = paginator.page(1)
         except EmptyPage:
             extras = paginator.page(paginator.num_pages)
-        context['extras'] = extras
-        context['user'] = User.objects.get(id=self.request.user.id)
-        context['filter'] = filters.ExtraFilter(self.request.GET)
+        context["extras"] = extras
+        context["user"] = User.objects.get(id=self.request.user.id)
+        context["filter"] = filters.ExtraFilter(self.request.GET)
         return context
 
     def get_queryset(self):
@@ -773,32 +759,32 @@ class ExtraListView(LoginRequiredMixin, ListView):
 
 
 class ExtraCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
-    template_name = 'brew/extra/create.html'
+    template_name = "brew/extra/create.html"
     form_class = ExtraModelForm
-    success_message = 'Extra was successfully created.'
-    success_url = reverse_lazy('brew:extra-list')
+    success_message = "Extra was successfully created."
+    success_url = reverse_lazy("brew:extra-list")
 
 
 class ExtraDetailView(LoginRequiredMixin, BSModalReadView):
     model = Extra
-    template_name = 'brew/extra/detail.html'
-    context_object_name = 'extra'
+    template_name = "brew/extra/detail.html"
+    context_object_name = "extra"
 
 
 class ExtraUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
     model = Extra
     form_class = ExtraModelForm
-    template_name = 'brew/extra/update.html'
-    success_message = 'Success: Extra was updated.'
-    context_object_name = 'extra'
-    success_url = reverse_lazy('brew:extra-list')
+    template_name = "brew/extra/update.html"
+    success_message = "Success: Extra was updated."
+    context_object_name = "extra"
+    success_url = reverse_lazy("brew:extra-list")
 
 
 class ExtraDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Extra
-    template_name = 'brew/extra/delete.html'
-    success_message = 'Extra was deleted.'
-    success_url = reverse_lazy('brew:extra-list')
+    template_name = "brew/extra/delete.html"
+    success_message = "Extra was deleted."
+    success_url = reverse_lazy("brew:extra-list")
 
 
 #
@@ -807,13 +793,13 @@ class ExtraDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView)
 class StyleListView(LoginRequiredMixin, ListView):
     model = Style
     template_name = "brew/style/list.html"
-    context_object_name = 'styles'
+    context_object_name = "styles"
     paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(StyleListView, self).get_context_data(**kwargs)
         styles = self.get_queryset()
-        page = self.request.GET.get('page')
+        page = self.request.GET.get("page")
         paginator = Paginator(styles, self.paginate_by)
         try:
             styles = paginator.page(page)
@@ -821,9 +807,9 @@ class StyleListView(LoginRequiredMixin, ListView):
             styles = paginator.page(1)
         except EmptyPage:
             styles = paginator.page(paginator.num_pages)
-        context['styles'] = styles
-        context['user'] = User.objects.get(id=self.request.user.id)
-        context['filter'] = filters.StyleFilter(self.request.GET)
+        context["styles"] = styles
+        context["user"] = User.objects.get(id=self.request.user.id)
+        context["filter"] = filters.StyleFilter(self.request.GET)
         return context
 
     def get_queryset(self):
@@ -833,22 +819,22 @@ class StyleListView(LoginRequiredMixin, ListView):
 
 
 class StyleCreateView(LoginRequiredMixin, StaffRequiredMixin, BSModalCreateView):
-    template_name = 'brew/style/create.html'
+    template_name = "brew/style/create.html"
     form_class = StyleModelForm
-    success_message = 'Style was successfully created.'
-    success_url = reverse_lazy('brew:style-list')
+    success_message = "Style was successfully created."
+    success_url = reverse_lazy("brew:style-list")
 
 
 class StyleDetailView(LoginRequiredMixin, BSModalReadView):
     model = Style
-    template_name = 'brew/style/detail.html'
-    context_object_name = 'style'
+    template_name = "brew/style/detail.html"
+    context_object_name = "style"
 
 
 class StyleInfoView(LoginRequiredMixin, BSModalReadView):
-    http_method_allowed = ('GET', 'POST')
+    http_method_allowed = ("GET", "POST")
     model = Style
-    context_object_name = 'style'
+    context_object_name = "style"
 
     def get_context_data(self, **kwargs):
         context = super(StyleInfoView, self).get_context_data(**kwargs)
@@ -862,7 +848,7 @@ class StyleInfoView(LoginRequiredMixin, BSModalReadView):
             gprec = 4
         return JsonResponse(
             {
-                'name': context["style"].name,
+                "name": context["style"].name,
                 "og_min": f'{round(getattr(context["style"].og_min, self.request.user.profile.gravity_units.lower()), gprec)}',
                 "og_max": f'{round(getattr(context["style"].og_max, self.request.user.profile.gravity_units.lower()), gprec)}',
                 "fg_min": f'{round(getattr(context["style"].fg_min, self.request.user.profile.gravity_units.lower()), gprec)}',
@@ -872,24 +858,25 @@ class StyleInfoView(LoginRequiredMixin, BSModalReadView):
                 "color_min": f'{round(getattr(context["style"].color_min, self.request.user.profile.color_units.lower()), 1)}',
                 "color_max": f'{round(getattr(context["style"].color_max, self.request.user.profile.color_units.lower()), 1)}',
                 "alcohol_min": f'{round(float(context["style"].alcohol_min), 1)}',
-                "alcohol_max": f'{round(float(context["style"].alcohol_max), 1)}'
-            })
+                "alcohol_max": f'{round(float(context["style"].alcohol_max), 1)}',
+            }
+        )
 
 
 class StyleUpdateView(LoginRequiredMixin, StaffRequiredMixin, BSModalUpdateView):
     model = Style
     form_class = StyleModelForm
-    template_name = 'brew/style/update.html'
-    success_message = 'Success: Style was updated.'
-    context_object_name = 'style'
-    success_url = reverse_lazy('brew:style-list')
+    template_name = "brew/style/update.html"
+    success_message = "Success: Style was updated."
+    context_object_name = "style"
+    success_url = reverse_lazy("brew:style-list")
 
 
 class StyleDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
     model = Style
-    template_name = 'brew/style/delete.html'
-    success_message = 'Style was deleted.'
-    success_url = reverse_lazy('brew:style-list')
+    template_name = "brew/style/delete.html"
+    success_message = "Style was deleted."
+    success_url = reverse_lazy("brew:style-list")
 
 
 #
@@ -898,13 +885,13 @@ class StyleDeleteView(LoginRequiredMixin, StaffRequiredMixin, BSModalDeleteView)
 class RecipeListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = "brew/recipe/list.html"
-    context_object_name = 'recipes'
+    context_object_name = "recipes"
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(RecipeListView, self).get_context_data(**kwargs)
         recipes = self.get_queryset()
-        page = self.request.GET.get('page')
+        page = self.request.GET.get("page")
         paginator = Paginator(recipes, self.paginate_by)
         try:
             recipes = paginator.page(page)
@@ -912,9 +899,9 @@ class RecipeListView(LoginRequiredMixin, ListView):
             recipes = paginator.page(1)
         except EmptyPage:
             recipes = paginator.page(paginator.num_pages)
-        context['recipes'] = recipes
-        context['user'] = User.objects.get(id=self.request.user.id)
-        context['filter'] = filters.RecipeFilter(self.request.GET)
+        context["recipes"] = recipes
+        context["user"] = User.objects.get(id=self.request.user.id)
+        context["filter"] = filters.RecipeFilter(self.request.GET)
         return context
 
     def get_queryset(self):
@@ -925,40 +912,52 @@ class RecipeListView(LoginRequiredMixin, ListView):
 
 
 class RecipeCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'brew/recipe/edit.html'
+    template_name = "brew/recipe/edit.html"
     form_class = RecipeModelForm
-    success_message = 'Recipe was successfully created.'
-    success_url = reverse_lazy('brew:recipe-list')
+    success_message = "Recipe was successfully created."
+    success_url = reverse_lazy("brew:recipe-list")
 
     def get_form_kwargs(self):
         kwargs = super(RecipeCreateView, self).get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def get_context_data(self, **kwargs):
         data = super(RecipeCreateView, self).get_context_data(**kwargs)
         data["title"] = "Create New Recipe"
         if self.request.POST:
-            data['fermentables'] = forms.IngredientFermentableFormSet(self.request.POST, request=self.request)
-            data['hops'] = forms.IngredientHopFormSet(self.request.POST, request=self.request)
-            data['yeasts'] = forms.IngredientYeastFormSet(self.request.POST, request=self.request)
-            data['extras'] = forms.IngredientExtraFormSet(self.request.POST, request=self.request)
-            data['mash_steps'] = forms.MashStepFormSet(self.request.POST, request=self.request)
+            data["fermentables"] = forms.IngredientFermentableFormSet(
+                self.request.POST, request=self.request
+            )
+            data["hops"] = forms.IngredientHopFormSet(
+                self.request.POST, request=self.request
+            )
+            data["yeasts"] = forms.IngredientYeastFormSet(
+                self.request.POST, request=self.request
+            )
+            data["extras"] = forms.IngredientExtraFormSet(
+                self.request.POST, request=self.request
+            )
+            data["mash_steps"] = forms.MashStepFormSet(
+                self.request.POST, request=self.request
+            )
         else:
-            data['fermentables'] = forms.IngredientFermentableFormSet(request=self.request)
-            data['hops'] = forms.IngredientHopFormSet(request=self.request)
-            data['yeasts'] = forms.IngredientYeastFormSet(request=self.request)
-            data['extras'] = forms.IngredientExtraFormSet(request=self.request)
-            data['mash_steps'] = forms.MashStepFormSet(request=self.request)
+            data["fermentables"] = forms.IngredientFermentableFormSet(
+                request=self.request
+            )
+            data["hops"] = forms.IngredientHopFormSet(request=self.request)
+            data["yeasts"] = forms.IngredientYeastFormSet(request=self.request)
+            data["extras"] = forms.IngredientExtraFormSet(request=self.request)
+            data["mash_steps"] = forms.MashStepFormSet(request=self.request)
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
-        fermentables = context['fermentables']
-        hops = context['hops']
-        extras = context['extras']
-        yeasts = context['yeasts']
-        mash_steps = context['mash_steps']
+        fermentables = context["fermentables"]
+        hops = context["hops"]
+        extras = context["extras"]
+        yeasts = context["yeasts"]
+        mash_steps = context["mash_steps"]
         formsets = [fermentables, hops, yeasts, mash_steps, extras]
         with transaction.atomic():
             form.instance.user = self.request.user
@@ -980,43 +979,63 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 
 
 class RecipeUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
-    template_name = 'brew/recipe/edit.html'
+    template_name = "brew/recipe/edit.html"
     form_class = RecipeModelForm
-    success_message = 'Recipe was successfully updated.'
-    success_url = reverse_lazy('brew:recipe-list')
+    success_message = "Recipe was successfully updated."
+    success_url = reverse_lazy("brew:recipe-list")
     model = Recipe
 
     def get_form_kwargs(self):
         kwargs = super(RecipeUpdateView, self).get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
     def get_context_data(self, **kwargs):
         data = super(RecipeUpdateView, self).get_context_data(**kwargs)
-        units = functions.get_units_for_user(self.request.user)
+        units = functions.get_user_units_with_repr(self.request.user)
         data.update(units)
         data["title"] = "Update Recipe"
         if self.request.POST:
-            data['fermentables'] = forms.IngredientFermentableFormSet(self.request.POST, request=self.request, instance=self.object)
-            data['hops'] = forms.IngredientHopFormSet(self.request.POST, request=self.request, instance=self.object)
-            data['yeasts'] = forms.IngredientYeastFormSet(self.request.POST, request=self.request, instance=self.object)
-            data['extras'] = forms.IngredientExtraFormSet(self.request.POST, request=self.request, instance=self.object)
-            data['mash_steps'] = forms.MashStepFormSet(self.request.POST, request=self.request, instance=self.object)
+            data["fermentables"] = forms.IngredientFermentableFormSet(
+                self.request.POST, request=self.request, instance=self.object
+            )
+            data["hops"] = forms.IngredientHopFormSet(
+                self.request.POST, request=self.request, instance=self.object
+            )
+            data["yeasts"] = forms.IngredientYeastFormSet(
+                self.request.POST, request=self.request, instance=self.object
+            )
+            data["extras"] = forms.IngredientExtraFormSet(
+                self.request.POST, request=self.request, instance=self.object
+            )
+            data["mash_steps"] = forms.MashStepFormSet(
+                self.request.POST, request=self.request, instance=self.object
+            )
         else:
-            data['fermentables'] = forms.IngredientFermentableFormSet(request=self.request, instance=self.object)
-            data['hops'] = forms.IngredientHopFormSet(request=self.request, instance=self.object)
-            data['yeasts'] = forms.IngredientYeastFormSet(request=self.request, instance=self.object)
-            data['extras'] = forms.IngredientExtraFormSet(request=self.request, instance=self.object)
-            data['mash_steps'] = forms.MashStepFormSet(request=self.request, instance=self.object)
+            data["fermentables"] = forms.IngredientFermentableFormSet(
+                request=self.request, instance=self.object
+            )
+            data["hops"] = forms.IngredientHopFormSet(
+                request=self.request, instance=self.object
+            )
+            data["yeasts"] = forms.IngredientYeastFormSet(
+                request=self.request, instance=self.object
+            )
+            data["extras"] = forms.IngredientExtraFormSet(
+                request=self.request, instance=self.object
+            )
+            data["mash_steps"] = forms.MashStepFormSet(
+                request=self.request, instance=self.object
+            )
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
-        fermentables = context['fermentables']
-        hops = context['hops']
-        extras = context['extras']
-        yeasts = context['yeasts']
-        mash_steps = context['mash_steps']
+        fermentables = context["fermentables"]
+        hops = context["hops"]
+        extras = context["extras"]
+        yeasts = context["yeasts"]
+        mash_steps = context["mash_steps"]
         formsets = [fermentables, hops, yeasts, extras, mash_steps]
         with transaction.atomic():
             form.instance.user = self.request.user
@@ -1039,21 +1058,23 @@ class RecipeUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
 
 class RecipeDetailView(LoginAndOwnershipRequiredMixin, BSModalReadView):
     model = Recipe
-    template_name = 'brew/recipe/detail.html'
-    context_object_name = 'recipe'
+    template_name = "brew/recipe/detail.html"
+    context_object_name = "recipe"
 
     def get_context_data(self, **kwargs):
         data = super(RecipeDetailView, self).get_context_data(**kwargs)
-        units = functions.get_units_for_user(self.request.user)
+        units = functions.get_user_units_with_repr(self.request.user)
         data.update(units)
         return data
 
 
-class RecipeDeleteView(LoginAndOwnershipRequiredMixin, StaffRequiredMixin, BSModalDeleteView):
+class RecipeDeleteView(
+    LoginAndOwnershipRequiredMixin, StaffRequiredMixin, BSModalDeleteView
+):
     model = Recipe
-    template_name = 'brew/recipe/delete.html'
-    success_message = 'Recipe was deleted.'
-    success_url = reverse_lazy('brew:recipe-list')
+    template_name = "brew/recipe/delete.html"
+    success_message = "Recipe was deleted."
+    success_url = reverse_lazy("brew:recipe-list")
 
 
 class RecipePrintView(WeasyTemplateResponseMixin, RecipeDetailView):
@@ -1062,28 +1083,29 @@ class RecipePrintView(WeasyTemplateResponseMixin, RecipeDetailView):
     #     static('/fontawesome_free/css/all.min.css'),
     #     static('/css/project.css'),
     # ]
-    template_name = 'brew/recipe/print.html'
+    template_name = "brew/recipe/print.html"
     pdf_attachment = False
 
 
 def import_recipe(recipe, user):
     """Import recipe to DB"""
-    recipe_data = _clean_data(recipe)
+    recipe_data = functions.clean_data(recipe)
     user = User.objects.get(username=user)
     style = []
-    if isinstance(recipe_data["style"], str): # this is probably name not pk
+    if isinstance(recipe_data["style"], str):  # this is probably name not pk
         style = Style.objects.filter(name__icontains=recipe_data["style"])
     else:
         style = Style.objects.filter(pk=recipe_data["style"])
     if style.count() == 0:
-        raise Exception(f"Did not fount a syle '{recipe_data['style']}' for '{recipe_data['name']}'")
+        raise Exception(
+            f"Did not fount a syle '{recipe_data['style']}' for '{recipe_data['name']}'"
+        )
     recipe_data["style"] = style[0].id
     serializer = RecipeSerializer(data=recipe_data, user=user)
     if serializer.is_valid():
         serializer.save()
     else:
         raise Exception(serializer.errors)
-
 
 
 @shared_task(bind=True)
@@ -1094,26 +1116,30 @@ def import_recipes(self, recipes, user):
     for recipe in recipes:
         import_recipe(recipe, user)
         uploaded += 1
-        progress_recorder.set_progress(uploaded, number_of_recipes, f"Uploaded {recipe['name']}")
+        progress_recorder.set_progress(
+            uploaded, number_of_recipes, f"Uploaded {recipe['name']}"
+        )
     return uploaded
 
 
 class RecipeImportView(LoginRequiredMixin, FormView):
     form_class = RecipeImportForm
-    success_url = reverse_lazy('brew:recipe-list')
-    template_name = 'brew/recipe/import.html'
-    success_message = 'Upload was successfully started!'
+    success_url = reverse_lazy("brew:recipe-list")
+    template_name = "brew/recipe/import.html"
+    success_message = "Upload was successfully started!"
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             recipes = json.load(request.FILES["json_file"])
             result = import_recipes.delay(recipes, request.user.username)
-            messages.add_message(request, messages.SUCCESS, result.task_id, extra_tags="task_id")
+            messages.add_message(
+                request, messages.SUCCESS, result.task_id, extra_tags="task_id"
+            )
             return redirect(self.success_url)
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {"form": form})

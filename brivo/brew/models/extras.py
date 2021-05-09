@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from brivo.brew.models import BaseModel, MASS_UNITS, TIME_CHOICE
 
+from modelcluster.fields import ParentalKey
 from django_measurement.models import MeasurementField
 from measurement.measures import Weight
 
@@ -54,7 +55,7 @@ class InventoryExtra(BaseExtra):
 
 
 class IngredientExtra(BaseExtra):
-    recipe = models.ForeignKey(
+    recipe = ParentalKey(
         "brew.Recipe",
         verbose_name=_("Recipe"),
         on_delete=models.CASCADE,

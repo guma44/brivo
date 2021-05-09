@@ -16,7 +16,6 @@
 $(document).ready(function() {
   $("form").on("change", function () {
     let arrayform = $("form").serializeArray();
-    console.log(arrayform)
     input_data = {
         "fermentables": {},
         "hops": {},
@@ -35,12 +34,15 @@ $(document).ready(function() {
         !(idx in input_data[type]) && (input_data[type][idx] = {})
         if (name.endsWith("_0")) {
             input_data[type][idx][new_name] = arrayform[i].value
-            unit_id = "#id_" + arrayform[i].name.substring(0, arrayform[i].name.length - 2) + "_1";
-            var unit = $(unit_id).text()
-            input_data[type][idx][new_name + "_unit"] = unit
+            //unit_id = "#id_" + arrayform[i].name.substring(0, arrayform[i].name.length - 2) + "_1";
+            //var unit = $(unit_id).text()
+            //input_data[type][idx][new_name + "_unit"] = unit
         }
         else if (name.endsWith("_1")) {
-            input_data[type][idx][new_name + "_unit"] = arrayform[i].value
+            input_data[type][idx][new_name] = input_data[type][idx][new_name] + arrayform[i].value
+        }
+        else if (name.endsWith("_ptr") || (name == "DELETE") || (name == "recipe")) {
+            //
         }
         else {
           var [type, idx, name] = arrayform[i].name.split("-");
@@ -50,6 +52,9 @@ $(document).ready(function() {
       else if (arrayform[i].name.startsWith("expected_beer_volume_0")) {
         var new_name = arrayform[i].name.substring(0, arrayform[i].name.length - 2)
         input_data[new_name] = arrayform[i].value;
+        unit_id = "#id_" + arrayform[i].name.substring(0, arrayform[i].name.length - 2) + "_1";
+        var unit = $(unit_id).text().replace(/(\r\n|\n|\r)/gm, "");
+        input_data[new_name] = arrayform[i].value + unit
       }
       else {
         input_data[arrayform[i].name] = arrayform[i].value;

@@ -8,6 +8,7 @@ from brivo.utils import functions
 
 from django_measurement.models import MeasurementField
 from measurement.measures import Volume, Temperature
+from modelcluster.fields import ParentalKey
 
 
 __all__ = ("Batch", "BATCH_STAGE_ORDER", "BATCH_STAGES")
@@ -33,7 +34,7 @@ class Batch(BaseModel):
     stage = models.CharField(
         _("Stage"), max_length=50, choices=BATCH_STAGES, default="INIT"
     )
-    recipe = models.ForeignKey(
+    recipe = ParentalKey(
         "Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE
     )
     user = models.ForeignKey(

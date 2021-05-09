@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from brivo.brew.models import BaseModel, MASS_UNITS, TIME_CHOICE
 
+from modelcluster.fields import ParentalKey
 from django_measurement.models import MeasurementField
 from measurement.measures import Weight
 
@@ -44,7 +45,7 @@ class BaseHop(BaseModel):
 
 
 class Hop(BaseHop):
-    country = models.ForeignKey(
+    country = ParentalKey(
         "Country",
         verbose_name=_("Country"),
         on_delete=models.CASCADE,
@@ -124,7 +125,7 @@ class InventoryHop(BaseHop):
 
 
 class IngredientHop(BaseHop):
-    recipe = models.ForeignKey(
+    recipe = ParentalKey(
         "brew.Recipe",
         verbose_name=_("Recipe"),
         on_delete=models.CASCADE,

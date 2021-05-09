@@ -49,7 +49,6 @@ $(function() {
         formCssClass: '{{ formset.prefix }}-dynamic-form', 
         added: function(row) {
             let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
-            console.log("Binding to " + '#id_hops-' + row_index + '-name');
             $('#id_hops-' + row_index + '-name').autocomplete({
                 serviceUrl: '/brew/hop/autocomplete',
                 noCache: false,

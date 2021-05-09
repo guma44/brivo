@@ -47,7 +47,6 @@ $(function() {
         formCssClass: '{{ formset.prefix }}-dynamic-form', 
         added: function(row) {
             let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
-            console.log("Binding to " + '#id_fermentables-' + row_index + '-name');
             $('#id_fermentables-' + row_index + '-name').autocomplete({
                 serviceUrl: '/brew/fermentable/autocomplete',
                 noCache: false,
@@ -56,7 +55,6 @@ $(function() {
                 width: '300',
                 onSelect: function (suggestion) {
                     let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
-                    console.log("Adding color to " + '#id_fermentables-' + row_index + '-color_0');
                     $('#id_fermentables-' + row_index + '-type').val(suggestion.data.type);
                     $('#div_id_fermentables-' + row_index + '-color').find("input").val(suggestion.data.color);
                     $('#id_fermentables-' + row_index + '-extraction').val(suggestion.data.extraction);
