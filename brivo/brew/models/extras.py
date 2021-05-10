@@ -37,8 +37,8 @@ class BaseExtra(BaseModel):
 
 
 class Extra(BaseExtra):
-    desc = models.CharField(_("Description"), max_length=1000)
-    active = models.DecimalField(_("Active"), max_digits=5, decimal_places=2)
+    desc = models.CharField(_("Description"), max_length=1000, blank=True, null=True)
+    active = models.BooleanField(_("Active"), default=True)
 
 
 class InventoryExtra(BaseExtra):
