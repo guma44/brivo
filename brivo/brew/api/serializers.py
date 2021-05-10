@@ -129,11 +129,14 @@ class YeastSerializer(CustomSerializer):
 
 
 class HopSerializer(CustomSerializer):
-    country = CountrySerializer()
     class Meta:
         model = models.Hop
         fields = "__all__"
         read_only_fields = ["created_at", "updated_at", "slug"]
+
+    def to_representation(self, instance):
+        self.fields['country'] =  CountrySerializer(read_only=True)
+        return super(HopSerializer, self).to_representation(instance)
 
 
 class TagSerializer(CustomSerializer):
