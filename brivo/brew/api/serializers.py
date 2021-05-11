@@ -156,7 +156,7 @@ class StyleSerializer(CustomSerializer):
     fg_max = measurement_field_factory(BeerGravity, "gravity_units")()
     color_min = measurement_field_factory(BeerColor, "color_units")()
     color_max = measurement_field_factory(BeerColor, "color_units")()
-    tags = TagSerializer(many=True)
+    tags = TagSerializer(many=True, required=False)
     class Meta:
         model = models.Style
         fields = "__all__"

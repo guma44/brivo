@@ -107,6 +107,7 @@ class StyleViewSet(
     ListModelMixin,
     UpdateModelMixin,
     CreateModelMixin,
+    DestroyModelMixin,
     GenericViewSet,
 ):
     serializer_class = serializers.StyleSerializer

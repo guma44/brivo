@@ -57,7 +57,7 @@ class Style(BaseModel):
     commercial_exam = models.TextField(
         _("Examples"), max_length=1000, blank=True, null=True
     )
-    tags = models.ManyToManyField("Tag")
+    tags = models.ManyToManyField("Tag", verbose_name=_("Tags"), blank=True, null=True)
     active = models.BooleanField(_("Active"), default=True)
 
     def get_og(self):
