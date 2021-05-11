@@ -4,10 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from brivo.brew.models import BaseModel
 from brivo.utils import functions
 from brivo.utils.measures import BeerGravity, BeerColor
-
-from django_measurement.models import MeasurementField
-from measurement.measures import Volume, Temperature
-
+from brivo.brew.fields import BeerGravityField, BeerColorField
 
 __all__ = ("Style",)
 
@@ -15,30 +12,18 @@ __all__ = ("Style",)
 class Style(BaseModel):
     category_id = models.CharField(_("Catetory ID"), max_length=1000)
     category = models.CharField(_("Category"), max_length=1000)
-    og_min = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("OG Max"), blank=True, null=True
-    )
-    og_max = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("OG Min"), blank=True, null=True
-    )
-    fg_min = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("FG Max"), blank=True, null=True
-    )
-    fg_max = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("FG Min"), blank=True, null=True
-    )
+    og_min = BeerGravityField(verbose_name=_("OG Max"), blank=True, null=True)
+    og_max = BeerGravityField(verbose_name=_("OG Min"), blank=True, null=True)
+    fg_min = BeerGravityField(verbose_name=_("FG Max"), blank=True, null=True)
+    fg_max = BeerGravityField(verbose_name=_("FG Min"), blank=True, null=True)
     ibu_min = models.DecimalField(
         _("IBU Max"), max_digits=5, decimal_places=2, blank=True, null=True
     )
     ibu_max = models.DecimalField(
         _("IBU Min"), max_digits=5, decimal_places=2, blank=True, null=True
     )
-    color_min = MeasurementField(
-        measurement=BeerColor, verbose_name=_("Color Min"), blank=True, null=True
-    )
-    color_max = MeasurementField(
-        measurement=BeerColor, verbose_name=_("Color Max"), blank=True, null=True
-    )
+    color_min = BeerColorField(verbose_name=_("Color Min"), blank=True, null=True)
+    color_max = BeerColorField(verbose_name=_("Color Max"), blank=True, null=True)
     alcohol_min = models.DecimalField(
         _("Alcohol Min"), max_digits=5, decimal_places=2, blank=True, null=True
     )
@@ -49,12 +34,20 @@ class Style(BaseModel):
         _("Fermentation Type"), max_length=1000, blank=True, null=True
     )
     desc_aroma = models.TextField(_("Aroma"), max_length=1000, blank=True, null=True)
-    desc_appe = models.TextField(_("Appearance"), max_length=1000, blank=True, null=True)
+    desc_appe = models.TextField(
+        _("Appearance"), max_length=1000, blank=True, null=True
+    )
     desc_flavor = models.TextField(_("Flavour"), max_length=1000, blank=True, null=True)
-    desc_mouth = models.TextField(_("Mouthfeel"), max_length=1000, blank=True, null=True)
-    desc_overall = models.TextField(_("Overall"), max_length=1000, blank=True, null=True)
+    desc_mouth = models.TextField(
+        _("Mouthfeel"), max_length=1000, blank=True, null=True
+    )
+    desc_overall = models.TextField(
+        _("Overall"), max_length=1000, blank=True, null=True
+    )
     desc_comment = models.TextField(_("Comment"), blank=True, null=True)
-    desc_history = models.TextField(_("History"), max_length=1000, blank=True, null=True)
+    desc_history = models.TextField(
+        _("History"), max_length=1000, blank=True, null=True
+    )
     desc_ingre = models.TextField(
         _("Ingredients"), max_length=1000, blank=True, null=True
     )

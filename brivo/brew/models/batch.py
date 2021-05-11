@@ -4,10 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 from brivo.brew.models import BaseModel, VOLUME_UNITS
 from brivo.utils.measures import BeerGravity
+from brivo.brew.fields import TemperatureField, BeerGravityField, VolumeField
 from brivo.utils import functions
 
-from django_measurement.models import MeasurementField
-from measurement.measures import Volume, Temperature
 from modelcluster.fields import ParentalKey
 
 
@@ -34,9 +33,7 @@ class Batch(BaseModel):
     stage = models.CharField(
         _("Stage"), max_length=50, choices=BATCH_STAGES, default="INIT"
     )
-    recipe = ParentalKey(
-        "Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE
-    )
+    recipe = ParentalKey("Recipe", verbose_name=_("Recipe"), on_delete=models.CASCADE)
     user = models.ForeignKey(
         "users.User", verbose_name=_("User"), on_delete=models.CASCADE
     )
@@ -47,37 +44,32 @@ class Batch(BaseModel):
     brewing_day = models.DateField(
         _("Brewing Day"), auto_now=False, auto_now_add=False, null=True
     )
-    grain_temperature = MeasurementField(
-        measurement=Temperature, verbose_name=_("Grain Temperature"), null=True, default=273.15 + 20
+    grain_temperature = TemperatureField(
+        verbose_name=_("Grain Temperature"), null=True, default=273.15 + 20
     )
-    sparging_temperature = MeasurementField(
-        measurement=Temperature, verbose_name=_("Sparging Temperature"), null=True, default=273.15 + 78
+    sparging_temperature = TemperatureField(
+        verbose_name=_("Sparging Temperature"), null=True, default=273.15 + 78
     )
 
     # Stage 2 fields: boil
-    gravity_before_boil = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("Gravity Before Boil"), null=True
+    gravity_before_boil = BeerGravityField(
+        verbose_name=_("Gravity Before Boil"), null=True
     )
 
     # Stage 3 fields: primary fermentation
-    initial_gravity = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("Initial Gravity"), null=True
-    )
-    wort_volume = MeasurementField(
-        measurement=Volume,
+    initial_gravity = BeerGravityField(verbose_name=_("Initial Gravity"), null=True)
+    wort_volume = VolumeField(
         verbose_name=_("Wort Volume"),
         null=True,
         unit_choices=VOLUME_UNITS,
     )
-    boil_loss = MeasurementField(
-        measurement=Volume,
-        verbose_name=_("Boil Waists"), null=True, unit_choices=VOLUME_UNITS
-    )
-    primary_fermentation_temperature = MeasurementField(
-        measurement=Temperature,
-        verbose_name=_("Primary Fermentation Temperature"),
+    boil_loss = VolumeField(
+        verbose_name=_("Boil Waists"),
         null=True,
-        blank=True
+        unit_choices=VOLUME_UNITS,
+    )
+    primary_fermentation_temperature = TemperatureField(
+        verbose_name=_("Primary Fermentation Temperature"), null=True, blank=True
     )
     primary_fermentation_start_day = models.DateField(
         _("Primary Fermentation Start Day"),
@@ -87,11 +79,8 @@ class Batch(BaseModel):
     )
 
     # Stage 4 fields: secondary fermentation
-    secondary_fermentation_temperature = MeasurementField(
-        measurement=Temperature,
-        verbose_name=_("Secondary Fermentation Temperature"),
-        null=True,
-        blank=True
+    secondary_fermentation_temperature = TemperatureField(
+        verbose_name=_("Secondary Fermentation Temperature"), null=True, blank=True
     )
     secondary_fermentation_start_day = models.DateField(
         _("Secondary Fermentation Start Day"),
@@ -105,24 +94,20 @@ class Batch(BaseModel):
         null=True,
         blank=True,
         auto_now=False,
-        auto_now_add=False
+        auto_now_add=False,
     )
-    post_primary_gravity = MeasurementField(
-        measurement=BeerGravity,
+    post_primary_gravity = BeerGravityField(
         verbose_name=_("Post-primary Gravity"),
         null=True,
-        blank=True
+        blank=True,
     )
 
     # Stage 4 fields: packaging
     packaging_date = models.DateField(
         _("Packaging Start Day"), auto_now=False, auto_now_add=False, null=True
     )
-    end_gravity = MeasurementField(
-        measurement=BeerGravity, verbose_name=_("End Gravity"), null=True
-    )
-    beer_volume = MeasurementField(
-        measurement=Volume,
+    end_gravity = BeerGravityField(verbose_name=_("End Gravity"), null=True)
+    beer_volume = VolumeField(
         verbose_name=_("Beer Volume"),
         null=True,
         unit_choices=VOLUME_UNITS,
@@ -154,14 +139,17 @@ class Batch(BaseModel):
                 vol - other_sugars / 145.0 + other_sugars / 100.0
             )
             max_gravity = BeerGravity(plato=(grain_gravity + other_gravity))
-            return ((self.initial_gravity.plato * vol) / (max_gravity.plato * self.recipe.get_primary_volume().l)) * 100.0
+            return (
+                (self.initial_gravity.plato * vol)
+                / (max_gravity.plato * self.recipe.get_primary_volume().l)
+            ) * 100.0
         except AttributeError:
             return None
 
     def get_ibu(self):
         added_ibus = []
         try:
-            for hop in self.recipe.get_hops():
+            for hop in self.recipe.hops.all():
                 if hop.use in ["BOIL", "AROMA", "FIRST WORT", "WHIRLPOOL"]:
                     if hop.amount.g > 0 and hop.time > 0 and hop.alpha_acids > 0:
                         added_ibus.append(
@@ -215,10 +203,13 @@ class Batch(BaseModel):
                 ]
             )
         elif stage == "SECONDARY_FERMENTATION":
-            fields.extend([
-                "post_primary_gravity",
-                "secondary_fermentation_start_day",
-                "dry_hops_start_day"])
+            fields.extend(
+                [
+                    "post_primary_gravity",
+                    "secondary_fermentation_start_day",
+                    "dry_hops_start_day",
+                ]
+            )
         elif stage == "PACKAGING":
             fields.extend(
                 [

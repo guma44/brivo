@@ -1,11 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from brivo.brew.models import BaseModel, MASS_UNITS, TIME_CHOICE
-
 from modelcluster.fields import ParentalKey
-from django_measurement.models import MeasurementField
-from measurement.measures import Weight
+
+from brivo.brew.fields import MassField
+from brivo.brew.models import BaseModel, MASS_UNITS, TIME_CHOICE
 
 __all__ = ("Extra", "IngredientExtra", "InventoryExtra")
 
@@ -48,9 +47,7 @@ class InventoryExtra(BaseExtra):
         on_delete=models.CASCADE,
         related_name="extras",
     )
-    amount = MeasurementField(
-        measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
-    )
+    amount = MassField(verbose_name=_("Amount"), unit_choices=MASS_UNITS)
     comment = models.TextField(_("Comment"))
 
 
@@ -61,8 +58,6 @@ class IngredientExtra(BaseExtra):
         on_delete=models.CASCADE,
         related_name="extras",
     )
-    amount = MeasurementField(
-        measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
-    )
+    amount = MassField(verbose_name=_("Amount"), unit_choices=MASS_UNITS)
     time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2)
     time_unit = models.CharField(_("Time Unit"), max_length=1000, choices=TIME_CHOICE)

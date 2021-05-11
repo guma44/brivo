@@ -4,11 +4,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 from brivo.brew.models import BaseModel, MASS_UNITS
-from brivo.utils.measures import BeerColor
+from brivo.brew.fields import BeerColorField, MassField
 
 from modelcluster.fields import ParentalKey
-from django_measurement.models import MeasurementField
-from measurement.measures import Volume, Weight, Temperature
+
 
 __all__ = ("Fermentable", "IngredientFermentable", "InventoryFermentable")
 
@@ -42,8 +41,7 @@ class BaseFermentable(BaseModel):
         choices=FERMENTABLE_TYPE,
         # help_text="Fermentable type.",
     )
-    color = MeasurementField(
-        measurement=BeerColor,
+    color = BeerColorField(
         verbose_name=_("Color"),
         # help_text="""The color of the item.""",
     )
@@ -53,14 +51,14 @@ class BaseFermentable(BaseModel):
         max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
-        # help_text="""Percent dry yield (fine grain) 
-        #     for the grain, or the raw yield by weight if this is an 
+        # help_text="""Percent dry yield (fine grain)
+        #     for the grain, or the raw yield by weight if this is an
         #     extract adjunct or sugar.""",
     )
 
 
 class Fermentable(BaseFermentable):
-    # oritin
+    # origin
     country = ParentalKey(
         "Country",
         verbose_name=_("Country"),
@@ -90,10 +88,13 @@ class Fermentable(BaseFermentable):
 
 
 class InventoryFermentable(BaseFermentable):
-    inventory = models.ForeignKey("brew.Inventory", verbose_name=_("Inventory"), on_delete=models.CASCADE, related_name="fermentables")
-    amount = MeasurementField(
-        measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
+    inventory = models.ForeignKey(
+        "brew.Inventory",
+        verbose_name=_("Inventory"),
+        on_delete=models.CASCADE,
+        related_name="fermentables",
     )
+    amount = MassField(verbose_name=_("Amount"), unit_choices=MASS_UNITS)
     comment = models.TextField(_("Comment"))
 
 
@@ -104,8 +105,7 @@ class IngredientFermentable(BaseFermentable):
         on_delete=models.CASCADE,
         related_name="fermentables",
     )
-    amount = MeasurementField(
-        measurement=Weight,
+    amount = MassField(
         verbose_name=_("Amount"),
         unit_choices=MASS_UNITS,
         help_text="Weight of the fermentable, extract or sugar.",

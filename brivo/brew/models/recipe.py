@@ -6,9 +6,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from brivo.brew.models import BaseModel, VOLUME_UNITS
 from brivo.utils import functions
 from brivo.utils.measures import BeerColor, BeerGravity
+from brivo.brew.fields import VolumeField
 
 from modelcluster.fields import ParentalKey
-from django_measurement.models import MeasurementField
 from measurement.measures import Volume, Weight
 
 
@@ -23,19 +23,18 @@ RECIPE_TYPE = [
 
 
 class Recipe(BaseModel):
-    user = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
-    # Recipe info
-    style = ParentalKey(
-        "Style", verbose_name=_("Style"), on_delete=models.DO_NOTHING
+    user = models.ForeignKey(
+        "users.User", verbose_name=_("User"), on_delete=models.CASCADE
     )
+    # Recipe info
+    style = ParentalKey("Style", verbose_name=_("Style"), on_delete=models.DO_NOTHING)
     type = models.CharField(_("Type"), max_length=1000, choices=RECIPE_TYPE)
 
     # Batch info
-    expected_beer_volume = MeasurementField(
-        measurement=Volume,
+    expected_beer_volume = VolumeField(
         verbose_name=_("Expected Beer Volume"),
         unit_choices=VOLUME_UNITS,
-        default=20
+        default=20,
     )
     boil_time = models.IntegerField(_("Boil Time"), default=60.0)
     evaporation_rate = models.DecimalField(

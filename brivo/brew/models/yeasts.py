@@ -2,11 +2,10 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from brivo.brew.fields import MassField, TemperatureField
 from brivo.brew.models import BaseModel, MASS_UNITS
 
 from modelcluster.fields import ParentalKey
-from django_measurement.models import MeasurementField
-from measurement.measures import Weight, Temperature
 
 __all__ = ("Yeast", "IngredientYeast", "InventoryYeast")
 
@@ -45,12 +44,8 @@ class Yeast(BaseYeast):
     )
     flocc = models.CharField(_("Flocculation"), max_length=1000)
     form = models.CharField(_("Form"), max_length=1000, choices=YEAST_FORM)
-    temp_min = MeasurementField(
-        measurement=Temperature, verbose_name=_("Min Temperature")
-    )
-    temp_max = MeasurementField(
-        measurement=Temperature, verbose_name=_("Max Temperature")
-    )
+    temp_min = TemperatureField(verbose_name=_("Min Temperature"))
+    temp_max = TemperatureField(verbose_name=_("Max Temperature"))
     alco_toler = models.CharField(_("Alcohol Tolerance"), max_length=1000)
     styles = models.CharField(_("Styles"), max_length=1000, blank=True, null=True)
     desc = models.TextField(_("Description"), blank=True, null=True)
@@ -74,7 +69,12 @@ class Yeast(BaseYeast):
 
 
 class InventoryYeast(BaseYeast):
-    inventory = models.ForeignKey("brew.Inventory", verbose_name=_("Inventory"), on_delete=models.CASCADE, related_name="yeasts")
+    inventory = models.ForeignKey(
+        "brew.Inventory",
+        verbose_name=_("Inventory"),
+        on_delete=models.CASCADE,
+        related_name="yeasts",
+    )
     expiration_date = models.DateField(
         _("Expiration Date"), auto_now=False, auto_now_add=False
     )
@@ -83,9 +83,7 @@ class InventoryYeast(BaseYeast):
     )
     generation = models.CharField(_("Generation"), max_length=50, blank=True)
     form = models.CharField(_("Form"), max_length=1000, choices=YEAST_FORM)
-    amount = MeasurementField(
-        measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
-    )
+    amount = MassField(verbose_name=_("Amount"), unit_choices=MASS_UNITS)
     comment = models.TextField(_("Comment"))
 
 
@@ -96,9 +94,7 @@ class IngredientYeast(BaseYeast):
         on_delete=models.CASCADE,
         related_name="yeasts",
     )
-    amount = MeasurementField(
-        measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
-    )
+    amount = MassField(verbose_name=_("Amount"), unit_choices=MASS_UNITS)
     attenuation = models.DecimalField(
         _("Attenuation"),
         max_digits=5,

@@ -2,11 +2,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from modelcluster.fields import ParentalKey
+
+from brivo.brew.fields import MassField
 from brivo.brew.models import BaseModel, MASS_UNITS, TIME_CHOICE
 
-from modelcluster.fields import ParentalKey
-from django_measurement.models import MeasurementField
-from measurement.measures import Weight
 
 __all__ = ("Hop", "IngredientHop", "InventoryHop")
 
@@ -115,12 +115,15 @@ class Hop(BaseHop):
 
 
 class InventoryHop(BaseHop):
-    inventory = models.ForeignKey("brew.Inventory", verbose_name=_("Inventory"), on_delete=models.CASCADE, related_name="hops")
+    inventory = models.ForeignKey(
+        "brew.Inventory",
+        verbose_name=_("Inventory"),
+        on_delete=models.CASCADE,
+        related_name="hops",
+    )
     year = models.IntegerField(_("Year"), validators=[MinValueValidator(0)])
     form = models.CharField(_("Form"), max_length=1000, choices=HOP_FORM)
-    amount = MeasurementField(
-        measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
-    )
+    amount = MassField(verbose_name=_("Amount"), unit_choices=MASS_UNITS)
     comment = models.TextField(_("Comment"))
 
 
@@ -132,9 +135,7 @@ class IngredientHop(BaseHop):
         related_name="hops",
     )
     use = models.CharField(_("Use"), max_length=1000, choices=HOP_USE)
-    amount = MeasurementField(
-        measurement=Weight, verbose_name=_("Amount"), unit_choices=MASS_UNITS
-    )
+    amount = MassField(verbose_name=_("Amount"), unit_choices=MASS_UNITS)
     time = models.DecimalField(
         _("Time"), max_digits=5, decimal_places=2, validators=[MinValueValidator(0)]
     )
