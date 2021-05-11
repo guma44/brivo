@@ -1,9 +1,19 @@
 import pytest
 
 from rest_framework.test import APIClient
+from model_bakery import baker
+from measurement.measures import Volume, Mass, Temperature
 
-from brivo.users.models import User
+from brivo.utils.measures import BeerColor, BeerGravity
+from brivo.users.models import User, UserProfile, UserBrewery
 from brivo.users.tests.factories import UserFactory
+
+
+baker.generators.add('brivo.brew.fields.BeerColorField', lambda: BeerColor(srm=10))
+baker.generators.add('brivo.brew.fields.BeerGravityField', lambda: BeerGravity(plato=10))
+baker.generators.add('brivo.brew.fields.VolumeField', lambda: Volume(l=10))
+baker.generators.add('brivo.brew.fields.MassField', lambda: Mass(kg=1))
+baker.generators.add('brivo.brew.fields.TemperatureField', lambda: Temperature(c=10))
 
 
 @pytest.fixture(autouse=True)
@@ -13,7 +23,11 @@ def media_storage(settings, tmpdir):
 
 @pytest.fixture
 def user() -> User:
-    return UserFactory()
+    user = UserFactory()
+    user.profile = UserProfile(user=user)
+    user.brewery = UserBrewery(user=user)
+    return user
+
 
 
 @pytest.fixture()

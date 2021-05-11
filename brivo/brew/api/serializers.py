@@ -111,6 +111,10 @@ class FermentableSerializer(CustomSerializer):
         read_only_fields = ["created_at", "updated_at", "slug"]
 
 
+    def to_representation(self, instance):
+        self.fields['country'] =  CountrySerializer(read_only=True)
+        return super(FermentableSerializer, self).to_representation(instance)
+
 
 class ExtraSerializer(CustomSerializer):
     class Meta:
