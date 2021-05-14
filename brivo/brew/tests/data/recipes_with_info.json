@@ -1,0 +1,326 @@
+[
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1 kg",
+                "extraction": "100",
+                "color": "4 ebc",
+                "use": "MASHING"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20 g",
+                "time": "60",
+                "time_unit": "MINUTE",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10 g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mash_steps": [
+            {
+                "temperature": "66 c",
+                "time": "60"
+            }
+        ],
+        "extra_info": {
+            "bitterness_ratio": 2.1,
+            "abv": 2.6,
+            "gravity": 7.3,
+            "preboil_gravity": 6.7,
+            "ibu": 61,
+            "color": 2.16,
+            "boil_volume": 11,
+            "primary_volume": 10,
+            "mash_size": 3,
+            "total_mash_volume": 4
+        },
+        "boil_loss": "0",
+        "type": "ALL GRAIN",
+        "expected_beer_volume": "10 l",
+        "boil_time": "60",
+        "evaporation_rate": "10",
+        "trub_loss": "0",
+        "dry_hopping_loss": "0",
+        "mash_efficiency": "75",
+        "liquor_to_grist_ratio": "3",
+        "name": "TestAllGrain"
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1 kg",
+                "extraction": "60",
+                "color": "4 ebc",
+                "use": "MASHING"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20 g",
+                "time": "60",
+                "time_unit": "MINUTE",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10 g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mash_steps": [
+            {
+                "temperature": "66 c",
+                "time": "60"
+            }
+        ],
+        "extra_info": {
+            "bitterness_ratio": 4,
+            "abv": 1,
+            "gravity": 4.4,
+            "preboil_gravity": 4.0,
+            "ibu": 68,
+            "color": 2.2,
+            "boil_volume": 11,
+            "primary_volume": 10,
+            "mash_size": 3,
+            "total_mash_volume": 4
+        },
+        "boil_loss": "0",
+        "type": "ALL GRAIN",
+        "expected_beer_volume": "10 l",
+        "boil_time": "60",
+        "evaporation_rate": "10",
+        "trub_loss": "0",
+        "dry_hopping_loss": "0",
+        "mash_efficiency": "75",
+        "liquor_to_grist_ratio": "3",
+        "name": "TestAllGrain2"
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1 kg",
+                "extraction": "60",
+                "color": "4 ebc",
+                "use": "MASHING"
+            },
+            {
+                "type": "GRAIN",
+                "name": "Carafa",
+                "amount": "0.5 kg",
+                "extraction": "70",
+                "color": "664 ebc",
+                "use": "MASHING"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20 g",
+                "time": "60",
+                "time_unit": "MINUTE",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10 g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mash_steps": [
+            {
+                "temperature": "66 c",
+                "time": "60"
+            }
+        ],
+        "extra_info": {
+            "bitterness_ratio": 2.21,
+            "abv": 2,
+            "gravity": 7.0,
+            "preboil_gravity": 6.3,
+            "ibu": 62,
+            "color": 36.5,
+            "boil_volume": 11,
+            "primary_volume": 10,
+            "mash_size": 4.5,
+            "total_mash_volume": 6
+        },
+        "boil_loss": "0",
+        "type": "ALL GRAIN",
+        "expected_beer_volume": "10 l",
+        "boil_time": "60",
+        "evaporation_rate": "10",
+        "trub_loss": "0",
+        "dry_hopping_loss": "0",
+        "mash_efficiency": "75",
+        "liquor_to_grist_ratio": "3",
+        "name": "TestAllGrain3"
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1 kg",
+                "extraction": "60",
+                "color": "4 ebc",
+                "use": "MASHING"
+            },
+            {
+                "type": "GRAIN",
+                "name": "Carafa",
+                "amount": "0.5 kg",
+                "extraction": "70",
+                "color": "664 ebc",
+                "use": "MASHING"
+            },
+            {
+                "type": "SUGAR",
+                "name": "Brown Sugar, Dark",
+                "amount": "0.5 kg",
+                "extraction": "100",
+                "color": "99 ebc",
+                "use": "BOIL"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20 g",
+                "time": "60",
+                "time_unit": "MINUTE",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10 g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mash_steps": [
+            {
+                "temperature": "66 c",
+                "time": "60"
+            }
+        ],
+        "extra_info": {
+            "bitterness_ratio": 1.08,
+            "abv": 4.8,
+            "gravity": 11.9,
+            "preboil_gravity": 10.8,
+            "ibu": 52,
+            "color": 40.1,
+            "boil_volume": 11,
+            "primary_volume": 10,
+            "mash_size": 4.5,
+            "total_mash_volume": 6
+        },
+        "boil_loss": "0",
+        "type": "ALL GRAIN",
+        "expected_beer_volume": "10 l",
+        "boil_time": "60",
+        "evaporation_rate": "10",
+        "trub_loss": "0",
+        "dry_hopping_loss": "0",
+        "mash_efficiency": "75",
+        "liquor_to_grist_ratio": "3",
+        "name": "TestAllGrain4"
+    },
+    {
+        "fermentables": [
+            {
+                "type": "GRAIN",
+                "name": "Pilsner (2 Row) Bel",
+                "amount": "1 kg",
+                "extraction": "100",
+                "color": "4 ebc",
+                "use": "MASHING"
+            }
+        ],
+        "hops": [
+            {
+                "use": "BOIL",
+                "name": "Marynka",
+                "amount": "20 g",
+                "time": "60",
+                "time_unit": "MINUTE",
+                "alpha_acids": "10"
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Safale S-04",
+                "type": "ALE",
+                "form": "DRY",
+                "amount": "10 g",
+                "lab": "Fermentis"
+            }
+        ],
+        "extras": [],
+        "mash_steps": [
+            {
+                "temperature": "66 c",
+                "time": "60"
+            }
+        ],
+        "extra_info": {
+            "bitterness_ratio": 1.44,
+            "abv": 2,
+            "gravity": 9.7,
+            "preboil_gravity": 8.8,
+            "ibu": 56,
+            "color": 2.2,
+            "boil_volume": 11,
+            "primary_volume": 10,
+            "mash_size": 3,
+            "total_mash_volume": 4
+        },
+        "boil_loss": "0",
+        "type": "ALL GRAIN",
+        "expected_beer_volume": "10 l",
+        "boil_time": "60",
+        "evaporation_rate": "10",
+        "trub_loss": "0",
+        "dry_hopping_loss": "0",
+        "mash_efficiency": "100",
+        "liquor_to_grist_ratio": "3",
+        "name": "TestAllGrain5"
+    }
+]

@@ -2,6 +2,7 @@ import re
 from collections import OrderedDict
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.fields import empty
 
 from measurement.measures import Weight, Temperature, Volume
 
@@ -219,7 +220,7 @@ class RecipeSerializer(CustomSerializer):
     secondary_volume = measurement_field_factory(Volume, "volume_units")(source="get_secondary_volume", read_only=True)
     color = measurement_field_factory(BeerColor, "color_units")(source="get_color", read_only=True)
     gravity = measurement_field_factory(BeerGravity, "gravity_units")(source="get_gravity", read_only=True)
-    biterness_ratio = serializers.DecimalField(5, 1, source="get_bitterness_ratio", read_only=True)
+    bitterness_ratio = serializers.DecimalField(5, 1, source="get_bitterness_ratio", read_only=True)
     abv = serializers.DecimalField(5, 1, source="get_abv", read_only=True)
     ibu = serializers.DecimalField(5, 1, source="get_ibu", read_only=True)
     class Meta:
@@ -254,7 +255,7 @@ class RecipeSerializer(CustomSerializer):
             "color",
             "abv",
             "gravity",
-            "biterness_ratio",
+            "bitterness_ratio",
         ]
         read_only_fields = [
             "id"
@@ -300,12 +301,16 @@ class RecipeSerializer(CustomSerializer):
             item_data.update({"recipe": instance})
             if "id" in item_data:
                 obj_id = item_data.pop("id")
-                try:
-                    obj = iclass.objects.get(id=obj_id, recipe=instance)
-                    for field, value in item_data.items():
-                        setattr(obj, field, value)
-                    obj.save(update_fields=item_data.keys())
-                except iclass.DoesNotExist:
+                if obj_id is not empty:
+                    try:
+                        obj = iclass.objects.get(id=obj_id, recipe=instance)
+                        for field, value in item_data.items():
+                            setattr(obj, field, value)
+                        obj.save(update_fields=item_data.keys())
+                    except iclass.DoesNotExist:
+                        item = iclass(**item_data)
+                        item.save()
+                else:
                     item = iclass(**item_data)
                     item.save()
             else:

@@ -9,7 +9,7 @@ from rest_framework.mixins import (
 )
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.permissions import IsAdminUser, SAFE_METHODS, BasePermission
+from rest_framework.permissions import IsAdminUser, SAFE_METHODS, IsAuthenticated
 
 from brivo.brew import models
 from brivo.brew.api import serializers
@@ -23,7 +23,7 @@ class IsAdminUserOrReadOnly(IsAdminUser):
         ) and request.user.is_authenticated
 
 
-class IsOwnerOrReadOnly(BasePermission):
+class IsOwnerOrReadOnly(IsAuthenticated):
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
@@ -31,7 +31,7 @@ class IsOwnerOrReadOnly(BasePermission):
             return True
 
         # Write permissions are only allowed to the owner of the snippet.
-        return obj.user == request.user
+        return self.has_permission(request, view) and obj.user == request.user
 
 
 class AddUserMixin:
@@ -123,6 +123,7 @@ class RecipeViewSet(
     ListModelMixin,
     UpdateModelMixin,
     CreateModelMixin,
+    DestroyModelMixin,
     GenericViewSet,
 ):
     serializer_class = serializers.RecipeSerializer
