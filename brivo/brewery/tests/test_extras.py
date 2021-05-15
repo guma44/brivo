@@ -25,7 +25,7 @@ def extra_instance(extra_json):
 
 class TestExtrasAPI:
 
-    endpoint = "/api/extras/"
+    endpoint = "/api/brewery/extras/"
 
     def test_list_not_logged_in(self, api_client):
         baker.make(Extra, _quantity=3)

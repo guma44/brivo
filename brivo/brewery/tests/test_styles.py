@@ -55,7 +55,7 @@ def style_with_measures(style_json):
 
 class TestStylesAPI:
 
-    endpoint = "/api/styles/"
+    endpoint = "/api/brewery/styles/"
 
     def test_list_not_logged_in(self, api_client):
         baker.make(Style, _quantity=3)

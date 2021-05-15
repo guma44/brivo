@@ -47,7 +47,7 @@ def hop_instance(hop_json, country):
 
 class TestHopsAPI:
 
-    endpoint = "/api/hops/"
+    endpoint = "/api/brewery/hops/"
 
     def test_list_not_logged_in(self, api_client):
         baker.make(Hop, _quantity=3)

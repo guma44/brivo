@@ -161,7 +161,7 @@ def recipe_with_ingredients_json(
 
 class TestRecipeEndpoints:
 
-    endpoint = "/api/recipes/"
+    endpoint = "/api/brewery/recipes/"
 
     def test_list_not_logged_in(self, api_client):
         response = api_client().get(self.endpoint)

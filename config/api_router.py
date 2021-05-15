@@ -10,12 +10,12 @@ else:
     router = SimpleRouter()
 
 router.register("users", UserViewSet)
-router.register("hops", brewery_views.HopViewSet)
-router.register("fermentables", brewery_views.FermentableViewSet)
-router.register("extras", brewery_views.ExtraViewSet)
-router.register("yeasts", brewery_views.YeastViewSet)
-router.register("styles", brewery_views.StyleViewSet)
-router.register("recipes", brewery_views.RecipeViewSet)
+router.register("brewery/hops", brewery_views.HopViewSet)
+router.register("brewery/fermentables", brewery_views.FermentableViewSet)
+router.register("brewery/extras", brewery_views.ExtraViewSet)
+router.register("brewery/yeasts", brewery_views.YeastViewSet)
+router.register("brewery/styles", brewery_views.StyleViewSet)
+router.register("brewery/recipes", brewery_views.RecipeViewSet)
 
 app_name = "api"
 urlpatterns = router.urls

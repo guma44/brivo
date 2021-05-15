@@ -35,7 +35,7 @@ def fermentable_instance(fermentable_json, country):
 
 class TestFermentablesAPI:
 
-    endpoint = "/api/fermentables/"
+    endpoint = "/api/brewery/fermentables/"
 
     def test_list_not_logged_in(self, api_client):
         baker.make(Fermentable, _quantity=3)

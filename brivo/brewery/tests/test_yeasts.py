@@ -44,7 +44,7 @@ def yeast_with_measures(yeast_json):
 
 class TestYeastsAPI:
 
-    endpoint = "/api/yeasts/"
+    endpoint = "/api/brewery/yeasts/"
 
     def test_list_not_logged_in(self, api_client):
         baker.make(Yeast, _quantity=3)

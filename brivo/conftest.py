@@ -117,7 +117,7 @@ def recipes(api_client, user, style):
     for recipe in data:
         extra_info = recipe.pop("extra_info")
         recipe["style"] = style.pk
-        response = client.post("/api/recipes/", data=recipe, format="json")
+        response = client.post("/api/brewery/recipes/", data=recipe, format="json")
         recipe_json = json.loads(response.content)
         infos[recipe_json["id"]] = extra_info
     return user, infos
