@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+{% load brew_tags %}
+
+{% block title %}Hops{% endblock title %}
+
+{% block content %}
+<h1 class="mt-3 mb-3">Hops</h1>
+<hl>
+<div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog mt-5 modal-lg">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog mt-5 modal-lg" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+<div class="container">
+    <div class="col-12 mb-3">
+    {% if user.is_staff %}
+    <button id="create-hop" class="btn btn-success" type="button" name="button">
+        <span class="fa fa-plus mr-2"></span>Create Hop
+    </button>
+    {% endif %}
+    <button id="create-hop" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
+        Toggle Filters
+    </button>
+    </div>
+    <div id="filter-row" class="row collapse">
+        <div class="col">
+            <div class="card card-body">
+                <form method="get">
+                    {{filter.form.as_p}}
+                    <button class="btn btn-primary" name="button" type="submit"><span class="fa fa-filter mr-2"></span>Filter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<table id="hops-table" class="table">
+    <thead>
+        <tr>
+            <th class="text-center" scope="col">Name</th>
+            <th class="text-center" scope="col">Type</th>
+            <th class="text-center" scope="col">Alpha Acids</th>
+            <th class="text-center" scope="col">Country</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for hop in hops %}
+        <tr>
+            <td class="text-center" scope="row">{{hop.name}}</td>
+            <td class="text-center">{{hop.type|title}}</td>
+            <td class="text-center">{{hop.alpha_acids}}</td>
+            <td class="text-center">{{hop.country}}</td>
+            <td class="text-center">
+                <!-- Read hop buttons -->
+                <button type="button" class="bs-modal read-hop btn btn-sm btn-primary" data-form-url="{% url 'brewery:hop-detail' hop.pk %}">
+                <span class="fa fa-eye"></span>
+                </button>
+                {% if user.is_staff %}
+                <!-- Update hop buttons -->
+                <button type="button" class="update-hop btn btn-sm btn-primary" data-form-url="{% url 'brewery:hop-update' hop.pk %}">
+                <span class="fa fa-edit"></span>
+                </button>
+                <!-- Delete hop buttons -->
+                <button type="button" class="bs-modal delete-hop btn btn-sm btn-danger" data-form-url="{% url 'brewery:hop-delete' hop.pk %}">
+                <span class="fa fa-trash"></span>
+                </button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if is_paginated %}
+    {% include "pagination.html" %}
+{% endif %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+{% endblock content %}
+{% block inline_javascript %}
+<script defer type="text/javascript">
+$(document).ready(function() {
+
+    $("#create-hop").modalForm({
+        formURL: "{% url 'brewery:hop-create' %}"
+    });
+
+    $(".update-hop").each(function () {
+        $(this).modalForm({
+        formURL: $(this).data("form-url"),
+        asyncUpdate: false,
+        });
+    });
+
+    // Read and Delete book buttons open modal with id="modal"
+    // The formURL is retrieved from the data of the element
+    $(".bs-modal").each(function () {
+        $(this).modalForm({formURL: $(this).data("form-url")});
+    });
+
+    // Hide message
+    $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+        $(".alert").slideUp(500);
+    });
+
+});
+</script>
+{% endblock inline_javascript %}

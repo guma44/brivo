@@ -1,0 +1,85 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<table class="table">
+{{ formset.management_form|crispy }}
+    <thead>
+        <tr >
+            <th class="text-center" scope="col">Name</th>
+            <th class="text-center" scope="col">Lab</th>
+            <th class="text-center" scope="col">Type</th>
+            <th class="text-center" scope="col">Attenuation</th>
+            <th class="text-center" scope="col">Form</th>
+            <th class="text-center" scope="col">Amount</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for form in formset.forms %}
+            {{ form.media }}
+            <tr class="{% cycle 'row1' 'row2' 'row3' 'row4' 'row5' %} formset_row-{{ formset.prefix }}">
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                <td>
+                    {{ field.name.errors.as_ul }}
+                    {{ form.name|as_crispy_field }}
+                </td>
+                <td>{{ field.use.errors.as_ul }}{{ form.lab|as_crispy_field }}</td>
+                <td>{{ field.color.errors.as_ul }}{{ form.type|as_crispy_field }}</td>
+                <td>{{ field.extraction.errors.as_ul }}{{ form.attenuation|as_crispy_field }}</td>
+                <td>{{ field.extraction.errors.as_ul }}{{ form.form|as_crispy_field }}</td>
+                <td>{{ field.extraction.errors.as_ul }}{{ form.amount|as_crispy_field }}</td>
+                <td class="delet-row">{{ form.DELETE }}</td>
+            </tr>
+        {% endfor %}
+</table>
+
+<br>
+<script src="{% static "js/jquery.formset.js" %}"></script>
+<script src="{% static "js/jquery.autocomplete.js" %}"></script>
+<script type="text/javascript">
+$(function() {
+    $('.formset_row-{{ formset.prefix }}').formset({
+        addText: '<button type="button" class="add-yeast btn btn-sm btn-warning"><span class="fa fa-plus"></span> Add Yeast</button>',
+        deleteText: '<button type="button" class="delete-yeast btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>',
+        prefix: '{{ formset.prefix }}',
+        {% if formset.request.method == "GET" %} hideLastAddForm: true, {% endif %} 
+        addCssClass: '{{ formset.prefix }}-add-row',          // CSS class applied to the add link
+        deleteCssClass: '{{ formset.prefix }}-delete-row',    // CSS class applied to the delete link
+        formCssClass: '{{ formset.prefix }}-dynamic-form', 
+        added: function(row) {
+            let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
+            $('#id_yeasts-' + row_index + '-name').autocomplete({
+                serviceUrl: '/brewery/yeast/autocomplete',
+                noCache: false,
+                minChars: 3,
+                paramName: "q",
+                width: '300',
+                onSelect: function (suggestion) {
+                    let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
+                    $('#id_yeasts-' + row_index + '-lab').val(suggestion.data.lab);
+                    $('#id_yeasts-' + row_index + '-type').val(suggestion.data.type);
+                    $('#id_yeasts-' + row_index + '-attenuation').val(suggestion.data.attenuation);
+                    $('#id_yeasts-' + row_index + '-form').val(suggestion.data.form);
+                }
+            });
+        }
+    });
+
+    $('#id_yeasts-0-name').autocomplete({
+        serviceUrl: '/brewery/yeast/autocomplete',
+        noCache: false,
+        minChars: 3,
+        paramName: "q",
+        width: '300',
+        onSelect: function (suggestion) {
+            $('#id_yeasts-0-lab').val(suggestion.data.lab);
+            $('#id_yeasts-0-type').val(suggestion.data.type);
+            $('#id_yeasts-0-attenuation').val(suggestion.data.attenuation);
+            $('#id_yeasts-0-form').val(suggestion.data.form);
+        }
+    });
+});
+</script>

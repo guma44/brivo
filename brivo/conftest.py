@@ -9,15 +9,15 @@ from measurement.measures import Volume, Mass, Temperature
 
 from brivo.utils.measures import BeerColor, BeerGravity
 from brivo.users.models import User, UserProfile, UserBrewery
-from brivo.brew.models import Style
+from brivo.brewery.models import Style
 from brivo.users.tests.factories import UserFactory
 
 
-baker.generators.add('brivo.brew.fields.BeerColorField', lambda: BeerColor(srm=10))
-baker.generators.add('brivo.brew.fields.BeerGravityField', lambda: BeerGravity(plato=10))
-baker.generators.add('brivo.brew.fields.VolumeField', lambda: Volume(l=10))
-baker.generators.add('brivo.brew.fields.MassField', lambda: Mass(kg=1))
-baker.generators.add('brivo.brew.fields.TemperatureField', lambda: Temperature(c=10))
+baker.generators.add('brivo.brewery.fields.BeerColorField', lambda: BeerColor(srm=10))
+baker.generators.add('brivo.brewery.fields.BeerGravityField', lambda: BeerGravity(plato=10))
+baker.generators.add('brivo.brewery.fields.VolumeField', lambda: Volume(l=10))
+baker.generators.add('brivo.brewery.fields.MassField', lambda: Mass(kg=1))
+baker.generators.add('brivo.brewery.fields.TemperatureField', lambda: Temperature(c=10))
 baker.generators.add('modelcluster.fields.ParentalKey', random_gen.gen_related)
 
 
@@ -111,7 +111,7 @@ def style():
 def recipes(api_client, user, style):
     client = api_client()
     client.force_authenticate(user)
-    with open(ROOT_DIR.joinpath("brew/tests/data/recipes_with_info.json")) as fin:
+    with open(ROOT_DIR.joinpath("brewery/tests/data/recipes_with_info.json")) as fin:
         data = json.load(fin)
     infos = {}
     for recipe in data:

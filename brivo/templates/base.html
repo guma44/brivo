@@ -70,20 +70,20 @@
                   Ingredients
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{% url 'brew:fermentable-list' %}">Fermentables</a>
-                  <a class="dropdown-item" href="{% url 'brew:hop-list' %}">Hops</a>
-                  <a class="dropdown-item" href="{% url 'brew:yeast-list' %}">Yeasts</a>
-                  <a class="dropdown-item" href="{% url 'brew:extra-list' %}">Extras</a>
+                  <a class="dropdown-item" href="{% url 'brewery:fermentable-list' %}">Fermentables</a>
+                  <a class="dropdown-item" href="{% url 'brewery:hop-list' %}">Hops</a>
+                  <a class="dropdown-item" href="{% url 'brewery:yeast-list' %}">Yeasts</a>
+                  <a class="dropdown-item" href="{% url 'brewery:extra-list' %}">Extras</a>
                 </div>
               </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'brew:style-list' %}">Styles</a>
+              <a class="nav-link" href="{% url 'brewery:style-list' %}">Styles</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'brew:recipe-list' %}">Recipes</a>
+              <a class="nav-link" href="{% url 'brewery:recipe-list' %}">Recipes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'brew:batch-list' %}">Brewlog</a>
+              <a class="nav-link" href="{% url 'brewery:batch-list' %}">Brewlog</a>
             </li>
             {% endif %}
           </ul>

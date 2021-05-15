@@ -16,7 +16,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("brivo.users.urls", namespace="users")),
-    path("brew/", include("brivo.brew.urls", namespace="brew")),
+    path("brewery/", include("brivo.brewery.urls", namespace="brewery")),
     path("accounts/email/", default_views.page_not_found, name="account_email", kwargs={"exception": Exception("Page not Found")},),
     path("accounts/", include("allauth.urls")),
     re_path(r'^celery-progress/', include('celery_progress.urls')),

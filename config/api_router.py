@@ -2,7 +2,7 @@ from django.conf import settings
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 from brivo.users.api.views import UserViewSet
-from brivo.brew.api import views as brewery_views
+from brivo.brewery.api import views as brewery_views
 
 if settings.DEBUG:
     router = DefaultRouter()

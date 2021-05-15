@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from brivo.users.forms import AdminUserChangeForm, AdminUserCreationForm
 from brivo.users.models import UserProfile, UserBrewery
-from brivo.brew import models
+from brivo.brewery import models
 
 User = get_user_model()
 

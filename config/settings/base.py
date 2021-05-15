@@ -88,7 +88,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "brivo.users.apps.UsersConfig",
     # Your stuff: custom apps go here
-    "brivo.brew.apps.BrewConfig"
+    "brivo.brewery.apps.BrewConfig"
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -199,7 +199,7 @@ TEMPLATES = [
                 "brivo.utils.context_processors.settings_context",
             ],
             'libraries':{
-                'brew_tags': 'brivo.brew.templatetags.brew_tags',
+                'brew_tags': 'brivo.brewery.templatetags.brew_tags',
 
                 }
         },
