@@ -18,6 +18,7 @@ RUN apt-get update \
   && apt-get install -y wget \
   && apt-get install -y tar \
   && apt-get install -y vim \
+  && apt-get install -y sqlite3 \
   && apt-get install -y supervisor \
   && apt-get install -y redis \
   # cleaning up unused files
