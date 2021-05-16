@@ -8,6 +8,7 @@ from rest_framework.mixins import (
     DestroyModelMixin,
 )
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAdminUser, SAFE_METHODS, IsAuthenticated
 
@@ -27,7 +28,7 @@ class IsOwnerOrReadOnly(IsAuthenticated):
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
-        if request.method in SAFE_METHODS and obj.is_public:
+        if request.method in SAFE_METHODS and getattr(obj, "is_public", False):
             return True
 
         # Write permissions are only allowed to the owner of the snippet.
@@ -152,3 +153,40 @@ class RecipeViewSet(
         kwargs["context"] = self.get_serializer_context()
         kwargs["user"] = self.request.user
         return serializer_class(*args, **kwargs)
+
+
+class BatchViewSet(
+    AddUserMixin,
+    ListModelMixin,
+    CreateModelMixin,
+    GenericViewSet,
+):
+    queryset = models.Batch.objects.all()
+    permission_classes = (IsOwnerOrReadOnly,)
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return models.Batch.objects.filter(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        request.data.update({"user": request.user.id})
+        return super(BatchViewSet, self).create(request, *args, **kwargs)
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return serializers.BatchSerializer
+        return serializers.BatchInitSerializer
+
+
+class BatchDetailViewSet(
+    AddUserMixin,
+    RetrieveModelMixin,
+    GenericViewSet,
+):
+    serializer_class = serializers.BatchSerializer
+    queryset = models.Batch.objects.all()
+    permission_classes = (IsOwnerOrReadOnly,)
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return models.Batch.objects.filter(user=self.request.user)

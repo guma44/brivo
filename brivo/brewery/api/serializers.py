@@ -345,3 +345,28 @@ class RecipeReadSerializer(RecipeSerializer):
 
     class Meta(RecipeSerializer.Meta):
         fields = RecipeSerializer.Meta.fields + ["user"]
+
+
+class BatchSerializer(AddIDMixin, CustomSerializer):
+    grain_temperature = measurement_field_factory(Temperature, "temperature_units")()
+    sparging_temperature = measurement_field_factory(Temperature, "temperature_units")()
+    gravity_before_boil = measurement_field_factory(BeerGravity, "gravity_units")()
+    initial_gravity = measurement_field_factory(BeerGravity, "gravity_units")()
+    wort_volume = measurement_field_factory(Volume, "volume_units")()
+    boil_loss = measurement_field_factory(Volume, "volume_units")()
+    primary_fermentation_temperature = measurement_field_factory(Temperature, "temperature_units")()
+    secondary_fermentation_temperature = measurement_field_factory(Temperature, "temperature_units")()
+    post_primary_gravity = measurement_field_factory(BeerGravity, "gravity_units")()
+    end_gravity = measurement_field_factory(BeerGravity, "gravity_units")()
+    beer_volume = measurement_field_factory(Volume, "volume_units")()
+
+    class Meta:
+        model = models.Batch
+        fields = "__all__"
+
+
+class BatchInitSerializer(AddIDMixin, CustomSerializer):
+
+    class Meta:
+        model = models.Batch
+        fields = ["recipe"]
