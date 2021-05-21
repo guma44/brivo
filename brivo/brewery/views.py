@@ -61,7 +61,7 @@ from brivo.brewery.models import (
     IngredientExtra,
     MashStep,
 )
-from brivo.brewery.api.serializers import RecipeSerializer
+from brivo.brewery.api import serializers
 from brivo.users.models import User
 from brivo.brewery import filters
 
@@ -74,9 +74,17 @@ ingredients_map = {
     "yeasts": IngredientYeast,
 }
 
+serializers_map = {
+    "fermentables": serializers.IngredientFermentableSerializer,
+    "hops": serializers.IngredientHopSerializer,
+    "extras": serializers.IngredientExtraSerializer,
+    "mash_steps": serializers.MashStepSerializer,
+    "yeasts": serializers.IngredientYeastSerializer,
+}
 
-def _is_valid(v):
-    return v.get("name", "") != ""
+
+def _is_valid(v, c):
+    return c(data=v).is_valid()
 
 
 def get_repr(obj, attr=None, prec=1, repr_="", default="---"):
@@ -94,7 +102,7 @@ def get_recipe_data(request):
     form = request.POST.get("form", None)
     data = functions.clean_data(json.loads(form))
     for f in ingredients_map.keys():
-        data[f] = [v for v in data[f].values() if _is_valid(v)]
+        data[f] = [v for v in data[f].values() if _is_valid(v, serializers_map[f])]
     if not data["name"]:
         data["name"] = "tmpname"
     if not data["style"] or not data["type"]:
@@ -112,7 +120,7 @@ def get_recipe_data(request):
                 "bitterness_ratio": "---",
             }
         )
-    serializer = RecipeSerializer(data=data, user=request.user)
+    serializer = serializers.RecipeSerializer(data=data, user=request.user)
     if not serializer.is_valid():
         raise Exception(serializer.errors)
     ingredients = {}
@@ -1101,7 +1109,7 @@ def import_recipe(recipe, user):
             f"Did not fount a syle '{recipe_data['style']}' for '{recipe_data['name']}'"
         )
     recipe_data["style"] = style[0].id
-    serializer = RecipeSerializer(data=recipe_data, user=user)
+    serializer = serializers.RecipeSerializer(data=recipe_data, user=user)
     if serializer.is_valid():
         serializer.save()
     else:
