@@ -334,6 +334,7 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
 }
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r"^/api/.*$"
 
 # Your stuff...
