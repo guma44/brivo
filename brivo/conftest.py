@@ -33,6 +33,8 @@ def user():
     user = UserFactory()
     user.profile = UserProfile(user=user)
     user.brewery = UserBrewery(user=user)
+    user.profile.save()
+    user.brewery.save()
     return user
 
 
@@ -41,6 +43,8 @@ def other_user():
     user = UserFactory()
     user.profile = UserProfile(user=user)
     user.brewery = UserBrewery(user=user)
+    user.profile.save()
+    user.brewery.save()
     return user
 
 

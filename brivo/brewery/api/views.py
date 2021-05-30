@@ -158,6 +158,7 @@ class RecipeViewSet(
 class BatchViewSet(
     AddUserMixin,
     ListModelMixin,
+    RetrieveModelMixin,
     CreateModelMixin,
     GenericViewSet,
 ):
@@ -173,20 +174,95 @@ class BatchViewSet(
         return super(BatchViewSet, self).create(request, *args, **kwargs)
 
     def get_serializer_class(self):
-        if self.action == "list":
+        if self.action == "init":
+            return serializers.BatchInitSerializer
+        elif self.action == "mash":
+            return serializers.BatchMashSerializer
+        elif self.action == "boil":
+            return serializers.BatchBoilSerializer
+        elif self.action == "primary":
+            return serializers.BatchPrimarySerializer
+        elif self.action == "secondary":
+            return serializers.BatchSecondarySerializer
+        elif self.action == "packaging":
+            return serializers.BatchPackagingSerializer
+        else:
             return serializers.BatchSerializer
-        return serializers.BatchInitSerializer
 
+    def _get_stage_or_update(self, request, id=None):
+        sc = self.get_serializer_class()
+        obj = self.get_queryset().get(pk=id)
+        serializer_context = {
+            "request": request,
+        }
+        if self.request.method == "PUT":
+            ser = sc(obj, data=request.data, user=obj.user, context=serializer_context)
+            if not ser.is_valid():
+                return Response(ser.errors, status=400)
+            ser.save()
+            return Response(ser.data)
+        elif self.request.method == "PATCH":
+            ser = sc(
+                obj,
+                data=request.data,
+                user=obj.user,
+                context=serializer_context,
+                partial=True,
+            )
+            if not ser.is_valid():
+                return Response(ser.errors, status=400)
+            ser.save()
+            return Response(ser.data)
+        else:
+            ser = sc(obj, user=obj.user, context=serializer_context)
+        return Response(ser.data)
 
-class BatchDetailViewSet(
-    AddUserMixin,
-    RetrieveModelMixin,
-    GenericViewSet,
-):
-    serializer_class = serializers.BatchSerializer
-    queryset = models.Batch.objects.all()
-    permission_classes = (IsOwnerOrReadOnly,)
-    lookup_field = "id"
+    @action(methods=["post"], detail=False)
+    def init(self, request):
+        sc = self.get_serializer_class()
+        request.data.update({"user": request.user.id})
+        serializer_context = {
+            "request": request,
+        }
+        ser = sc(data=request.data, user=request.user, context=serializer_context)
+        if not ser.is_valid():
+            return Response(ser.errors, status=400)
+        ser.save()
+        return Response(ser.data, status=201)
 
-    def get_queryset(self):
-        return models.Batch.objects.filter(user=self.request.user)
+    @action(methods=["get", "put", "patch"], detail=True)
+    def mash(self, request, id=None):
+        return self._get_stage_or_update(request=request, id=id)
+
+    @action(methods=["get", "put", "patch"], detail=True)
+    def boil(self, request, id=None):
+        return self._get_stage_or_update(request=request, id=id)
+
+    @action(methods=["get", "put", "patch"], detail=True)
+    def primary(self, request, id=None):
+        return self._get_stage_or_update(request=request, id=id)
+
+    @action(methods=["get", "put", "patch"], detail=True)
+    def secondary(self, request, id=None):
+        return self._get_stage_or_update(request=request, id=id)
+
+    @action(methods=["get", "put", "patch"], detail=True)
+    def packaging(self, request, id=None):
+        return self._get_stage_or_update(request=request, id=id)
+
+    @action(methods=["post"], detail=True)
+    def finish(self, request, id=None):
+        sc = self.get_serializer_class()
+        obj = self.get_queryset().get(pk=id)
+        serializer_context = {
+            "request": request,
+        }
+        ser = sc(obj, user=obj.user, context=serializer_context)
+        data = ser.data
+        data["stage"] = "FINISHED"
+        ser = sc(data=data, user=obj.user, context=serializer_context)
+        if ser.is_valid():
+            ser.save()
+            return Response(ser.data)
+        else:
+            return Response(ser.errors)
