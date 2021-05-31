@@ -141,7 +141,7 @@
                     <td class="text-left">{{ fermentable.use|title|default:"---" }}</td>
                     <td class="text-left">{{ fermentable.color|get_obj_attr:color_units.0|floatformat }} {{color_units.1}}</td>
                     <td class="text-left">{{ fermentable.extraction }}%</td>
-                    <td class="text-left">{{ fermentable.amount|get_obj_attr:big_weight.0|floatformat }} {{big_weight.1}}</td>
+                    <td id="fermentable-amount-{{fermentable.id}}" class="fermentable-amount text-left">{{ fermentable.amount|get_obj_attr:big_weight.0|floatformat }} {{big_weight.1}}</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -203,4 +203,20 @@
 <div class="modal-footer">
   <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
 </div>
+<script>
+$(document).ready(function() {
+  var fermentables = {};
+  var total = 0.0
+  $(".fermentable-amount").each(function(index){
+    var amount = parseFloat($("#" + this.id).text().split("-")[0]);
+    fermentables[this.id] = amount
+    total = total + amount
+  });
+  for (const [key, value] of Object.entries(fermentables)) {
+    percent = ((value/total)*100).toFixed(1);
+    var text = $("#" + key).text()
+    $("#" + key).text(`${text} (${percent}%)`)
+  }
+});
+</script>
 {% endblock content %}
