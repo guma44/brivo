@@ -425,16 +425,33 @@ class BatchSerializer(CustomSerializer):
         for field in required_fields:
             if field not in data:
                 errors[field] = f"This field is required for stage <= {data['stage']}"
+        data["batch_number"] = self._get_batch_number(data.get("batch_number", 1))
         if len(errors) > 0:
             raise serializers.ValidationError(errors)
         return data
+
+    def create(self, validated_data):
+        validated_data["user"] = self.user
+        return super(BatchSerializer, self).create(validated_data)
+
+    def _get_batch_number(self, number=None):
+        batches = models.Batch.objects.filter(user=self.user).order_by(
+            "-batch_number"
+        )
+        if number not in [b.batch_number for b in batches]:
+            return number
+        if len(batches) > 0:
+            num = batches[0].batch_number
+            return num + 1
+        else:
+            # this is the first batch ever
+            return 1
 
 
     def _get_batch_required_fields(self, stage):
         fields = ["recipe", "stage"]
         mashing = [
             "name",
-            "batch_number",
             "brewing_day",
             "grain_temperature",
             "sparging_temperature",

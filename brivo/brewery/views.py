@@ -453,70 +453,22 @@ class BatchDeleteView(LoginAndOwnershipRequiredMixin, BSModalDeleteView):
 
 def import_batch(batch, user):
     batch_data = functions.clean_data(batch)
-    recipe = Recipe.objects.filter(name__icontains=batch_data["recipe"])
     user = User.objects.get(username=user)
-    batch_data["user"] = user
-    if "stage" not in batch_data:
-        batch_data["stage"] = "FINISHED"
+    recipe = []
+    if isinstance(batch_data["recipe"], str):  # this is probably name not pk
+        recipe = Recipe.objects.filter(name__icontains=batch_data["recipe"])
+    else:
+        recipe = Recipe.objects.filter(pk=batch_data["recipe"])
     if recipe.count() == 0:
         raise Exception(
             f"Did not fount a recipe '{batch_data['recipe']}' for '{batch_data['name']}'"
         )
-    elif recipe.count() > 1:
-        print(f"Found too many recipes with name {batch['recipe']}")
-    batch_data["recipe"] = recipe[0]
-    temp_unit = batch_data["temperature_unit"]
-    volume_unit = batch_data["volume_unit"]
-    gravity_unit = batch_data["gravity_unit"]
-    batch_data["grain_temperature"] = Temperature(
-        **{temp_unit: batch_data["grain_temperature"]}
-    )
-    batch_data["sparging_temperature"] = Temperature(
-        **{temp_unit: batch_data["sparging_temperature"]}
-    )
-    batch_data["gravity_before_boil"] = BeerGravity(
-        **{gravity_unit: batch_data["gravity_before_boil"]}
-    )
-    if batch_data["end_gravity"] is not None:
-        batch_data["end_gravity"] = BeerGravity(
-            **{gravity_unit: batch_data["end_gravity"]}
-        )
+    batch_data["recipe"] = recipe[0].id
+    serializer = serializers.BatchSerializer(data=batch_data, user=user)
+    if serializer.is_valid():
+        serializer.save()
     else:
-        del batch_data["end_gravity"]
-    if batch_data.get("post_primary_gravity") is not None:
-        batch_data["post_primary_gravity"] = BeerGravity(
-            **{gravity_unit: batch_data["post_primary_gravity"]}
-        )
-    else:
-        del batch_data["post_primary_gravity"]
-    batch_data["initial_gravity"] = BeerGravity(
-        **{gravity_unit: batch_data["initial_gravity"]}
-    )
-    batch_data["wort_volume"] = Volume(**{volume_unit: batch_data["wort_volume"]})
-    batch_data["boil_loss"] = Volume(
-        **{
-            volume_unit: batch_data["boil_loss"]
-            if batch_data["boil_loss"] is not None
-            else 0
-        }
-    )
-    if batch_data["beer_volume"] is not None:
-        batch_data["beer_volume"] = Volume(**{volume_unit: batch_data["beer_volume"]})
-    else:
-        del batch_data["beer_volume"]
-    to_del = ["temperature_unit", "volume_unit", "gravity_unit"]
-    for d in to_del:
-        del batch_data[d]
-
-    if "post_primary_gravity" not in batch_data and "end_gravity" not in batch_data:
-        batch_data["stage"] = "PRIMARY_FERMENTATION"
-    elif "post_primary_gravity" in batch_data and "end_gravity" not in batch_data:
-        batch_data["stage"] = "SECONDARY_FERMENTATION"
-    else:
-        batch_data["stage"] = "FINISHED"
-
-    new_batch = Batch(**batch_data)
-    new_batch.save()
+        raise Exception(serializer.errors)
 
 
 @shared_task(bind=True)
