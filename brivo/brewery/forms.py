@@ -243,16 +243,16 @@ packaging_stats_for_batch = """
 </br>
 <table class="table" style="background:#dedede">
    <tr>
-      <td>Expected Volume With Trub Loss:</td>
-      <td class: "text-left" id="expected_boil_volume_info">{{ batch.recipe.get_boil_volume|get_obj_attr:volume.0|floatformat }}  {{volume.1}}</td>
+      <td>ABV:</td>
+      <td class: "text-left" id="abv_batch_stats">{{ batch.get_abv|floatformat }} %</td>
    <tr>
    <tr>
-      <td>Expected Original Gravity:</td>
-      <td class: "text-left" id="expected_preboil_gravity_info">{{ batch.recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
+      <td>Attenuation:</td>
+      <td class: "text-left" id="attenuation_batch_stats">{{ batch.get_attenuation|floatformat }} %</td>
    <tr>
    <tr>
-      <td>Boil Time:</td>
-      <td class: "text-left" id="primary_volume_info">{{ batch.recipe.boil_time }} Min</td>
+      <td>Calories:</td>
+      <td class: "text-left" id="calories_batch_stats">{{ batch.get_calories|floatformat }} kcal/500ml</td>
    <tr>
 </table>
 """
@@ -470,6 +470,10 @@ class BaseBatchForm(BSModalModelForm):
                         Field("beer_volume"),
                         Field("carbonation_type"),
                         Field("carbonation_level"),
+                        Row(
+                            Column(HTML(packaging_stats_for_batch), css_class='form-group col-md-3 mb-0'),
+                            css_class='form-row'
+                        ),
                     ),
                     Row(
                         Column(HTML(packaging_info_for_batch), css_class='form-group mb-0'),

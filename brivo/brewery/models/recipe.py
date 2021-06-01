@@ -157,10 +157,10 @@ class Recipe(BaseModel):
         return float(min_val) / 100
 
     def get_final_gravity(self):
-        return self.get_gravity().plato * (1 - self.get_max_attenuation())
+        return BeerGravity(plato=self.get_gravity().plato * (1 - self.get_max_attenuation()))
 
     def get_abv(self):
-        return (self.get_gravity().plato - self.get_final_gravity()) * 0.516
+        return functions.get_abv(self.get_gravity().sg, self.get_final_gravity().sg)
 
     def get_fermentable_sugar(self, fermentable):
         sugar = fermentable.amount.kg * float(fermentable.extraction) / 100.0

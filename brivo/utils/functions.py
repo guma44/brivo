@@ -109,7 +109,7 @@ def get_beer_calories(og, fg):
     calories per 12 oz beer = [(6.9 × ABW) + 4.0 × (RE - 0.1)] × fg × 3.55
     to 100ml = ((calories / 12) / 29.573529564) * 100"""
     calories = ((6.9 * get_abw(og, fg)) + 4.0 * (get_real_extract(og, fg) - 0.1)) * fg * 3.55
-    return ((calories / 12) / 29.573529564) * 100
+    return (((calories / 12) / 29.573529564) * 100) * 5
 
 
 def get_real_extract(og, fg):
@@ -136,9 +136,8 @@ def get_abw(og, fg):
 
 def get_abv(og, fg):
     """Alcohol by Volume -
-    og & fg in sg
-    ABV = (og - fg) * 131.25"""
-    return (og - fg) * 131.25
+    og & fg in sg"""
+    return 76.08 * (og - fg) / (1.775 - og) * (fg / 0.794)
 
 def get_bitterness(og, fg, ibu):
     og = to_plato(og)
