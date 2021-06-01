@@ -60,7 +60,7 @@ class TestStylesAPI:
     def test_list_not_logged_in(self, api_client):
         baker.make(Style, _quantity=3)
         response = api_client().get(self.endpoint)
-        assert response.status_code == 403
+        assert response.status_code == 401
 
     def test_list_logged_in(self, api_client, user):
         baker.make(Style, _quantity=3)

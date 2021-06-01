@@ -14,7 +14,7 @@ class TestBatchEndpoints:
 
     def test_list_not_logged_in(self, api_client):
         response = api_client().get(self.endpoint)
-        assert response.status_code == 403
+        assert response.status_code == 401
 
     def test_list(self, api_client, user):
         baker.make(Batch, _quantity=3, user=user)
