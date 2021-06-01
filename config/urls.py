@@ -7,6 +7,8 @@ from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
+from brivo.users.api.views import CustomLogoutView
+
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
@@ -30,6 +32,7 @@ urlpatterns = [
 urlpatterns += [
     # API base url
     path("api/", include("config.api_router", namespace="api")),
+    path("api/auth/logout/", CustomLogoutView.as_view()),
     path('api/auth/', include('dj_rest_auth.urls')),
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
     # DRF auth token
