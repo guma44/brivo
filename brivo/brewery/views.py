@@ -443,6 +443,12 @@ class BatchDetailView(LoginAndOwnershipRequiredMixin, BSModalReadView):
     template_name = "brewery/batch/detail.html"
     context_object_name = "batch"
 
+    def get_context_data(self, **kwargs):
+        data = super(BatchDetailView, self).get_context_data(**kwargs)
+        units = functions.get_user_units_with_repr(self.request.user)
+        data.update(units)
+        return data
+
 
 class BatchDeleteView(LoginAndOwnershipRequiredMixin, BSModalDeleteView):
     model = Batch

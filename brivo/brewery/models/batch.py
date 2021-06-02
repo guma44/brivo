@@ -167,13 +167,22 @@ class Batch(BaseModel):
         return sum(added_ibus)
 
     def get_abv(self):
-        return functions.get_abv(self.initial_gravity.sg, self.end_gravity.sg)
+        try:
+            return functions.get_abv(self.initial_gravity.sg, self.end_gravity.sg)
+        except AttributeError:
+            return None
 
     def get_attenuation(self):
-        return functions.get_attenuation(self.initial_gravity.sg, self.end_gravity.sg)
+        try:
+            return functions.get_attenuation(self.initial_gravity.sg, self.end_gravity.sg)
+        except AttributeError:
+            return None
 
     def get_calories(self):
-        return functions.get_beer_calories(self.initial_gravity.sg, self.end_gravity.sg)
+        try:
+            return functions.get_beer_calories(self.initial_gravity.sg, self.end_gravity.sg)
+        except AttributeError:
+            return None
 
     @staticmethod
     def get_fields_by_stage(stage):
