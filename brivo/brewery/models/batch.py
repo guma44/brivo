@@ -26,6 +26,11 @@ BATCH_STAGES = (
 BATCH_STAGE_ORDER = [bs[0] for bs in BATCH_STAGES]
 
 CARBONATION_TYPE = (("FORCED", "Forced"), ("REFERMENTATION", "Refermentation"))
+SUGAR_TYPE = (
+    ("CORN_SUGAR", "Corn Sugar"),
+    ("TABLE_SUGAR", "Table Sugar"),
+    ("DRY_EXTRACT", "Dry Extract")
+)
 
 
 class Batch(BaseModel):
@@ -117,6 +122,12 @@ class Batch(BaseModel):
     )
     carbonation_level = models.DecimalField(
         _("Carbonation Level"), max_digits=5, decimal_places=2, null=True
+    )
+    sugar_type = models.CharField(
+        _("Sugar Type"), max_length=50, choices=SUGAR_TYPE, null=True, blank=True
+    )
+    priming_temperature = TemperatureField(
+        verbose_name=_("Priming Temperature"), null=True, blank=True
     )
 
     hidden_fields = ["stage"]
@@ -227,6 +238,8 @@ class Batch(BaseModel):
                     "beer_volume",
                     "carbonation_type",
                     "carbonation_level",
+                    "sugar_type",
+                    "priming_temperature"
                 ]
             )
         return fields

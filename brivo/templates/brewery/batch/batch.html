@@ -82,6 +82,23 @@ $(document).ready(function() {
       {% endif %}
     {% endfor %}
   {% endif %}
+
+  function toggle_refermentation() {
+    if ($("#id_carbonation_type").find(":selected").text() == "Refermentation") {
+      $(".refermentation-fields").slideDown();
+      $("#id_sugar_type").prop('required', true);
+      $("#id_priming_temperature_0").prop('required', true);
+    }
+    else {
+      $(".refermentation-fields").slideUp();
+      $("#id_sugar_type").prop('required', false);
+      $("#id_priming_temperature_0").prop('required', false);
+    }
+  }
+  $("#id_carbonation_type").change(function(){
+    toggle_refermentation();
+  });
+  toggle_refermentation();
 });
 </script>
 {% endblock %}

@@ -145,7 +145,7 @@ class TestBatchEndpoints:
         assert response.status_code == 201, json.loads(response.content)
         assert json.loads(response.content)["stage"] == "SECONDARY_FERMENTATION"
 
-    def test_create_in_packaging(self, api_client, recipes):
+    def test_create_in_packaging_refermentation(self, api_client, recipes):
         user, infos = recipes
         recipe_id = list(infos.keys())[0]
         client = api_client()
@@ -163,6 +163,38 @@ class TestBatchEndpoints:
             "primary_fermentation_start_day": "2020-05-06",
             "packaging_date": "2016-07-30",
             "carbonation_type": "REFERMENTATION",
+            "carbonation_level": "1.80",
+            "beer_volume": "20.0 l",
+            "end_gravity": "6.5 plato",
+            "recipe": recipe_id,
+            "stage": "PACKAGING",
+        }
+        response = client.post(f"{self.endpoint}", data=data, format="json")
+        assert response.status_code == 400, json.loads(response.content)
+        data["sugar_type"] = "TABLE_SUGAR"
+        data["priming_temperature"] = "20 c"
+        response = client.post(f"{self.endpoint}", data=data, format="json")
+        assert response.status_code == 201, json.loads(response.content)
+        assert json.loads(response.content)["stage"] == "PACKAGING"
+
+    def test_create_in_packaging_forced(self, api_client, recipes):
+        user, infos = recipes
+        recipe_id = list(infos.keys())[0]
+        client = api_client()
+        client.force_authenticate(user)
+        data = {
+            "name": "Session IPA",
+            "batch_number": 68,
+            "brewing_day": "2020-05-06",
+            "grain_temperature": "20.0 c",
+            "sparging_temperature": "78.0 c",
+            "gravity_before_boil": "11 plato",
+            "boil_loss": "3 l",
+            "initial_gravity": "12 plato",
+            "wort_volume": "20 l",
+            "primary_fermentation_start_day": "2020-05-06",
+            "packaging_date": "2016-07-30",
+            "carbonation_type": "FORCED",
             "carbonation_level": "1.80",
             "beer_volume": "20.0 l",
             "recipe": recipe_id,
@@ -275,7 +307,7 @@ class TestBatchEndpoints:
         # PACKAGING
         data = {
             "packaging_date": "2016-07-30",
-            "carbonation_type": "REFERMENTATION",
+            "carbonation_type": "FORCED",
             "carbonation_level": "1.80",
             "end_gravity": "6.5 plato",
             "beer_volume": "20.0 l",

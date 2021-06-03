@@ -453,6 +453,9 @@ class BaseBatchForm(BSModalModelForm):
                 )
             )
         elif self.instance.stage == "PACKAGING":
+            style = ""
+            if getattr(self.instance, "carbonation_type", "").lower() == "forced":
+                style = "display:none"
             self.fields.update({
                 "end_gravity": MeasurementField(
                     measurement=BeerGravity,
@@ -460,6 +463,10 @@ class BaseBatchForm(BSModalModelForm):
                 "beer_volume": MeasurementField(
                     measurement=Volume,
                     unit_choices=volume_unit_choices),
+                "priming_temperature": MeasurementField(
+                    measurement=Temperature,
+                    required=False,
+                    unit_choices=temp_unit_choices),
             })
             self.helper.layout = Layout(
                 Div(
@@ -470,6 +477,12 @@ class BaseBatchForm(BSModalModelForm):
                         Field("beer_volume"),
                         Field("carbonation_type"),
                         Field("carbonation_level"),
+                        Div(
+                            Field("sugar_type"),
+                            Field("priming_temperature"),
+                            css_class="refermentation-fields",
+                            style=style
+                        ),
                         Row(
                             Column(HTML(packaging_stats_for_batch), css_class='form-group col-md-3 mb-0'),
                             css_class='form-row'

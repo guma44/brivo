@@ -258,7 +258,7 @@ class BatchViewSet(
             "request": request,
         }
         ser = sc(obj, user=obj.user, context=serializer_context)
-        data = ser.data
+        data = {k:v for k, v in ser.data.items() if v is not None}
         data["stage"] = "FINISHED"
         ser = sc(data=data, user=obj.user, context=serializer_context)
         if ser.is_valid():

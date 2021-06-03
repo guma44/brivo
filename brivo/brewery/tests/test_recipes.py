@@ -23,7 +23,7 @@ recipe_info = {
     "primary_volume": 28.35,
     "secondary_volume": 27.0,
     "color": 4.36,
-    "abv": 4.3,
+    "abv": 4.4,
     "gravity": 11.035,
     "bitterness_ratio": 0.8,
 }

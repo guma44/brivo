@@ -404,6 +404,7 @@ class BatchSerializer(CustomSerializer):
     post_primary_gravity = measurement_field_factory(BeerGravity, "gravity_units")()
     end_gravity = measurement_field_factory(BeerGravity, "gravity_units")()
     beer_volume = measurement_field_factory(Volume, "volume_units")()
+    priming_temperature = measurement_field_factory(Temperature, "temperature_units")(required=False)
 
     class Meta:
         model = models.Batch
@@ -420,7 +421,7 @@ class BatchSerializer(CustomSerializer):
         """
         if "stage" not in data:
             raise serializers.ValidationError({"stage": "This field is required"})
-        required_fields = self._get_batch_required_fields(data["stage"])
+        required_fields = self._get_batch_required_fields(data)
         errors = {}
         for field in required_fields:
             if field not in data:
@@ -448,7 +449,7 @@ class BatchSerializer(CustomSerializer):
             return 1
 
 
-    def _get_batch_required_fields(self, stage):
+    def _get_batch_required_fields(self, data):
         fields = ["recipe", "stage"]
         mashing = [
             "name",
@@ -470,14 +471,17 @@ class BatchSerializer(CustomSerializer):
             "carbonation_type",
             "carbonation_level",
         ]
-        if stage == "MASHING":
+        if data["stage"] == "MASHING":
             fields = fields + mashing
-        elif stage == "BOIL":
+        elif data["stage"] == "BOIL":
             fields = fields + mashing + boil
-        elif stage == "PRIMARY_FERMENTATION" or stage == "SECONDARY_FERMENTATION":
+        elif data["stage"] == "PRIMARY_FERMENTATION" or data["stage"] == "SECONDARY_FERMENTATION":
             fields = fields + mashing + boil + primary
-        elif stage == "PACKAGING" or stage == "FINISHED":
+        elif data["stage"] == "PACKAGING" or data["stage"] == "FINISHED":
             fields = fields + mashing + boil + primary + packaging
+        if data["stage"] == "PACKAGING":
+            if data["carbonation_type"] == "REFERMENTATION":
+                fields = fields + ["sugar_type", "priming_temperature"]
         return fields
 
 
@@ -603,6 +607,7 @@ class BatchSecondarySerializer(CustomSerializer):
 class BatchPackagingSerializer(CustomSerializer):
     end_gravity = measurement_field_factory(BeerGravity, "gravity_units")()
     beer_volume = measurement_field_factory(Volume, "volume_units")()
+    priming_temperature = measurement_field_factory(Temperature, "temperature_units")(required=False)
     previous_step = serializers.HyperlinkedIdentityField(
         view_name="api:batch-secondary", lookup_field="id", read_only=True
     )
@@ -620,9 +625,29 @@ class BatchPackagingSerializer(CustomSerializer):
             "beer_volume",
             "carbonation_type",
             "carbonation_level",
+            "sugar_type",
+            "priming_temperature",
             "previous_step",
             "next_step",
         ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["sugar_type"].required = False
+
+    def validate(self, data):
+        """
+        Check that the start is before the stop.
+        """
+        errors = {}
+        if data["carbonation_type"] == "REFERMENTATION":
+            if "sugar_type" not in data:
+                errors["sugar_type"] = "This field is required when 'carbonation_type' = 'REFERMENTATION'"
+            if "priming_temperature" not in data:
+                errors["priming_temperature"] = "This field is required when 'carbonation_type' = 'REFERMENTATION'"
+        if len(errors) > 0:
+            raise serializers.ValidationError(errors)
+        return data
 
     def to_internal_value(self, data):
         data = super().to_internal_value(data)
