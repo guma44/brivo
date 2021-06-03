@@ -477,9 +477,12 @@ class BaseBatchForm(BSModalModelForm):
                         Field("beer_volume"),
                         Field("carbonation_type"),
                         Field("carbonation_level"),
-                        Div(
-                            Field("sugar_type"),
-                            Field("priming_temperature"),
+                        Row(
+                            Column(
+                                Field("sugar_type"),
+                                Field("priming_temperature"),
+                                css_class="col-md-3"
+                            ),
                             css_class="refermentation-fields",
                             style=style
                         ),

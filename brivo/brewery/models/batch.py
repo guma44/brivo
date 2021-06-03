@@ -10,7 +10,7 @@ from brivo.utils import functions
 from modelcluster.fields import ParentalKey
 
 
-__all__ = ("Batch", "BATCH_STAGE_ORDER", "BATCH_STAGES")
+__all__ = ("Batch", "BATCH_STAGE_ORDER", "BATCH_STAGES", "SUGAR_TYPE")
 
 
 BATCH_STAGES = (

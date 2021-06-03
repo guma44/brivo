@@ -2,6 +2,7 @@ import re
 import math
 
 from django.utils.encoding import smart_str
+from measurement.measures import Volume, Mass
 
 _FLOAT_REGEX = re.compile(r"^-?(?:\d+())?(?:\.\d*())?(?:e-?\d+())?(?:\2|\1\3)$")
 _INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
@@ -271,6 +272,40 @@ def calculate_abw(og, fg):
     :return float:    Alcohol by Weight
     """
     return 0.79336 * calculate_abv(og, fg)
+
+
+def calculate_priming_sugar(priming_temperature, beer_volume, carbonation_level, sugar_type="TABLE_SUGAR"):
+    """
+    :param float priming_temperature: Temperature of beer in fahrenheit
+    :param float beer_volume: Volume of beer to prime in gallons US
+    :param float carbonation_level: Desired carbonation level
+    :return Weight: Weight of table sugar to use
+    """
+    amount = (
+        15.195 * beer_volume * (carbonation_level - 3.0378 + (0.050062 * priming_temperature) - (0.00026555 * (priming_temperature ** 2)))
+    )
+    if sugar_type == "CORN_SUGAR":
+        amount = amount + amount*0.1
+    elif sugar_type == "DRY_EXTRACT":
+        amount = amount + amount*0.46
+    return Mass(g=amount)
+
+
+def calculate_dissolve_volume(sugar_amount, sugar_type, og):
+    """Calculate volume to disolve priming sugar
+    :param float sugar_amount: Sugar amount in pounds Lb
+    :param string sugar_type: Sugar type
+    :param float og: OG in SG
+    """
+    if sugar_type == "DRY_EXTRACT":
+        ppg = 36
+    else:
+        ppg = 46
+    print(sugar_amount, og)
+    volume = abs(sugar_amount * ppg / (1 - og) / 1000.0)
+    volume = volume - 0.1 * volume
+    return Volume(us_g=volume)
+
 
 def get_hex_color_from_srm(srm):
     """Return HEX converted color from SRM"""

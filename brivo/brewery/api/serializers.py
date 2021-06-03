@@ -653,3 +653,34 @@ class BatchPackagingSerializer(CustomSerializer):
         data = super().to_internal_value(data)
         data['stage'] = 'PACKAGING'
         return data
+
+
+class BeerPrimingCalculatorRequestSerializer(serializers.Serializer):
+    priming_temperature = measurement_field_factory(
+        Temperature, "temperature_units"
+    )()
+    beer_volume = measurement_field_factory(
+        Volume, "volume_units"
+    )()
+    carbonation_level = serializers.FloatField(max_value=6, min_value=0)
+    sugar_type = serializers.ChoiceField(models.SUGAR_TYPE)
+    original_gravity = measurement_field_factory(
+        BeerGravity, "gravity_units"
+    )(required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
+
+
+class BeerPrimingCalculatorResponseSerializer(serializers.Serializer):
+    sugar_amount = measurement_field_factory(
+        Weight, "mass_units"
+    )()
+    water_volume = measurement_field_factory(
+        Volume, "volume_units"
+    )(required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)

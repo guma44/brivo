@@ -9,11 +9,13 @@ from rest_framework.mixins import (
 )
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ViewSet
 from rest_framework.permissions import IsAdminUser, SAFE_METHODS, IsAuthenticated
+from drf_spectacular.utils import extend_schema
 
 from brivo.brewery import models
 from brivo.brewery.api import serializers
+from brivo.utils import functions
 
 
 class IsAdminUserOrReadOnly(IsAdminUser):
@@ -266,3 +268,43 @@ class BatchViewSet(
             return Response(ser.data)
         else:
             return Response(ser.errors)
+
+
+class BeerCalculatorViewSet(AddUserMixin, ViewSet):
+
+    permission_classes = (IsAuthenticated,)
+
+    def get_serializer_class(self):
+        if self.action == "priming":
+            return serializers.BeerPrimingCalculatorRequestSerializer
+        else:
+            return serializers.BeerPrimingCalculatorRequestSerializer
+
+    @extend_schema(
+        request=serializers.BeerPrimingCalculatorRequestSerializer,
+        responses=serializers.BeerPrimingCalculatorResponseSerializer,
+    )
+    @action(methods=["post"], detail=False)
+    def priming(self, request, format=None):
+        """
+        Get priming sugar
+        """
+        serializer = serializers.BeerPrimingCalculatorRequestSerializer(data=request.data, user=request.user)
+        serializer.is_valid()
+        amount = functions.calculate_priming_sugar(
+            priming_temperature=serializer.validated_data["priming_temperature"].f,
+            beer_volume=serializer.validated_data["beer_volume"].us_g,
+            carbonation_level=serializer.validated_data["carbonation_level"],
+            sugar_type=serializer.validated_data["sugar_type"])
+        data={"sugar_amount": f"{amount.g} g"}
+        if "original_gravity" in serializer.validated_data:
+            volume = functions.calculate_dissolve_volume(
+                sugar_amount=amount.lb,
+                sugar_type=serializer.validated_data["sugar_type"],
+                og=serializer.validated_data["original_gravity"].sg
+            )
+            data["water_volume"] = f"{volume.l} l"
+        res_ser = serializers.BeerPrimingCalculatorResponseSerializer(data=data, user=request.user)
+        res_ser.is_valid()
+        return Response(res_ser.data)
+
