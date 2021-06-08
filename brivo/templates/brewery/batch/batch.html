@@ -95,10 +95,39 @@ $(document).ready(function() {
       $("#id_priming_temperature_0").prop('required', false);
     }
   }
+  function check_priming_params() {
+    if ($("#id_carbonation_type").find(":selected").text() == "Refermentation") {
+      $.ajax({
+        type: "POST",
+        headers: { "X-CSRFToken": "{{ csrf_token }}" }, 
+        url: '/api/brewery/calc/priming/',
+        data: {
+          "priming_temperature": $("#id_priming_temperature_0").val() + " {{temp_units.0}}",
+          "beer_volume": $("#id_beer_volume_0").val() + " {{volume.0}}",
+          "carbonation_level": $("#id_carbonation_level").val(),
+          "sugar_type": $("#id_sugar_type").find(":selected").val(),
+          "original_gravity": "{{ batch.initial_gravity|get_obj_attr:gravity_units.0|floatformat }} {{gravity_units.0}}"
+        },
+        dataType: 'json',
+        success: function (data) {
+          $("#priming_sugar_info_span").text(parseFloat(data["sugar_amount"].split(" ")[0]).toFixed(1));
+          $("#priming_water_info_span").text(parseFloat(data["water_volume"].split(" ")[0]).toFixed(3));
+        },
+        error: function (data) {
+          $("#priming_sugar_info_span").text("---");
+          $("#priming_water_info_span").text("---");
+        }
+      });
+    }
+  }
   $("#id_carbonation_type").change(function(){
     toggle_refermentation();
   });
+  $("#id_carbonation_type,#id_sugar_type,#id_priming_temperature_0,#id_carbonation_level,#id_beer_volume_0").change(function(){
+    check_priming_params();
+  });
   toggle_refermentation();
+  check_priming_params();
 });
 </script>
 {% endblock %}

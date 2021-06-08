@@ -257,6 +257,22 @@ packaging_stats_for_batch = """
 </table>
 """
 
+
+priming_info_for_batch = """
+{% load brew_tags %}
+</br>
+<table class="table" style="background:#dedede">
+   <tr>
+      <td>Priming sugar:</td>
+      <td class: "text-left" id="priming_sugar_info"><span id="priming_sugar_info_span"></span> {{small_weight.1}}</td>
+   <tr>
+   <tr>
+      <td>Amount of water:</td>
+      <td class: "text-left" id="priming_water_info"><span id="priming_water_info_span"></span> {{volume.1}}</td>
+   <tr>
+</table>
+"""
+
 def _get_unit_choices(profile):
     # 
     if profile.general_units == "METRIC":
@@ -454,7 +470,10 @@ class BaseBatchForm(BSModalModelForm):
             )
         elif self.instance.stage == "PACKAGING":
             style = ""
-            if getattr(self.instance, "carbonation_type", "").lower() == "forced":
+            if getattr(self.instance, "carbonation_type", None) is not None:
+                if getattr(self.instance, "carbonation_type", None).lower() == "forced":
+                    style = "display:none"
+            else:
                 style = "display:none"
             self.fields.update({
                 "end_gravity": MeasurementField(
@@ -481,8 +500,9 @@ class BaseBatchForm(BSModalModelForm):
                             Column(
                                 Field("sugar_type"),
                                 Field("priming_temperature"),
-                                css_class="col-md-3"
+                                css_class="col-md-12"
                             ),
+                            Column(HTML(priming_info_for_batch), css_class="col-md-3"),
                             css_class="refermentation-fields",
                             style=style
                         ),

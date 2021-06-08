@@ -290,7 +290,8 @@ class BeerCalculatorViewSet(AddUserMixin, ViewSet):
         Get priming sugar
         """
         serializer = serializers.BeerPrimingCalculatorRequestSerializer(data=request.data, user=request.user)
-        serializer.is_valid()
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=400)
         amount = functions.calculate_priming_sugar(
             priming_temperature=serializer.validated_data["priming_temperature"].f,
             beer_volume=serializer.validated_data["beer_volume"].us_g,
