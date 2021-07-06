@@ -237,10 +237,10 @@ class FermentableAutocomplete(BaseAutocomplete):
                 "data": {
                     "name": result.name,
                     "type": result.type,
-                    "color": getattr(
+                    "color": round(getattr(
                         result.color, self.request.user.profile.color_units.lower()
-                    ),
-                    "extraction": result.extraction,
+                    ), 1),
+                    "extraction": round(result.extraction, 2),
                 },
                 "value": result.name,
             }
