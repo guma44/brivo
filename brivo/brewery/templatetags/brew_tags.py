@@ -17,6 +17,11 @@ def get_fields(obj):
     return [(field.verbose_name, field.value_to_string(obj)) for field in obj._meta.fields]
 
 
+@register.filter
+def count_dry_hops(obj):
+    return obj.filter(use="DRY HOP").count()
+
+
 @register.simple_tag(takes_context=True)
 def param_replace(context, **kwargs):
     """

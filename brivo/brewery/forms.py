@@ -113,6 +113,7 @@ boil_info_for_batch = """
         </thead>
         <tbody>
             {% for hop in batch.recipe.hops.all %}
+                {% if hop.use != "DRY HOP" %}
                 <tr>
                     <td class="text-left">{{ hop.name }}</td>
                     <td class="text-left">{{ hop.use|title }}</td>
@@ -120,6 +121,7 @@ boil_info_for_batch = """
                     <td class="text-left">{{ hop.amount|get_obj_attr:small_weight.0 }} {{small_weight.1}}</td>
                     <td class="text-left">{{ hop.time|floatformat }} {{hop.time_unit|lower}}(s)</td>
                 </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>
@@ -200,6 +202,39 @@ primary_stats_for_batch = """
       <td class: "text-left" id="actual_mash_efficiency_info">{{ batch.get_actuall_mash_efficiency|floatformat|default:"---" }}%</td>
    <tr>
 </table>
+"""
+
+secondary_info_for_batch = """
+{% load brew_tags %}
+<div class="ingredients mt-5 mb-5">
+    {% if batch.recipe.hops.all|count_dry_hops > 0 %}
+    <h5>Hops</h5>
+    <table class="table table-sm">
+        <thead>
+            <tr >
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Use</th>
+                <th class="text-left" scope="col">Alpha Acids</th>
+                <th class="text-left" scope="col">Amount</th>
+                <th class="text-left" scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hop in batch.recipe.hops.all %}
+                {% if hop.use == "DRY HOP" %}
+                <tr>
+                    <td class="text-left">{{ hop.name }}</td>
+                    <td class="text-left">{{ hop.use|title }}</td>
+                    <td class="text-left">{{ hop.alpha_acids }}%</td>
+                    <td class="text-left">{{ hop.amount|get_obj_attr:small_weight.0 }} {{small_weight.1}}</td>
+                    <td class="text-left">{{ hop.time|floatformat }} {{hop.time_unit|lower}}(s)</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
 """
 
 packaging_info_for_batch = """
@@ -459,6 +494,10 @@ class BaseBatchForm(BSModalModelForm):
                         Field("secondary_fermentation_start_day"),
                         Field("dry_hops_start_day"),
                     ),
+                    Row(
+                        Column(HTML(secondary_info_for_batch), css_class='form-group mb-0'),
+                        css_class='form-row'
+                    )
                 ),
                 Div(
                     ButtonHolder(
