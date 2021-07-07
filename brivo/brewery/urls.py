@@ -121,4 +121,10 @@ urlpatterns = [
          name='batch-delete'),
     path('batch/import', views.BatchImportView.as_view(),
          name='batch-import'),
+    path('batch/<int:batch_pk>/fermentation_check', views.FermentationCheckCreateView.as_view(),
+         name='batch-fermentation_check-create'),
+    path('batch/<int:batch_pk>/fermentation_check/<int:pk>/update', views.FermentationCheckUpdateView.as_view(),
+         name='batch-fermentation_check-update'),
+    path('batch/<int:batch_pk>/fermentation_check/<int:pk>/delete', views.FermentationCheckDeleteView.as_view(),
+         name='batch-fermentation_check-delete'),
 ]

@@ -121,6 +121,35 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-sm-12">
+      {% if batch.fermentation_checks.all.count > 0 %}
+      <h8>Fermentation Checks</h8>
+      <table class="table table-sm mt-2">
+          <thead>
+              <tr >
+                  <th class="text-left" scope="col">Sample Day</th>
+                  <th class="text-left" scope="col">Gravity</th>
+                  <th class="text-left" scope="col">Beer Temperature</th>
+                  <th class="text-left" scope="col">Ambient Temperature</th>
+                  <th class="text-left" scope="col">Comment</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for check in batch.fermentation_checks.all|dictsort:"sample_day" %}
+                  <tr>
+                      <td class="text-left">{{ check.sample_day }} ({{check.sample_day|timesince}})</td>
+                      <td class="text-left">{{ check.gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
+                      <td class="text-left">{% if check.beer_temperature %}{{ check.beer_temperature|get_obj_attr:temp_units.0|floatformat}}{% else %}---{% endif %} {% if check.beer_temperature %}{{temp_units.1}}{% endif %}</td>
+                      <td class="text-left">{% if check.ambient_temperature %}{{ check.ambient_temperature|get_obj_attr:temp_units.0|floatformat}}{% else %}---{% endif %} {% if check.ambient_temperature %}{{temp_units.1}}{% endif %}</td>
+                      <td class="text-left">{% if check.comment %}{{ check.comment }}{% else %}---{% endif %}</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row">
     <div class="col-sm-7">
       <h5>Packaging</h5>
       <table class="table table-sm">

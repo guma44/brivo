@@ -10,7 +10,7 @@ from brivo.utils import functions
 from modelcluster.fields import ParentalKey
 
 
-__all__ = ("Batch", "BATCH_STAGE_ORDER", "BATCH_STAGES", "SUGAR_TYPE")
+__all__ = ("Batch", "FermentationCheck", "BATCH_STAGE_ORDER", "BATCH_STAGES", "SUGAR_TYPE")
 
 
 BATCH_STAGES = (
@@ -31,6 +31,30 @@ SUGAR_TYPE = (
     ("TABLE_SUGAR", "Table Sugar"),
     ("DRY_EXTRACT", "Dry Extract")
 )
+
+class FermentationCheck(BaseModel):
+    batch = ParentalKey(
+        "brewery.Batch",
+        verbose_name=_("Batch"),
+        on_delete=models.CASCADE,
+        related_name="fermentation_checks",
+    )
+    sample_day = models.DateField(
+        _("Sample Day"),
+        null=True,
+        auto_now=False,
+        auto_now_add=False,
+    )
+    gravity = BeerGravityField(
+        verbose_name=_("Gravity"), null=True
+    )
+    beer_temperature = TemperatureField(
+        verbose_name=_("Beer Temperature"), null=True, blank=True
+    )
+    ambient_temperature = TemperatureField(
+        verbose_name=_("Ambient Temperature"), null=True, blank=True
+    )
+    comment = models.TextField(_("Comment"), blank=True, null=True)
 
 
 class Batch(BaseModel):

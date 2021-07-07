@@ -45,9 +45,11 @@ from brivo.brewery.forms import (
     RecipeImportForm,
     BatchImportForm,
     IngredientFermentableFormSet,
+    FermentationCheckModelForm
 )
 from brivo.brewery.models import (
     Batch,
+    FermentationCheck,
     BATCH_STAGE_ORDER,
     Fermentable,
     Hop,
@@ -406,7 +408,75 @@ class BatchView(UserPassesTestMixin, FormView):
     def test_func(self):
         if self.batch is not None:
             return self.request.user == self.batch.user
-        return True
+        return False
+
+
+class FermentationCheckCreateView(LoginRequiredMixin, BSModalCreateView):
+    template_name = "brewery/batch/fermentation_check.html"
+    form_class = FermentationCheckModelForm
+    success_message = "FermentationCheck was created."
+
+    def dispatch(self, request, *args, **kwargs):
+        batch_id = kwargs.get("batch_pk")
+        self.batch = Batch.objects.get(pk=batch_id)
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.batch = self.batch
+        form.instance.save()
+        return redirect(reverse("brewery:batch-update", args=[form.instance.batch.pk]))
+
+    def test_func(self):
+        if self.batch is not None:
+            return self.request.user == self.batch.user
+        return False
+
+
+class FermentationCheckUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = FermentationCheck
+    form_class = FermentationCheckModelForm
+    template_name = "brewery/batch/fermentation_check_update.html"
+    success_message = "FermentationCheck was updated."
+    context_object_name = "fermentation_check"
+
+    def get_form_kwargs(self):
+        kwargs = super(FermentationCheckUpdateView, self).get_form_kwargs()
+        kwargs.update({"request": self.request})
+        return kwargs
+
+    def dispatch(self, request, *args, **kwargs):
+        batch_id = kwargs.get("batch_pk")
+        self.batch = Batch.objects.get(pk=batch_id)
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.batch = self.batch
+        form.instance.save()
+        return redirect(reverse("brewery:batch-update", args=[form.instance.batch.pk]))
+
+    def test_func(self):
+        if self.batch is not None:
+            return self.request.user == self.batch.user
+        return False
+
+
+class FermentationCheckDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = FermentationCheck
+    template_name = "brewery/batch/fermentation_check_delete.html"
+    success_message = "FermentationCheck was deleted."
+
+    def dispatch(self, request, *args, **kwargs):
+        batch_id = kwargs.get("batch_pk")
+        self.batch = Batch.objects.get(pk=batch_id)
+        return super().dispatch(request, *args, **kwargs)
+
+    def test_func(self):
+        if self.batch is not None:
+            return self.request.user == self.batch.user
+        return False
+
+    def get_success_url(self):
+        return reverse("brewery:batch-update", args=[self.batch.pk])
 
 
 class BatchListView(LoginRequiredMixin, ListView):

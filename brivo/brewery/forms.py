@@ -175,6 +175,46 @@ primary_info_for_batch = """
             {% endfor %}
     </table>
 </div>
+<div class="checks mt-5 mb-5">
+    <h5>Fermentation Checks</h5>
+    <button type="button" class="mr-1 bs-modal read-recipe btn btn-sm btn-primary" data-form-url="{% url 'brewery:batch-fermentation_check-create' batch.pk %}">
+        <span class="fa fa-plus"></span> Add Fermentation Check
+    </button>
+    {% if batch.fermentation_checks.all.count > 0 %}
+    <table class="table table-sm mt-2">
+        <thead>
+            <tr >
+                <th class="text-left" scope="col">Sample Day</th>
+                <th class="text-left" scope="col">Gravity</th>
+                <th class="text-left" scope="col">Beer Temperature</th>
+                <th class="text-left" scope="col">Ambient Temperature</th>
+                <th class="text-left" scope="col">Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for check in batch.fermentation_checks.all|dictsort:"sample_day" %}
+                <tr>
+                    <td class="text-left">{{ check.sample_day }} ({{check.sample_day|timesince}})</td>
+                    <td class="text-left">{{ check.gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
+                    <td class="text-left">{% if check.beer_temperature %}{{ check.beer_temperature|get_obj_attr:temp_units.0|floatformat}}{% else %}---{% endif %} {% if check.beer_temperature %}{{temp_units.1}}{% endif %}</td>
+                    <td class="text-left">{% if check.ambient_temperature %}{{ check.ambient_temperature|get_obj_attr:temp_units.0|floatformat}}{% else %}---{% endif %} {% if check.ambient_temperature %}{{temp_units.1}}{% endif %}</td>
+                    <td class="text-left">{% if check.comment %}{{ check.comment }}{% else %}---{% endif %}</td>
+                    <td class="text-center">
+                        {% if user.is_authenticated %}
+                        <button type="button" class="bs-modal update-ferm-check btn btn-sm btn-primary" data-form-url="{% url 'brewery:batch-fermentation_check-update' batch.pk check.pk %}">
+                        <span class="fa fa-edit"></span>
+                        </button>
+                        <button type="button" class="bs-modal delete-ferm-check btn btn-sm btn-danger" data-form-url="{% url 'brewery:batch-fermentation_check-delete' batch.pk check.pk %}">
+                        <span class="fa fa-trash"></span>
+                        </button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
 """
 
 primary_stats_for_batch = """
@@ -563,6 +603,32 @@ class BaseBatchForm(BSModalModelForm):
                     )
                 )
             )
+
+
+class FermentationCheckModelForm(BSModalModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(FermentationCheckModelForm, self).__init__(*args, **kwargs)
+        volume_unit_choices, temp_unit_choices, gravity_unit_choices = _get_unit_choices(
+            self.request.user.profile
+        )
+        self.fields.update({
+            "beer_temperature": MeasurementField(
+                measurement=Temperature,
+                unit_choices=temp_unit_choices,
+                required=False),
+            "ambient_temperature": MeasurementField(
+                measurement=Temperature,
+                unit_choices=temp_unit_choices,
+                required=False),
+            "gravity": MeasurementField(
+                measurement=BeerGravity,
+                unit_choices=gravity_unit_choices),
+        })
+
+    class Meta:
+        model = models.FermentationCheck
+        fields = ["gravity", "beer_temperature", "ambient_temperature", "sample_day", "comment"]
 
 
 class FermentableModelForm(BSModalModelForm):
