@@ -408,7 +408,7 @@ class BatchView(UserPassesTestMixin, FormView):
     def test_func(self):
         if self.batch is not None:
             return self.request.user == self.batch.user
-        return False
+        return True
 
 
 class FermentationCheckCreateView(LoginRequiredMixin, BSModalCreateView):

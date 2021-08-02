@@ -7,7 +7,7 @@ register = template.Library()
 @register.filter
 def get_obj_attr(obj, attr):
     if obj is not None:
-        return getattr(obj, attr.lower())
+        return getattr(obj, attr.lower(), "---")
     else:
         return "---"
 
