@@ -1130,6 +1130,8 @@ def import_recipe(recipe, user):
     style = []
     if isinstance(recipe_data["style"], str):  # this is probably name not pk
         style = Style.objects.filter(name__icontains=recipe_data["style"])
+        if style.count() == 0:  # check also category
+            style = Style.objects.filter(category_id__icontains=recipe_data["style"])
     else:
         style = Style.objects.filter(pk=recipe_data["style"])
     if style.count() == 0:
@@ -1171,7 +1173,19 @@ class RecipeImportView(LoginRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            recipes = json.load(request.FILES["json_file"])
+            try:
+                if request.POST["filetype"] == "json":
+                    recipes = json.load(request.FILES["file"])
+                elif request.POST["filetype"] == "beerxml":
+                    recipes = functions.beerxml_to_json(request.FILES["file"])
+                else:
+                    return render(request, self.template_name, {"form": form})
+            except Exception as exc:
+                print(exc)
+                messages.add_message(
+                    request, messages.ERROR, f"Cannot parse file. Check if you provided valid {request.POST['filetype'].upper()} file."
+                )
+                return redirect(self.success_url)
             result = import_recipes.delay(recipes, request.user.username)
             messages.add_message(
                 request, messages.SUCCESS, result.task_id, extra_tags="task_id"

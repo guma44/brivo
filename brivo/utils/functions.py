@@ -1,5 +1,8 @@
 import re
 import math
+from pybeerxml.parser import Parser
+from pybeerxml.utils import to_lower
+from xml.etree import ElementTree
 
 from django.utils.encoding import smart_str
 from measurement.measures import Volume, Mass
@@ -389,3 +392,128 @@ def get_hex_color_from_srm(srm):
         return "#3A070B"
     else:
         return "#36080A"
+
+
+def beerxml_to_json(xml_file):
+    """Convert beerxml recipe to JSON."""
+    fermentable_type_map = {
+        "grain": "GRAIN",
+        "sugar": "SUGAR",
+        "extract": "LIQUID EXTRACT",
+        "dry extract": "DRY EXTRACT",
+        "adjunct": "SUGAR",
+    }
+
+    yeast_type_map = {
+        "ale": "ALE",
+        "lager": "LAGER",
+        "wheat": "WHEAT",
+        "wine": "CHAMPAGNE",
+        "champagne": "CHAMPAGNE",
+    }
+
+
+    yeast_form_map = {
+        "liquid": "LIQUID",
+        "dry": "DRY",
+        "slant": "SLURRY",
+        "culture": "CULTURE",
+    }
+
+    beers = []
+    parser = Parser()
+    # with open(xml_file, "rt") as file:
+    tree = ElementTree.parse(xml_file)
+
+    for recipe_node in tree.iter():
+        if to_lower(recipe_node.tag) != "recipe":
+            continue
+        recipe = parser.parse_recipe(recipe_node)
+        
+        print("Working on", recipe.name)
+        beer = {
+            "fermentables": [],
+            "hops": [],
+            "yeasts": [],
+            "extras": [],
+            "mash_steps": [],
+            "extra_info": {},
+        }
+        beer["boil_time"] = math.ceil(recipe.boil_time)
+        beer["boil_loss"] = round(recipe.equipment.evap_rate, 2)
+        beer["trub_loss"] = math.ceil(
+            100 * (recipe.equipment.trub_chiller_loss / recipe.batch_size)
+        )
+        beer["dry_hopping_loss"] = 10
+        beer["type"] = recipe.type.upper()
+        beer["expected_beer_volume"] = f"{recipe.batch_size} l"
+        # Mashing
+        beer["mash_efficiency"] = recipe.efficiency
+        beer["liquor_to_grist_ratio"] = 4
+        for fermentable in recipe.fermentables:
+            print(fermentable)
+            beer["fermentables"].append(
+                {
+                    "type": fermentable_type_map[fermentable.type.lower()],
+                    "name": fermentable.name.strip(".").strip(),
+                    "amount": f"{fermentable.amount} kg",
+                    "extraction": fermentable._yield,
+                    "color": f"{fermentable.color} srm",
+                    "use": "MASHING"
+                    if getattr(fermentable, "is_mashed", "true").lower() == "true"
+                    else "BOIL",
+                }
+            )
+        for hop in recipe.hops:
+            if hop.use.upper() == "DRY HOP":
+                hoptime = math.ceil((hop.time / 60) / 24)
+                time_unit = "DAY"
+            else:
+                hoptime = hop.time
+                time_unit = "MINUTE"
+
+            beer["hops"].append(
+                {
+                    "use": hop.use.upper(),
+                    "name": hop.name.strip(".").strip(),
+                    "amount": f"{hop.amount} kg",
+                    "time": hoptime,
+                    "time_unit": time_unit,
+                    "alpha_acids": hop.alpha,
+                }
+            )
+        for yeast in recipe.yeasts:
+            beer["yeasts"].append(
+                {
+                    "name": yeast.name.strip(".").strip(),
+                    "type": yeast_type_map[yeast.type.lower()],
+                    "form": yeast_form_map[yeast.form.lower()],
+                    "amount": f"{yeast.amount} kg",  # it could be liters but we keep only one
+                    "lab": yeast.laboratory,
+                }
+            )
+        for extra in recipe.miscs:
+            beer["extras"].append(
+                {
+                    "type": extra.type.upper(),
+                    "name": extra.name.strip(".").strip(),
+                    "use": extra.use.upper(),
+                    "amount": f"{extra.amount} kg",
+                    "time": extra.time,
+                    "time_unit": "MINUTE",
+                }
+            )
+        for mash_step in recipe.mash.steps:
+            beer["mash_steps"].append(
+                {
+                    "temperature": f"{mash_step.step_temp} c",
+                    "time": mash_step.step_time,
+                }
+            )
+        beer["name"] = recipe.name
+        beer[
+            "style"
+        ] = f"{int(recipe.style.category_number)}{recipe.style.style_letter}"  # 2015 BJCP Category
+        beers.append(beer)
+    print(beers)
+    return beers

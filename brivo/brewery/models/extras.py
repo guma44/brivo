@@ -59,5 +59,5 @@ class IngredientExtra(BaseExtra):
         related_name="extras",
     )
     amount = MassField(verbose_name=_("Amount"), unit_choices=MASS_UNITS)
-    time = models.DecimalField(_("Time"), max_digits=5, decimal_places=2)
+    time = models.DecimalField(_("Time"), max_digits=10, decimal_places=5)
     time_unit = models.CharField(_("Time Unit"), max_length=1000, choices=TIME_CHOICE)

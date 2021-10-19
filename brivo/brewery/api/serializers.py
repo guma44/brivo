@@ -36,7 +36,11 @@ def measurement_field_factory(mclass, munit):
             pattern = re.compile(
                 r"^(?P<value>(\d+|\d+\.\d+))\s?(?P<unit>(%s))$" % "|".join(units)
             )
-            match = pattern.match(data)
+            try:
+                match = pattern.match(data)
+            except Exception as exp:
+                print(data)
+                raise exp
             if match is None:
                 raise serializers.ValidationError(
                     "%s is not a valid %s" % (data, mclass.__name__)

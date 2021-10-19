@@ -1013,7 +1013,8 @@ class RecipeModelForm(BSModalModelForm):
 
 
 class RecipeImportForm(Form):
-    json_file = FileField()
+    file = FileField()
+    filetype = ChoiceField(choices=(("beerxml", "BeerXML"), ("json", "JSON")))
 
 
 class BatchImportForm(Form):
