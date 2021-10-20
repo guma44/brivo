@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -267,3 +269,12 @@ class Batch(BaseModel):
                 ]
             )
         return fields
+
+    def get_ndays_since_brewing(self):
+        today = datetime.datetime.now().date()
+        if self.primary_fermentation_start_day is not None:
+            ndays = (today - self.primary_fermentation_start_day).days
+            return ndays
+        else:
+            return 0
+        

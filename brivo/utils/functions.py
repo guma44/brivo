@@ -1,15 +1,48 @@
 import re
+import os
 import math
 from pybeerxml.parser import Parser
 from pybeerxml.utils import to_lower
 from xml.etree import ElementTree
 
 from django.utils.encoding import smart_str
+from django.template import TemplateDoesNotExist
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.core.mail import EmailMessage, EmailMultiAlternatives
+
 from measurement.measures import Volume, Mass
 
 _FLOAT_REGEX = re.compile(r"^-?(?:\d+())?(?:\.\d*())?(?:e-?\d+())?(?:\2|\1\3)$")
 _INT_REGEX = re.compile(r"^(?<![\d.])[0-9]+(?![\d.])$")
 _EMAIL_REGEX = re.compile(r"(.+@[a-zA-Z0-9\.]+,?){1,}")
+
+
+def render_mail(template, subject, email, context):
+    to = [email] if isinstance(email, str) else email
+    # remove superfluous line breaks
+    subject = " ".join(subject.splitlines()).strip()
+    subject = f"BRIVO: {subject}"
+
+    from_email = settings.DEFAULT_FROM_EMAIL
+    ext = os.path.splitext(template)[-1][1:]
+    body = render_to_string(
+        template,
+        context
+    ).strip()
+    if ext == "txt":
+        msg = EmailMultiAlternatives(subject, body, from_email, to)
+    elif ext == "html":
+        msg = EmailMessage(subject, body, from_email, to)
+        msg.content_subtype = "html"  # Main content is now text/html
+    else:
+        raise Exception("Extention for e-mail template not found")
+    return msg
+
+
+def send_mail(template, subject, email, context):
+    msg = render_mail(template, subject, email, context)
+    msg.send()
 
 
 def convert_type(data):
