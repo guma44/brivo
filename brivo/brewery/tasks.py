@@ -38,7 +38,7 @@ def check_fermenting_batches(user, email):
         elif ndays == 7:
             functions.send_mail(
                 template="brewery/emails/batch_fermentation.html",
-                subject=f"{{batch.name}} is fermenting for {ndays}",
+                subject=f"{batch.name} is fermenting for {ndays}",
                 email=email,
                 context={
                     "ndays": ndays,
@@ -50,7 +50,7 @@ def check_fermenting_batches(user, email):
         elif ndays == 14:
             functions.send_mail(
                 template="brewery/emails/batch_fermentation.html",
-                subject=f"{{batch.name}} is fermenting for {ndays}",
+                subject=f"{batch.name} is fermenting for {ndays}",
                 email=email,
                 context={
                     "ndays": ndays,
