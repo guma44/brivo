@@ -23,8 +23,8 @@ fontawesome-free==5.15.2
 django-widget-tweaks==1.4.8
 django-filter==2.4.0
 django-dynamic-formsets==0.0.8
-django-modelcluster==5.1 
-django-weasyprint==1.1.0
+django-modelcluster==5.1
+django-weasyprint==1.1.0.post1
 python-slugify==4.0.1
 celery-progress
 model_bakery==1.3.1
