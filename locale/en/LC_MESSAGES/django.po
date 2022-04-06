@@ -1,0 +1,1814 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-14 18:36+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: brivo/brewery/forms.py:424
+msgid "Base Recipe Selection"
+msgstr ""
+
+#: brivo/brewery/forms.py:428
+msgid "Brew It!"
+msgstr ""
+
+#: brivo/brewery/forms.py:434 brivo/brewery/models/batch.py:79
+msgid "Grain Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:439 brivo/brewery/models/batch.py:82
+msgid "Sparging Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:449 brivo/brewery/forms.py:537
+#: brivo/brewery/forms.py:1291 brivo/brewery/models/extras.py:24
+#: brivo/brewery/models/hops.py:17
+msgid "Mash"
+msgstr ""
+
+#: brivo/brewery/forms.py:460
+msgid "Mash Information"
+msgstr ""
+
+#: brivo/brewery/forms.py:461
+msgid "Boil Size"
+msgstr ""
+
+#: brivo/brewery/forms.py:462 brivo/brewery/models/recipe.py:70
+#: brivo/templates/brewery/recipe/detail.html:102
+#: brivo/templates/brewery/recipe/print.html:80
+msgid "Mash Efficiency"
+msgstr ""
+
+#: brivo/brewery/forms.py:463 brivo/templates/brewery/recipe/detail.html:106
+#: brivo/templates/brewery/recipe/print.html:81
+msgid "Liquor-to-Grist Ratio"
+msgstr ""
+
+#: brivo/brewery/forms.py:464 brivo/brewery/forms.py:1270
+#: brivo/templates/base.html:73 brivo/templates/brewery/fermentable/list.html:6
+#: brivo/templates/brewery/fermentable/list.html:9
+#: brivo/templates/brewery/recipe/detail.html:125
+msgid "Fermentables"
+msgstr ""
+
+#: brivo/brewery/forms.py:465 brivo/brewery/forms.py:521
+#: brivo/brewery/forms.py:605 brivo/brewery/forms.py:669
+#: brivo/brewery/models/base.py:83 brivo/templates/brewery/batch/list.html:54
+#: brivo/templates/brewery/extra/list.html:47
+#: brivo/templates/brewery/fermentable/list.html:47
+#: brivo/templates/brewery/hop/list.html:47
+#: brivo/templates/brewery/recipe/detail.html:129
+#: brivo/templates/brewery/recipe/detail.html:156
+#: brivo/templates/brewery/recipe/detail.html:181
+#: brivo/templates/brewery/recipe/extra_formset.html:10
+#: brivo/templates/brewery/recipe/fermentable_formset.html:9
+#: brivo/templates/brewery/recipe/hop_formset.html:10
+#: brivo/templates/brewery/recipe/list.html:55
+#: brivo/templates/brewery/recipe/print.html:103
+#: brivo/templates/brewery/recipe/print.html:130
+#: brivo/templates/brewery/recipe/print.html:155
+#: brivo/templates/brewery/recipe/yeast_formset.html:9
+#: brivo/templates/brewery/style/list.html:47
+#: brivo/templates/brewery/yeast/list.html:47
+msgid "Name"
+msgstr ""
+
+#: brivo/brewery/forms.py:466 brivo/brewery/forms.py:607
+#: brivo/brewery/models/extras.py:34 brivo/brewery/models/fermentables.py:39
+#: brivo/brewery/models/hops.py:106 brivo/brewery/models/recipe.py:31
+#: brivo/brewery/models/yeasts.py:34 brivo/templates/brewery/extra/list.html:48
+#: brivo/templates/brewery/fermentable/list.html:48
+#: brivo/templates/brewery/hop/list.html:48
+#: brivo/templates/brewery/recipe/detail.html:54
+#: brivo/templates/brewery/recipe/detail.html:130
+#: brivo/templates/brewery/recipe/detail.html:183
+#: brivo/templates/brewery/recipe/extra_formset.html:11
+#: brivo/templates/brewery/recipe/fermentable_formset.html:10
+#: brivo/templates/brewery/recipe/print.html:104
+#: brivo/templates/brewery/recipe/print.html:157
+#: brivo/templates/brewery/recipe/yeast_formset.html:11
+#: brivo/templates/brewery/yeast/list.html:48
+msgid "Type"
+msgstr ""
+
+#: brivo/brewery/forms.py:467 brivo/brewery/forms.py:522
+#: brivo/brewery/forms.py:670 brivo/brewery/models/extras.py:35
+#: brivo/brewery/models/hops.py:137 brivo/templates/brewery/extra/list.html:49
+#: brivo/templates/brewery/recipe/detail.html:131
+#: brivo/templates/brewery/recipe/detail.html:157
+#: brivo/templates/brewery/recipe/extra_formset.html:12
+#: brivo/templates/brewery/recipe/fermentable_formset.html:11
+#: brivo/templates/brewery/recipe/hop_formset.html:11
+#: brivo/templates/brewery/recipe/print.html:105
+#: brivo/templates/brewery/recipe/print.html:131
+msgid "Use"
+msgstr ""
+
+#: brivo/brewery/forms.py:468 brivo/brewery/forms.py:842
+#: brivo/brewery/forms.py:963 brivo/brewery/forms.py:1276
+#: brivo/brewery/models/fermentables.py:45
+#: brivo/templates/brewery/fermentable/list.html:49
+#: brivo/templates/brewery/recipe/detail.html:50
+#: brivo/templates/brewery/recipe/detail.html:132
+#: brivo/templates/brewery/recipe/fermentable_formset.html:12
+#: brivo/templates/brewery/recipe/list.html:61
+#: brivo/templates/brewery/recipe/print.html:65
+#: brivo/templates/brewery/recipe/print.html:106
+msgid "Color"
+msgstr ""
+
+#: brivo/brewery/forms.py:469 brivo/brewery/models/fermentables.py:50
+#: brivo/templates/brewery/fermentable/list.html:50
+#: brivo/templates/brewery/recipe/detail.html:133
+#: brivo/templates/brewery/recipe/fermentable_formset.html:13
+#: brivo/templates/brewery/recipe/print.html:107
+msgid "Extraction"
+msgstr ""
+
+#: brivo/brewery/forms.py:470 brivo/brewery/forms.py:524
+#: brivo/brewery/forms.py:610 brivo/brewery/forms.py:672
+#: brivo/brewery/forms.py:960 brivo/brewery/forms.py:996
+#: brivo/brewery/forms.py:1029 brivo/brewery/forms.py:1061
+#: brivo/brewery/models/extras.py:50 brivo/brewery/models/extras.py:61
+#: brivo/brewery/models/fermentables.py:97
+#: brivo/brewery/models/fermentables.py:109 brivo/brewery/models/hops.py:126
+#: brivo/brewery/models/hops.py:138 brivo/brewery/models/yeasts.py:86
+#: brivo/brewery/models/yeasts.py:97
+#: brivo/templates/brewery/recipe/detail.html:134
+#: brivo/templates/brewery/recipe/detail.html:159
+#: brivo/templates/brewery/recipe/detail.html:186
+#: brivo/templates/brewery/recipe/extra_formset.html:13
+#: brivo/templates/brewery/recipe/fermentable_formset.html:14
+#: brivo/templates/brewery/recipe/hop_formset.html:13
+#: brivo/templates/brewery/recipe/print.html:108
+#: brivo/templates/brewery/recipe/print.html:133
+#: brivo/templates/brewery/recipe/print.html:160
+#: brivo/templates/brewery/recipe/yeast_formset.html:14
+msgid "Amount"
+msgstr ""
+
+#: brivo/brewery/forms.py:480 brivo/brewery/forms.py:540
+#: brivo/brewery/forms.py:632 brivo/brewery/forms.py:688
+#: brivo/brewery/forms.py:788 brivo/templates/users/settings.html:15
+#: brivo/templates/users/settings.html:26
+#: brivo/templates/users/settings.html:37
+msgid "Save"
+msgstr ""
+
+#: brivo/brewery/forms.py:481 brivo/brewery/forms.py:500
+#: brivo/brewery/forms.py:629 brivo/brewery/models/batch.py:21
+#: brivo/brewery/models/extras.py:23 brivo/brewery/models/fermentables.py:25
+#: brivo/brewery/models/hops.py:15
+msgid "Boil"
+msgstr ""
+
+#: brivo/brewery/forms.py:489 brivo/brewery/models/batch.py:87
+#: brivo/templates/brewery/batch/detail.html:77
+msgid "Gravity Before Boil"
+msgstr ""
+
+#: brivo/brewery/forms.py:506
+msgid "Expected Boil Volume"
+msgstr ""
+
+#: brivo/brewery/forms.py:507
+msgid "Expected Pre-Boil Gravity"
+msgstr ""
+
+#: brivo/brewery/forms.py:508 brivo/brewery/models/recipe.py:39
+#: brivo/templates/brewery/recipe/detail.html:73
+#: brivo/templates/brewery/recipe/print.html:71
+msgid "Boil Time"
+msgstr ""
+
+#: brivo/brewery/forms.py:520 brivo/brewery/forms.py:668
+#: brivo/brewery/forms.py:1311 brivo/templates/base.html:74
+#: brivo/templates/brewery/hop/list.html:6
+#: brivo/templates/brewery/hop/list.html:9
+#: brivo/templates/brewery/recipe/detail.html:152
+#: brivo/templates/brewery/recipe/print.html:126
+msgid "Hops"
+msgstr ""
+
+#: brivo/brewery/forms.py:523 brivo/brewery/forms.py:671
+#: brivo/brewery/models/hops.py:40 brivo/templates/brewery/hop/list.html:49
+#: brivo/templates/brewery/recipe/detail.html:158
+#: brivo/templates/brewery/recipe/hop_formset.html:12
+#: brivo/templates/brewery/recipe/print.html:132
+msgid "Alpha Acids"
+msgstr ""
+
+#: brivo/brewery/forms.py:525 brivo/brewery/forms.py:673
+#: brivo/brewery/models/extras.py:62 brivo/brewery/models/hops.py:140
+#: brivo/brewery/models/mash.py:21
+#: brivo/templates/brewery/recipe/detail.html:160
+#: brivo/templates/brewery/recipe/extra_formset.html:14
+#: brivo/templates/brewery/recipe/hop_formset.html:14
+#: brivo/templates/brewery/recipe/mash_formset.html:10
+#: brivo/templates/brewery/recipe/print.html:134
+msgid "Time"
+msgstr ""
+
+#: brivo/brewery/forms.py:543 brivo/brewery/forms.py:685
+msgctxt "fermentation stage"
+msgid "Primary"
+msgstr ""
+
+#: brivo/brewery/forms.py:552 brivo/brewery/models/batch.py:103
+msgid "Primary Fermentation Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:558 brivo/brewery/models/batch.py:91
+msgid "Initial Gravity"
+msgstr ""
+
+#: brivo/brewery/forms.py:563 brivo/brewery/models/batch.py:93
+#: brivo/templates/brewery/batch/detail.html:98
+msgid "Wort Volume"
+msgstr ""
+
+#: brivo/brewery/forms.py:568 brivo/brewery/models/recipe.py:48
+#: brivo/templates/brewery/recipe/detail.html:85
+#: brivo/templates/brewery/recipe/print.html:74
+msgid "Boil Loss"
+msgstr ""
+
+#: brivo/brewery/forms.py:578 brivo/brewery/models/batch.py:22
+#: brivo/templates/brewery/batch/batch.html:20
+msgid "Primary Fermentation"
+msgstr ""
+
+#: brivo/brewery/forms.py:588
+msgid "Expected Gravity"
+msgstr ""
+
+#: brivo/brewery/forms.py:589
+msgid "Expected Volume With Trub Loss"
+msgstr ""
+
+#: brivo/brewery/forms.py:590
+msgid "Expected Boil Loss"
+msgstr ""
+
+#: brivo/brewery/forms.py:591 brivo/templates/brewery/batch/detail.html:85
+msgid "Batch IBU"
+msgstr ""
+
+#: brivo/brewery/forms.py:592 brivo/templates/brewery/batch/detail.html:73
+msgid "Actual Mash Efficiency"
+msgstr ""
+
+#: brivo/brewery/forms.py:604 brivo/brewery/forms.py:1332
+#: brivo/templates/base.html:75 brivo/templates/brewery/recipe/detail.html:177
+#: brivo/templates/brewery/recipe/print.html:151
+#: brivo/templates/brewery/yeast/list.html:6
+#: brivo/templates/brewery/yeast/list.html:9
+msgid "Yeasts"
+msgstr ""
+
+#: brivo/brewery/forms.py:606 brivo/brewery/models/yeasts.py:33
+#: brivo/templates/brewery/recipe/detail.html:182
+#: brivo/templates/brewery/recipe/print.html:156
+#: brivo/templates/brewery/recipe/yeast_formset.html:10
+#: brivo/templates/brewery/yeast/list.html:50
+msgid "Lab"
+msgstr ""
+
+#: brivo/brewery/forms.py:608 brivo/brewery/forms.py:753
+#: brivo/brewery/models/yeasts.py:99
+#: brivo/templates/brewery/batch/detail.html:118
+#: brivo/templates/brewery/recipe/detail.html:184
+#: brivo/templates/brewery/recipe/print.html:158
+#: brivo/templates/brewery/recipe/yeast_formset.html:12
+msgid "Attenuation"
+msgstr ""
+
+#: brivo/brewery/forms.py:609 brivo/brewery/models/hops.py:125
+#: brivo/brewery/models/yeasts.py:46 brivo/brewery/models/yeasts.py:85
+#: brivo/brewery/models/yeasts.py:106
+#: brivo/templates/brewery/recipe/detail.html:185
+#: brivo/templates/brewery/recipe/print.html:159
+#: brivo/templates/brewery/recipe/yeast_formset.html:13
+#: brivo/templates/brewery/yeast/list.html:49
+msgid "Form"
+msgstr ""
+
+#: brivo/brewery/forms.py:611 brivo/templates/brewery/batch/detail.html:128
+msgid "Fermentation Checks"
+msgstr ""
+
+#: brivo/brewery/forms.py:612
+#: brivo/templates/brewery/batch/fermentation_check.html:12
+msgid "Add Fermentation Check"
+msgstr ""
+
+#: brivo/brewery/forms.py:613 brivo/brewery/models/batch.py:45
+#: brivo/templates/brewery/batch/detail.html:132
+msgid "Sample Day"
+msgstr ""
+
+#: brivo/brewery/forms.py:614 brivo/brewery/forms.py:818
+#: brivo/brewery/forms.py:1275 brivo/brewery/models/batch.py:51
+#: brivo/templates/brewery/batch/detail.html:133
+#: brivo/templates/brewery/batch/list.html:57
+#: brivo/templates/brewery/recipe/detail.html:38
+#: brivo/templates/brewery/recipe/list.html:56
+#: brivo/templates/brewery/recipe/print.html:62
+msgid "Gravity"
+msgstr ""
+
+#: brivo/brewery/forms.py:615 brivo/brewery/forms.py:806
+#: brivo/brewery/models/batch.py:54
+#: brivo/templates/brewery/batch/detail.html:134
+msgid "Beer Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:616 brivo/brewery/forms.py:812
+#: brivo/brewery/models/batch.py:57
+#: brivo/templates/brewery/batch/detail.html:135
+msgid "Ambient Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:617 brivo/brewery/models/batch.py:59
+#: brivo/brewery/models/extras.py:51 brivo/brewery/models/fermentables.py:86
+#: brivo/brewery/models/fermentables.py:98 brivo/brewery/models/hops.py:113
+#: brivo/brewery/models/hops.py:127 brivo/brewery/models/styles.py:47
+#: brivo/brewery/models/yeasts.py:55 brivo/brewery/models/yeasts.py:87
+#: brivo/templates/brewery/batch/detail.html:136
+msgid "Comment"
+msgstr ""
+
+#: brivo/brewery/forms.py:633 brivo/brewery/forms.py:785
+#: brivo/brewery/models/extras.py:26
+msgid "Secondary"
+msgstr ""
+
+#: brivo/brewery/forms.py:641 brivo/brewery/models/batch.py:114
+msgid "Secondary Fermentation Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:647 brivo/brewery/models/batch.py:131
+msgid "Post-primary Gravity"
+msgstr ""
+
+#: brivo/brewery/forms.py:658 brivo/brewery/models/batch.py:23
+#: brivo/templates/brewery/batch/batch.html:21
+msgid "Secondary Fermentation"
+msgstr ""
+
+#: brivo/brewery/forms.py:689 brivo/brewery/forms.py:724
+#: brivo/brewery/models/batch.py:24 brivo/templates/brewery/batch/batch.html:22
+#: brivo/templates/brewery/batch/detail.html:156
+msgid "Packaging"
+msgstr ""
+
+#: brivo/brewery/forms.py:703 brivo/brewery/models/batch.py:140
+msgid "End Gravity"
+msgstr ""
+
+#: brivo/brewery/forms.py:708 brivo/brewery/models/batch.py:142
+#: brivo/templates/brewery/batch/detail.html:160
+msgid "Beer Volume"
+msgstr ""
+
+#: brivo/brewery/forms.py:713 brivo/brewery/models/batch.py:156
+msgid "Priming Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:739
+msgid "Priming Sugar"
+msgstr ""
+
+#: brivo/brewery/forms.py:740
+msgid "Amount of Water"
+msgstr ""
+
+#: brivo/brewery/forms.py:752 brivo/templates/brewery/batch/detail.html:114
+#: brivo/templates/brewery/recipe/detail.html:46
+#: brivo/templates/brewery/recipe/list.html:57
+#: brivo/templates/brewery/recipe/print.html:64
+msgid "ABV"
+msgstr ""
+
+#: brivo/brewery/forms.py:754
+msgid "Calories"
+msgstr ""
+
+#: brivo/brewery/forms.py:766
+msgid "Carbonation Guidline"
+msgstr ""
+
+#: brivo/brewery/forms.py:767
+msgid "British-Style Ales"
+msgstr ""
+
+#: brivo/brewery/forms.py:768
+msgid "Porter, Stout"
+msgstr ""
+
+#: brivo/brewery/forms.py:769
+msgid "Belgian Ales"
+msgstr ""
+
+#: brivo/brewery/forms.py:770
+msgid "European Lagers"
+msgstr ""
+
+#: brivo/brewery/forms.py:771
+msgid "American Ales and Lagers"
+msgstr ""
+
+#: brivo/brewery/forms.py:772
+msgid "Lambic"
+msgstr ""
+
+#: brivo/brewery/forms.py:773
+msgid "Fruit Lambic"
+msgstr ""
+
+#: brivo/brewery/forms.py:789
+msgid "Finish"
+msgstr ""
+
+#: brivo/brewery/forms.py:879 brivo/brewery/models/yeasts.py:47
+msgid "Min Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:884 brivo/brewery/models/yeasts.py:48
+msgid "Max Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:910 brivo/brewery/models/styles.py:25
+msgid "Color Min"
+msgstr ""
+
+#: brivo/brewery/forms.py:915 brivo/brewery/models/styles.py:26
+msgid "Color Max"
+msgstr ""
+
+#: brivo/brewery/forms.py:920 brivo/brewery/models/styles.py:16
+msgid "OG Min"
+msgstr ""
+
+#: brivo/brewery/forms.py:925 brivo/brewery/models/styles.py:15
+msgid "OG Max"
+msgstr ""
+
+#: brivo/brewery/forms.py:930 brivo/brewery/models/styles.py:18
+msgid "FG Min"
+msgstr ""
+
+#: brivo/brewery/forms.py:935 brivo/brewery/models/styles.py:17
+msgid "FG Max"
+msgstr ""
+
+#: brivo/brewery/forms.py:998 brivo/brewery/models/extras.py:63
+#: brivo/brewery/models/hops.py:142
+msgid "Time Unit"
+msgstr ""
+
+#: brivo/brewery/forms.py:1093 brivo/brewery/models/mash.py:20
+#: brivo/templates/brewery/recipe/mash_formset.html:9
+msgid "Temperature"
+msgstr ""
+
+#: brivo/brewery/forms.py:1195 brivo/brewery/models/recipe.py:35
+msgid "Expected Beer Volume"
+msgstr ""
+
+#: brivo/brewery/forms.py:1205
+msgid "Submit"
+msgstr ""
+
+#: brivo/brewery/forms.py:1213
+msgid "Recipe Information"
+msgstr ""
+
+#: brivo/brewery/forms.py:1220
+msgid "Batch Information"
+msgstr ""
+
+#: brivo/brewery/forms.py:1258 brivo/templates/brewery/recipe/detail.html:81
+#: brivo/templates/brewery/recipe/print.html:73
+msgid "Boil Volume"
+msgstr ""
+
+#: brivo/brewery/forms.py:1259
+msgid "Pre-boil Gravity"
+msgstr ""
+
+#: brivo/brewery/forms.py:1260
+msgid "Primary Volume"
+msgstr ""
+
+#: brivo/brewery/forms.py:1261
+msgid "Secondary Volume"
+msgstr ""
+
+#: brivo/brewery/forms.py:1316
+msgid "Bitterness"
+msgstr ""
+
+#: brivo/brewery/forms.py:1317
+msgid "Bitterness Ratio"
+msgstr ""
+
+#: brivo/brewery/forms.py:1338 brivo/templates/base.html:76
+#: brivo/templates/brewery/extra/list.html:6
+#: brivo/templates/brewery/extra/list.html:9
+msgid "Extras"
+msgstr ""
+
+#: brivo/brewery/models/base.py:22
+msgid "minute"
+msgstr ""
+
+#: brivo/brewery/models/base.py:23
+msgid "hour"
+msgstr ""
+
+#: brivo/brewery/models/base.py:24
+msgid "day"
+msgstr ""
+
+#: brivo/brewery/models/base.py:25
+msgid "week"
+msgstr ""
+
+#: brivo/brewery/models/base.py:26
+msgid "month"
+msgstr ""
+
+#: brivo/brewery/models/base.py:27
+msgid "year"
+msgstr ""
+
+#: brivo/brewery/models/base.py:85
+msgid "Created At"
+msgstr ""
+
+#: brivo/brewery/models/base.py:86
+msgid "Modified At"
+msgstr ""
+
+#: brivo/brewery/models/base.py:100
+msgid "Code"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:19
+msgid "Init"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:20 brivo/brewery/models/fermentables.py:24
+#: brivo/templates/brewery/batch/batch.html:18
+#: brivo/templates/brewery/recipe/detail.html:98
+msgid "Mashing"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:25
+msgid "Finished"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:30
+msgid "Forced"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:30
+msgid "Refermentation"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:32
+msgid "Corn Sugar"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:33
+msgid "Table Sugar"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:34
+msgid "Dry Extract"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:40
+#: brivo/templates/brewery/recipe/detail.html:65
+#: brivo/templates/brewery/recipe/print.html:68
+msgid "Batch"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:65 brivo/templates/brewery/batch/list.html:55
+msgid "Stage"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:67 brivo/brewery/models/extras.py:57
+#: brivo/brewery/models/fermentables.py:104 brivo/brewery/models/hops.py:133
+#: brivo/brewery/models/mash.py:16
+msgid "Recipe"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:69 brivo/brewery/models/recipe.py:27
+#: brivo/users/models.py:102 brivo/users/models.py:114
+msgid "User"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:74
+msgid "Batch Number"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:76 brivo/templates/brewery/batch/list.html:56
+msgid "Brewing Day"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:98
+msgid "Boil Waists"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:106
+msgid "Primary Fermentation Start Day"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:117
+msgid "Secondary Fermentation Start Day"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:124
+msgid "Dry Hops Start Day"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:138
+msgid "Packaging Start Day"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:147
+#: brivo/templates/brewery/batch/detail.html:168
+msgid "Carbonation Type"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:150
+msgid "Carbonation Level"
+msgstr ""
+
+#: brivo/brewery/models/batch.py:153
+msgid "Sugar Type"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:13
+msgid "Any"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:14
+msgid "Spice"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:15
+msgid "Flavor"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:16
+msgid "Fining"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:17
+msgid "Herb"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:18
+msgid "Water agent"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:19 brivo/brewery/models/extras.py:29
+msgid "Other"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:25 brivo/templates/account/email.html:31
+msgid "Primary"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:27
+msgid "Keging"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:28
+msgid "Bottling"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:39 brivo/brewery/models/fermentables.py:81
+#: brivo/brewery/models/hops.py:111 brivo/brewery/models/yeasts.py:51
+msgid "Description"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:40 brivo/brewery/models/fermentables.py:87
+#: brivo/brewery/models/hops.py:114 brivo/brewery/models/styles.py:61
+#: brivo/brewery/models/yeasts.py:56
+msgid "Active"
+msgstr ""
+
+#: brivo/brewery/models/extras.py:46 brivo/brewery/models/fermentables.py:93
+#: brivo/brewery/models/hops.py:120 brivo/brewery/models/yeasts.py:74
+msgid "Inventory"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:16
+msgid "Adjunct"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:17
+msgid "Grain"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:18
+msgid "Dry extract"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:19
+msgid "Liquid extract"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:20
+msgid "Sugar"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:26
+msgid "Late boil"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:27
+msgid "Steep"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:64 brivo/brewery/models/hops.py:50
+#: brivo/templates/brewery/hop/list.html:50
+msgid "Country"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:71
+msgid "Max Use"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:76
+msgid ""
+"The recommended \n"
+"            maximum percentage (by weight) this ingredient should represent "
+"in a \n"
+"            batch of beer."
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:84 brivo/brewery/models/hops.py:56
+#: brivo/brewery/models/yeasts.py:53 brivo/templates/brewery/yeast/list.html:51
+msgid "External Link"
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:111
+msgid "Weight of the fermentable, extract or sugar."
+msgstr ""
+
+#: brivo/brewery/models/fermentables.py:114
+msgid "Fermentable Use"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:16
+msgid "Dry hop"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:18 brivo/brewery/models/hops.py:32
+#: brivo/brewery/models/styles.py:36
+msgid "Aroma"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:19
+msgid "First wort"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:20
+msgid "Whirpool"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:25
+msgid "Hop pellets"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:26
+msgid "Whole hops"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:27 brivo/brewery/models/recipe.py:20
+msgid "Extract"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:31
+msgid "Dual Purpose"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:33
+msgid "Bittering"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:59
+msgid "Alpha Min"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:62
+msgid "Alpha Max"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:65
+msgid "Beta Min"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:68
+msgid "Beta Max"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:71
+msgid "Co-Humulone Min"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:74
+msgid "Co-Humulone Max"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:77
+msgid "Total Oil Min"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:80
+msgid "Total Oil Max"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:83
+msgid "Myrcene Min"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:86
+msgid "Myrcene Max"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:89
+msgid "Humulene Min"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:92
+msgid "Humulene Max"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:95
+msgid "Caryophyllene Min"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:98
+msgid "Caryophyllene Max"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:101
+msgid "Farnesene Min"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:104
+msgid "Farnesene Max"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:108
+msgid "Substitue"
+msgstr ""
+
+#: brivo/brewery/models/hops.py:124
+msgid "Year"
+msgstr ""
+
+#: brivo/brewery/models/inventory.py:9
+msgid "brewery.User"
+msgstr ""
+
+#: brivo/brewery/models/mash.py:22 brivo/brewery/models/recipe.py:76
+msgid "Note"
+msgstr ""
+
+#: brivo/brewery/models/recipe.py:19
+msgid "All Grain"
+msgstr ""
+
+#: brivo/brewery/models/recipe.py:21
+msgid "Partial Mash"
+msgstr ""
+
+#: brivo/brewery/models/recipe.py:30
+#: brivo/templates/brewery/recipe/detail.html:58
+#: brivo/templates/brewery/recipe/list.html:59
+#: brivo/templates/brewery/recipe/print.html:66
+msgid "Style"
+msgstr ""
+
+#: brivo/brewery/models/recipe.py:41
+msgid "Evaporation Rate"
+msgstr ""
+
+#: brivo/brewery/models/recipe.py:55
+#: brivo/templates/brewery/recipe/detail.html:89
+#: brivo/templates/brewery/recipe/print.html:75
+msgid "Trub Loss"
+msgstr ""
+
+#: brivo/brewery/models/recipe.py:62
+#: brivo/templates/brewery/recipe/detail.html:93
+#: brivo/templates/brewery/recipe/print.html:76
+msgid "Dry Hopping Loss"
+msgstr ""
+
+#: brivo/brewery/models/recipe.py:73
+msgid "Liquor-To-Grist Ratio"
+msgstr ""
+
+#: brivo/brewery/models/recipe.py:77
+msgid "Public"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:13
+msgid "Catetory ID"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:14
+msgid "Category"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:20
+msgid "IBU Max"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:23
+msgid "IBU Min"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:28
+msgid "Alcohol Min"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:31
+msgid "Alcohol Max"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:34 brivo/templates/brewery/style/list.html:48
+msgid "Fermentation Type"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:38
+msgid "Appearance"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:40
+msgid "Flavour"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:42
+msgid "Mouthfeel"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:45
+msgid "Overall"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:49
+msgid "History"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:52 brivo/templates/base.html:70
+msgid "Ingredients"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:55
+msgid "Style Comparison"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:58
+msgid "Examples"
+msgstr ""
+
+#: brivo/brewery/models/styles.py:60
+msgid "Tags"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:14
+msgid "Ale"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:15
+msgid "Lager"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:16
+msgid "Wheat"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:17
+msgid "Wild"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:18
+msgid "Champagne"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:19
+msgid "Bacteria"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:20
+msgid "Mix"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:25
+msgid "Dry"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:26
+msgid "Liquid"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:27
+msgid "Slurry"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:28
+msgid "Culture"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:38
+msgid "Lab ID"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:40
+msgid "Min Attenuation"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:43
+msgid "Max Attenuation"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:45
+msgid "Flocculation"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:49
+msgid "Alcohol Tolerance"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:50 brivo/templates/base.html:80
+#: brivo/templates/brewery/style/list.html:6
+#: brivo/templates/brewery/style/list.html:9
+msgid "Styles"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:79
+msgid "Expiration Date"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:82
+msgid "Collected At"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:84
+msgid "Generation"
+msgstr ""
+
+#: brivo/brewery/models/yeasts.py:93
+msgid "brewery.models.Recipe"
+msgstr ""
+
+#: brivo/templates/403.html:3 brivo/templates/403.html:6
+msgid "Forbidden"
+msgstr ""
+
+#: brivo/templates/404.html:3 brivo/templates/404.html:6
+msgid "Page not found"
+msgstr ""
+
+#: brivo/templates/404.html:8
+msgid "This is not the page you were looking for"
+msgstr ""
+
+#: brivo/templates/500.html:3
+msgid "Server Error"
+msgstr ""
+
+#: brivo/templates/500.html:6
+msgid "Ooops"
+msgstr ""
+
+#: brivo/templates/500.html:8
+msgid "Looks like something went wrong"
+msgstr ""
+
+#: brivo/templates/500.html:10
+msgid ""
+"We track these errors automatically, but if the problem persists feel free "
+"to contact us. In the meantime, try refreshing"
+msgstr ""
+
+#: brivo/templates/account/account_inactive.html:5
+#: brivo/templates/account/account_inactive.html:8
+msgid "Account Inactive"
+msgstr ""
+
+#: brivo/templates/account/account_inactive.html:10
+msgid "This account is inactive."
+msgstr ""
+
+#: brivo/templates/account/email.html:7
+msgid "Account"
+msgstr ""
+
+#: brivo/templates/account/email.html:10
+msgid "E-mail Addresses"
+msgstr ""
+
+#: brivo/templates/account/email.html:13
+msgid "The following e-mail addresses are associated with your account:"
+msgstr ""
+
+#: brivo/templates/account/email.html:27
+msgid "Verified"
+msgstr ""
+
+#: brivo/templates/account/email.html:29
+msgid "Unverified"
+msgstr ""
+
+#: brivo/templates/account/email.html:37
+msgid "Make Primary"
+msgstr ""
+
+#: brivo/templates/account/email.html:38
+msgid "Re-send Verification"
+msgstr ""
+
+#: brivo/templates/account/email.html:39
+msgid "Remove"
+msgstr ""
+
+#: brivo/templates/account/email.html:46
+msgid "Warning:"
+msgstr ""
+
+#: brivo/templates/account/email.html:46
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+
+#: brivo/templates/account/email.html:51
+msgid "Add E-mail Address"
+msgstr ""
+
+#: brivo/templates/account/email.html:56
+msgid "Add E-mail"
+msgstr ""
+
+#: brivo/templates/account/email.html:66
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr ""
+
+#: brivo/templates/account/email_confirm.html:6
+#: brivo/templates/account/email_confirm.html:10
+msgid "Confirm E-mail Address"
+msgstr ""
+
+#: brivo/templates/account/email_confirm.html:16
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+
+#: brivo/templates/account/email_confirm.html:20
+msgid "Confirm"
+msgstr ""
+
+#: brivo/templates/account/email_confirm.html:27
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+
+#: brivo/templates/account/login.html:6 brivo/templates/account/login.html:10
+#: brivo/templates/account/login.html:22
+msgid "Sign In"
+msgstr ""
+
+#: brivo/templates/account/login.html:12
+#, python-format
+msgid ""
+"If you have not created an account yet, then please\n"
+"<a href=\"%(signup_url)s\">sign up</a> first."
+msgstr ""
+
+#: brivo/templates/account/login.html:21
+msgid "Forgot Password?"
+msgstr ""
+
+#: brivo/templates/account/logout.html:5 brivo/templates/account/logout.html:8
+#: brivo/templates/account/logout.html:17
+msgid "Sign Out"
+msgstr ""
+
+#: brivo/templates/account/logout.html:10
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: brivo/templates/account/password_change.html:6
+#: brivo/templates/account/password_change.html:9
+#: brivo/templates/account/password_change.html:14
+#: brivo/templates/account/password_reset_from_key.html:5
+#: brivo/templates/account/password_reset_from_key.html:8
+#: brivo/templates/account/password_reset_from_key_done.html:4
+#: brivo/templates/account/password_reset_from_key_done.html:7
+msgid "Change Password"
+msgstr ""
+
+#: brivo/templates/account/password_reset.html:7
+#: brivo/templates/account/password_reset.html:11
+#: brivo/templates/account/password_reset_done.html:6
+#: brivo/templates/account/password_reset_done.html:9
+msgid "Password Reset"
+msgstr ""
+
+#: brivo/templates/account/password_reset.html:16
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+
+#: brivo/templates/account/password_reset.html:21
+msgid "Reset My Password"
+msgstr ""
+
+#: brivo/templates/account/password_reset.html:24
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+
+#: brivo/templates/account/password_reset_done.html:15
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: brivo/templates/account/password_reset_from_key.html:8
+msgid "Bad Token"
+msgstr ""
+
+#: brivo/templates/account/password_reset_from_key.html:12
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+
+#: brivo/templates/account/password_reset_from_key.html:18
+msgid "change password"
+msgstr ""
+
+#: brivo/templates/account/password_reset_from_key.html:21
+#: brivo/templates/account/password_reset_from_key_done.html:8
+msgid "Your password is now changed."
+msgstr ""
+
+#: brivo/templates/account/password_set.html:6
+#: brivo/templates/account/password_set.html:9
+#: brivo/templates/account/password_set.html:14
+msgid "Set Password"
+msgstr ""
+
+#: brivo/templates/account/signup.html:6
+msgid "Signup"
+msgstr ""
+
+#: brivo/templates/account/signup.html:9 brivo/templates/account/signup.html:19
+msgid "Sign Up"
+msgstr ""
+
+#: brivo/templates/account/signup.html:11
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: brivo/templates/account/signup_closed.html:5
+#: brivo/templates/account/signup_closed.html:8
+msgid "Sign Up Closed"
+msgstr ""
+
+#: brivo/templates/account/signup_closed.html:10
+msgid "We are sorry, but the sign up is currently closed."
+msgstr ""
+
+#: brivo/templates/account/verification_sent.html:5
+#: brivo/templates/account/verification_sent.html:8
+#: brivo/templates/account/verified_email_required.html:5
+#: brivo/templates/account/verified_email_required.html:8
+msgid "Verify Your E-mail Address"
+msgstr ""
+
+#: brivo/templates/account/verification_sent.html:10
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: brivo/templates/account/verified_email_required.html:12
+msgid ""
+"This part of the site requires us to verify that\n"
+"you are who you claim to be. For this purpose, we require that you\n"
+"verify ownership of your e-mail address. "
+msgstr ""
+
+#: brivo/templates/account/verified_email_required.html:16
+msgid ""
+"We have sent an e-mail to you for\n"
+"verification. Please click on the link inside this e-mail. Please\n"
+"contact us if you do not receive it within a few minutes."
+msgstr ""
+
+#: brivo/templates/account/verified_email_required.html:20
+#, python-format
+msgid ""
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
+"mail address</a>."
+msgstr ""
+
+#: brivo/templates/base.html:83 brivo/templates/brewery/recipe/list.html:6
+#: brivo/templates/brewery/recipe/list.html:9
+msgid "Recipes"
+msgstr ""
+
+#: brivo/templates/base.html:86
+msgid "Brewlog"
+msgstr ""
+
+#: brivo/templates/base.html:122 brivo/templates/users/settings.html:4
+#: brivo/templates/users/settings.html:7
+msgid "Settings"
+msgstr ""
+
+#: brivo/templates/base.html:125
+msgid "Log out"
+msgstr ""
+
+#: brivo/templates/base.html:130
+msgid "Sign up"
+msgstr ""
+
+#: brivo/templates/base.html:134
+msgid "Sign in"
+msgstr ""
+
+#: brivo/templates/brewery/batch/batch.html:19
+msgid "Boiling"
+msgstr ""
+
+#: brivo/templates/brewery/batch/batch.html:34
+#, python-format
+msgid ""
+"\n"
+"      Batch \"%(name)s\" no. %(number)s based on \"%(recipe_name)s\" recipe\n"
+"    "
+msgstr ""
+
+#: brivo/templates/brewery/batch/delete.html:11
+msgid "Delete Batch"
+msgstr ""
+
+#: brivo/templates/brewery/batch/delete.html:19
+msgid "Are you sure you want to delete batch with name"
+msgstr ""
+
+#: brivo/templates/brewery/batch/delete.html:24
+#: brivo/templates/brewery/batch/fermentation_check_delete.html:22
+#: brivo/templates/brewery/extra/delete.html:23
+#: brivo/templates/brewery/fermentable/delete.html:23
+#: brivo/templates/brewery/hop/delete.html:23
+#: brivo/templates/brewery/recipe/delete.html:23
+#: brivo/templates/brewery/style/delete.html:23
+#: brivo/templates/brewery/yeast/delete.html:23
+msgid "Delete"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:35
+#: brivo/templates/brewery/recipe/detail.html:34
+msgid "Info"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:39
+msgid "Status"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:43
+msgid "Brewing Date"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:47
+msgid "Fermentation Date"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:51
+msgid "Secondary Date"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:55
+msgid "Dry Hops Date"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:59
+msgid "Packaging Date"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:69
+msgid "Mash and Boil"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:81
+msgid "Original gravity"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:94
+msgid "Fermentation"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:102
+msgid "Boil loss"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:106
+msgid "Post-primary gravity"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:110
+msgid "Final gravity"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:164
+msgid "Calories per 500ml"
+msgstr ""
+
+#: brivo/templates/brewery/batch/detail.html:172
+msgid "Volumes of CO2"
+msgstr ""
+
+#: brivo/templates/brewery/batch/fermentation_check.html:27
+msgid "Add"
+msgstr ""
+
+#: brivo/templates/brewery/batch/fermentation_check_delete.html:11
+msgid "Delete Fermentation Check"
+msgstr ""
+
+#: brivo/templates/brewery/batch/fermentation_check_delete.html:18
+msgid "Are you sure you want to delete this fermentation check?"
+msgstr ""
+
+#: brivo/templates/brewery/batch/fermentation_check_update.html:12
+msgid "Update Fermentation Check"
+msgstr ""
+
+#: brivo/templates/brewery/batch/fermentation_check_update.html:27
+#: brivo/templates/brewery/extra/update.html:37
+#: brivo/templates/brewery/fermentable/update.html:37
+#: brivo/templates/brewery/hop/update.html:37
+#: brivo/templates/brewery/style/update.html:37
+#: brivo/templates/brewery/yeast/update.html:37
+msgid "Update"
+msgstr ""
+
+#: brivo/templates/brewery/batch/import.html:11
+#: brivo/templates/brewery/batch/list.html:30
+msgid "Import Batch"
+msgstr ""
+
+#: brivo/templates/brewery/batch/import.html:22
+#: brivo/templates/brewery/recipe/import.html:22
+msgid "Import"
+msgstr ""
+
+#: brivo/templates/brewery/batch/list.html:6
+#: brivo/templates/brewery/batch/list.html:9
+msgid "Batches"
+msgstr ""
+
+#: brivo/templates/brewery/batch/list.html:27
+msgid "Create New Batch"
+msgstr ""
+
+#: brivo/templates/brewery/batch/list.html:34
+#: brivo/templates/brewery/extra/list.html:31
+#: brivo/templates/brewery/fermentable/list.html:31
+#: brivo/templates/brewery/hop/list.html:31
+#: brivo/templates/brewery/recipe/list.html:34
+#: brivo/templates/brewery/style/list.html:31
+#: brivo/templates/brewery/yeast/list.html:31
+msgid "Toggle Filters"
+msgstr ""
+
+#: brivo/templates/brewery/batch/list.html:42
+#: brivo/templates/brewery/extra/list.html:39
+#: brivo/templates/brewery/fermentable/list.html:39
+#: brivo/templates/brewery/hop/list.html:39
+#: brivo/templates/brewery/recipe/list.html:42
+#: brivo/templates/brewery/style/list.html:39
+#: brivo/templates/brewery/yeast/list.html:39
+msgid "Filter"
+msgstr ""
+
+#: brivo/templates/brewery/batch/list.html:58
+#: brivo/templates/brewery/extra/list.html:50
+#: brivo/templates/brewery/fermentable/list.html:51
+#: brivo/templates/brewery/hop/list.html:51
+#: brivo/templates/brewery/recipe/extra_formset.html:15
+#: brivo/templates/brewery/recipe/fermentable_formset.html:15
+#: brivo/templates/brewery/recipe/hop_formset.html:15
+#: brivo/templates/brewery/recipe/list.html:62
+#: brivo/templates/brewery/recipe/mash_formset.html:11
+#: brivo/templates/brewery/recipe/yeast_formset.html:15
+#: brivo/templates/brewery/style/list.html:51
+#: brivo/templates/brewery/yeast/list.html:52
+msgid "Action"
+msgstr ""
+
+#: brivo/templates/brewery/emails/batch_fermentation.html:3
+#, python-format
+msgid "Hello %(username)s! "
+msgstr ""
+
+#: brivo/templates/brewery/emails/batch_fermentation.html:5
+#, python-format
+msgid ""
+"\n"
+"Your batch #%(batch_number)s - %(name)s is fermenting for %(ndays)s days. Go "
+"to your Brivo to adjust status or measure a density. \n"
+msgstr ""
+
+#: brivo/templates/brewery/emails/batch_fermentation.html:9
+msgid "Thank you, Brivo!"
+msgstr ""
+
+#: brivo/templates/brewery/extra/create.html:10
+#: brivo/templates/brewery/extra/list.html:27
+msgid "Create Extra"
+msgstr ""
+
+#: brivo/templates/brewery/extra/create.html:38
+#: brivo/templates/brewery/fermentable/create.html:38
+#: brivo/templates/brewery/hop/create.html:37
+#: brivo/templates/brewery/style/create.html:38
+#: brivo/templates/brewery/yeast/create.html:38
+msgid "Create"
+msgstr ""
+
+#: brivo/templates/brewery/extra/delete.html:11
+msgid "Delete Extra"
+msgstr ""
+
+#: brivo/templates/brewery/extra/delete.html:18
+msgid "Are you sure you want to delete extra with name"
+msgstr ""
+
+#: brivo/templates/brewery/extra/detail.html:7
+msgid "Extra details"
+msgstr ""
+
+#: brivo/templates/brewery/extra/detail.html:25
+#: brivo/templates/brewery/fermentable/detail.html:25
+#: brivo/templates/brewery/hop/detail.html:25
+#: brivo/templates/brewery/recipe/detail.html:205
+#: brivo/templates/brewery/style/detail.html:25
+#: brivo/templates/brewery/yeast/detail.html:24
+msgid "Close"
+msgstr ""
+
+#: brivo/templates/brewery/extra/update.html:9
+msgid "Update Extra"
+msgstr ""
+
+#: brivo/templates/brewery/fermentable/create.html:10
+#: brivo/templates/brewery/fermentable/list.html:27
+msgid "Create Fermentable"
+msgstr ""
+
+#: brivo/templates/brewery/fermentable/delete.html:11
+msgid "Delete Fermentable"
+msgstr ""
+
+#: brivo/templates/brewery/fermentable/delete.html:18
+msgid "Are you sure you want to delete fermentable with name"
+msgstr ""
+
+#: brivo/templates/brewery/fermentable/detail.html:7
+msgid "Fermentable details"
+msgstr ""
+
+#: brivo/templates/brewery/fermentable/update.html:9
+msgid "Update Fermentable"
+msgstr ""
+
+#: brivo/templates/brewery/fermentable_from.html:12
+#: brivo/templates/pagination.html:10 brivo/templates/pagination.html:17
+msgid "Previous"
+msgstr ""
+
+#: brivo/templates/brewery/fermentable_from.html:13
+#: brivo/templates/pagination.html:42 brivo/templates/pagination.html:49
+msgid "Next"
+msgstr ""
+
+#: brivo/templates/brewery/hop/create.html:9
+#: brivo/templates/brewery/hop/list.html:27
+msgid "Create Hop"
+msgstr ""
+
+#: brivo/templates/brewery/hop/delete.html:11
+msgid "Delete Hop"
+msgstr ""
+
+#: brivo/templates/brewery/hop/delete.html:18
+msgid "Are you sure you want to delete hop with name"
+msgstr ""
+
+#: brivo/templates/brewery/hop/detail.html:7
+msgid "Hop details"
+msgstr ""
+
+#: brivo/templates/brewery/hop/update.html:9
+msgid "Update Hop"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/delete.html:11
+msgid "Delete Recipe"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/delete.html:18
+msgid "Are you sure you want to delete recipe with name"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/detail.html:42
+#: brivo/templates/brewery/recipe/list.html:60
+#: brivo/templates/brewery/recipe/print.html:63
+#: brivo/templates/brewery/style/list.html:50
+msgid "IBU"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/detail.html:69
+#: brivo/templates/brewery/recipe/print.html:70
+msgid "Expected Volume"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/detail.html:77
+#: brivo/templates/brewery/recipe/print.html:72
+msgid "Evaporation rate"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/detail.html:111
+msgid "Steps"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/import.html:11
+#: brivo/templates/brewery/recipe/list.html:30
+msgid "Import Recipe"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/list.html:27
+msgid "Create Recipe"
+msgstr ""
+
+#: brivo/templates/brewery/recipe/list.html:58
+msgid "Size"
+msgstr ""
+
+#: brivo/templates/brewery/style/create.html:10
+#: brivo/templates/brewery/style/list.html:27
+msgid "Create Style"
+msgstr ""
+
+#: brivo/templates/brewery/style/delete.html:11
+msgid "Delete Style"
+msgstr ""
+
+#: brivo/templates/brewery/style/delete.html:18
+msgid "Are you sure you want to delete style with name"
+msgstr ""
+
+#: brivo/templates/brewery/style/detail.html:7
+msgid "Style details"
+msgstr ""
+
+#: brivo/templates/brewery/style/list.html:49
+msgid "OG"
+msgstr ""
+
+#: brivo/templates/brewery/style/update.html:9
+msgid "Update Style"
+msgstr ""
+
+#: brivo/templates/brewery/yeast/create.html:10
+#: brivo/templates/brewery/yeast/list.html:27
+msgid "Create Yeast"
+msgstr ""
+
+#: brivo/templates/brewery/yeast/delete.html:11
+msgid "Delete Yeast"
+msgstr ""
+
+#: brivo/templates/brewery/yeast/delete.html:18
+msgid "Are you sure you want to delete yeast with name"
+msgstr ""
+
+#: brivo/templates/brewery/yeast/detail.html:6
+msgid "Yeast details"
+msgstr ""
+
+#: brivo/templates/brewery/yeast/update.html:9
+msgid "Update Yeast"
+msgstr ""
+
+#: brivo/templates/pages/home.html:10
+msgid "Open source brewing manager"
+msgstr ""
+
+#: brivo/templates/users/settings.html:19
+msgid "Profile"
+msgstr ""
+
+#: brivo/templates/users/settings.html:30
+msgid "Brewery"
+msgstr ""
+
+#: brivo/users/admin.py:23
+msgid "Personal info"
+msgstr ""
+
+#: brivo/users/admin.py:25
+msgid "Permissions"
+msgstr ""
+
+#: brivo/users/admin.py:33
+msgid "Important dates"
+msgstr ""
+
+#: brivo/users/apps.py:7
+msgid "Users"
+msgstr ""
+
+#: brivo/users/forms.py:31
+msgid "This email has already been registered."
+msgstr ""
+
+#: brivo/users/forms.py:32
+msgid "This username has already been taken."
+msgstr ""
+
+#: brivo/users/models.py:104
+msgid "General Units"
+msgstr ""
+
+#: brivo/users/models.py:105
+msgid "Temperature Units"
+msgstr ""
+
+#: brivo/users/models.py:106
+msgid "Gravity Units"
+msgstr ""
+
+#: brivo/users/models.py:107
+msgid "Color Units"
+msgstr ""
+
+#: brivo/users/models.py:116
+msgid "Brewery Name"
+msgstr ""
+
+#: brivo/users/models.py:117
+msgid "External URL"
+msgstr ""
+
+#: brivo/users/models.py:118
+msgid "Number of Batches"
+msgstr ""
+
+#: config/settings/base.py:41
+msgid "English"
+msgstr ""
+
+#: config/settings/base.py:42
+msgid "Polish"
+msgstr ""

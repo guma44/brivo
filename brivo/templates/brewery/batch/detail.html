@@ -1,5 +1,6 @@
 {% load static %}
 {% load brew_tags %}
+{% load i18n %}
 
 {% block content %}
 <div class="modal-footer pb-0">
@@ -30,31 +31,31 @@
 <div class="modal-body">
   <div class="row">
     <div class="col-sm-7">
-      <h5>Info</h5>
+      <h5>{% trans "Info" %}</h5>
       <table class="table table-sm">
         <tbody>
           <tr>
-            <th>Status</th>
+            <th>{% trans "Status"%} </th>
             <td>{{batch.stage}}</td>
           </tr>
           <tr>
-            <th>Brewing Date</th>
+            <th>{% trans "Brewing Date"%} </th>
             <td>{{batch.brewing_day|default:"---"}} {% if batch.brewing_day %}({{batch.brewing_day|timesince}}){% endif %}</td>
           </tr>
           <tr>
-            <th>Fermentation Date</th>
+            <th>{% trans "Fermentation Date"%} </th>
             <td>{{batch.primary_fermentation_start_day|default:"---"}} {% if batch.primary_fermentation_start_day %}({{batch.primary_fermentation_start_day|timesince}}){% endif %}</td>
           </tr>
           <tr>
-            <th>Secondary Date</th>
+            <th>{% trans "Secondary Date"%} </th>
             <td>{{batch.secondary_fermentation_start_day|default:"---"}} {% if batch.secondary_fermentation_start_day %}({{batch.secondary_fermentation_start_day|timesince}}){% endif %}</td>
           </tr>
           <tr>
-            <th>Dry Hops Date</th>
+            <th>{% trans "Dry Hops Date"%} </th>
             <td>{{batch.dry_hops_start_day|default:"---"}} {% if batch.dry_hops_start_day %}({{batch.dry_hops_start_day|timesince}}){% endif %}</td>
           </tr>
           <tr>
-            <th>Packaging Date</th>
+            <th>{% trans "Packaging Date"%} </th>
             <td>{{batch.packaging_date|default:"---"}} {% if batch.packaging_date %}({{batch.packaging_date|timesince}}){% endif %}</td>
           </tr>
           
@@ -64,23 +65,23 @@
   </div>
   <div class="row">
     <div class="col-sm-7">
-      <h5>Mash and Boil</h5>
+      <h5>{% trans "Mash and Boil" %}</h5>
       <table class="table table-sm">
         <tbody>
           <tr>
-            <th>Actual Mash Efficiency</th>
+            <th>{% trans "Actual Mash Efficiency"%} </th>
             <td>{% if batch.get_actuall_mash_efficiency %}{{ batch.get_actuall_mash_efficiency|floatformat }} %{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Gravity Before Boil</th>
+            <th>{% trans "Gravity Before Boil"%} </th>
             <td>{% if batch.gravity_before_boil %}{{ batch.gravity_before_boil|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Original gravity</th>
+            <th>{% trans "Original gravity"%} </th>
             <td>{% if batch.initial_gravity %}{{ batch.initial_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Batch IBU</th>
+            <th>{% trans "Batch IBU"%} </th>
             <td>{% if batch.get_ibu %}{{ batch.get_ibu|floatformat }}{% else %}---{% endif %}</td>
           </tr>
         </tbody>
@@ -89,31 +90,31 @@
   </div>
   <div class="row">
     <div class="col-sm-7">
-      <h5>Fermentation</h5>
+      <h5>{% trans "Fermentation" %}</h5>
       <table class="table table-sm">
         <tbody>
           <tr>
-            <th>Wort Volume</th>
+            <th>{% trans "Wort Volume"%} </th>
             <td>{% if batch.wort_volume %}{{ batch.wort_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Boil loss</th>
+            <th>{% trans "Boil loss"%} </th>
             <td>{% if batch.boil_loss %}{{ batch.boil_loss|get_obj_attr:volume.0|floatformat}} {{volume.1}}{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Post-primary gravity</th>
+            <th>{% trans "Post-primary gravity"%} </th>
             <td>{% if batch.post_primary_gravity %}{{ batch.post_primary_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Final gravity</th>
+            <th>{% trans "Final gravity"%} </th>
             <td>{% if batch.end_gravity %}{{ batch.end_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>ABV</th>
+            <th>{% trans "ABV"%} </th>
             <td>{% if batch.get_abv %}{{ batch.get_abv|floatformat }} %{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Attenuation</th>
+            <th>{% trans "Attenuation"%} </th>
             <td>{% if batch.get_attenuation %}{{ batch.get_attenuation|floatformat }} %{% else %}---{% endif %}</td>
           </tr>
         </tbody>
@@ -123,15 +124,15 @@
   <div class="row">
     <div class="col-sm-12">
       {% if batch.fermentation_checks.all.count > 0 %}
-      <h8>Fermentation Checks</h8>
+      <h8>{% trans "Fermentation Checks" %}</h8>
       <table class="table table-sm mt-2">
           <thead>
               <tr >
-                  <th class="text-left" scope="col">Sample Day</th>
-                  <th class="text-left" scope="col">Gravity</th>
-                  <th class="text-left" scope="col">Beer Temperature</th>
-                  <th class="text-left" scope="col">Ambient Temperature</th>
-                  <th class="text-left" scope="col">Comment</th>
+                  <th class="text-left" scope="col">{% trans "Sample Day" %}</th>
+                  <th class="text-left" scope="col">{% trans "Gravity" %}</th>
+                  <th class="text-left" scope="col">{% trans "Beer Temperature" %}</th>
+                  <th class="text-left" scope="col">{% trans "Ambient Temperature" %}</th>
+                  <th class="text-left" scope="col">{% trans "Comment" %}</th>
               </tr>
           </thead>
           <tbody>
@@ -151,35 +152,35 @@
   </div>
   <div class="row">
     <div class="col-sm-7">
-      <h5>Packaging</h5>
+      <h5>{% trans "Packaging" %}</h5>
       <table class="table table-sm">
         <tbody>
           <tr>
-            <th>Beer Volume</th>
+            <th>{% trans "Beer Volume"%} </th>
             <td>{% if batch.beer_volume %}{{ batch.beer_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Calories per 500ml</th>
+            <th>{% trans "Calories per 500ml"%} </th>
             <td>{% if batch.get_calories %}{{ batch.get_calories|floatformat }} kcal{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Carbonation Type</th>
+            <th>{% trans "Carbonation Type"%} </th>
             <td>{% if batch.carbonation_type %}{{ batch.carbonation_type }}{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Volumes of CO2</th>
+            <th>{% trans "Volumes of CO2"%} </th>
             <td>{% if batch.carbonation_level %}{{ batch.carbonation_level|floatformat }}{% else %}---{% endif %}</td>
           </tr>
           {% comment %} <tr>
-            <th>Priming Sugar</th>
+            <th>{% trans "Priming Sugar"%} </th>
             <td>{% if batch. %}{{ batch.|floatformat }} %{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Priming Sugar Amount</th>
+            <th>{% trans "Priming Sugar Amount"%} </th>
             <td>{% if batch. %}{{ batch.|floatformat }} %{% else %}---{% endif %}</td>
           </tr>
           <tr>
-            <th>Priming Beer Temperature</th>
+            <th>{% trans "Priming Beer Temperature"%} </th>
             <td>{% if batch. %}{{ batch.|floatformat }} %{% else %}---{% endif %}</td>
           </tr> {% endcomment %}
         </tbody>

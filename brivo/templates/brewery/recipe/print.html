@@ -59,26 +59,26 @@
         <hr class="mb-3"/>
         <div class="recipe-info">
             <ul>
-                <li><span class="rip-head">Gravity:  {{recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</li>
-                <li><span class="rip-head">IBU : {{recipe.get_ibu|floatformat}}</li>
-                <li><span class="rip-head">ABV:  {{recipe.get_abv|floatformat}}%</li>
-                <li><span class="rip-head">Color:  {{recipe.get_color|get_obj_attr:color_units.0|floatformat}} {{color_units.1}}</li>
-                <li><span class="rip-head">Style:  {{recipe.style.name}}</li>
+                <li><span class="rip-head">{% trans "Gravity" %}:  {{recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</li>
+                <li><span class="rip-head">{% trans "IBU" %} : {{recipe.get_ibu|floatformat}}</li>
+                <li><span class="rip-head">{% trans "ABV" %}:  {{recipe.get_abv|floatformat}}%</li>
+                <li><span class="rip-head">{% trans "Color" %}:  {{recipe.get_color|get_obj_attr:color_units.0|floatformat}} {{color_units.1}}</li>
+                <li><span class="rip-head">{% trans "Style" %}:  {{recipe.style.name}}</li>
             </ul>
-            <h5>Batch</h5>
+            <h5>{% trans "Batch" %}</h5>
                 <ul>
-                    <li><span class="rip-head">Expected Volume:</span> {{recipe.expected_beer_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</li>
-                    <li><span class="rip-head">Boil Time:</span> {{recipe.boil_time}} Min</li>
-                    <li><span class="rip-head">Evaporation rate:</span> {{recipe.evaporation_rate|floatformat}}%</li>
-                    <li><span class="rip-head">Boil Volume:</span> {{recipe.get_boil_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</li>
-                    <li><span class="rip-head">Boil Loss:</span> {{recipe.boil_loss|floatformat}}%</li>
-                    <li><span class="rip-head">Trub Loss:</span> {{recipe.trub_loss|floatformat}}%</li>
-                    <li><span class="rip-head">Dry Hopping Loss:</span> {{recipe.dry_hopping_loss|floatformat}}%</li>
+                    <li><span class="rip-head">{% trans "Expected Volume" %}:</span> {{recipe.expected_beer_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</li>
+                    <li><span class="rip-head">{% trans "Boil Time" %}:</span> {{recipe.boil_time}} Min</li>
+                    <li><span class="rip-head">{% trans "Evaporation rate" %}:</span> {{recipe.evaporation_rate|floatformat}}%</li>
+                    <li><span class="rip-head">{% trans "Boil Volume" %}:</span> {{recipe.get_boil_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</li>
+                    <li><span class="rip-head">{% trans "Boil Loss" %}:</span> {{recipe.boil_loss|floatformat}}%</li>
+                    <li><span class="rip-head">{% trans "Trub Loss" %}:</span> {{recipe.trub_loss|floatformat}}%</li>
+                    <li><span class="rip-head">{% trans "Dry Hopping Loss" %}:</span> {{recipe.dry_hopping_loss|floatformat}}%</li>
                 </ul>
             <h5>Mashing</h5>
                 <ul>
-                    <li><span class="rip-head">Mash Efficiency:</span> {{recipe.mash_efficiency|floatformat}}%</li>
-                    <li><span class="rip-head">Liquor-to-Grist Ratio:</span> {{recipe.liquor_to_grist_ratio|floatformat}} {{volume.1}}/{{big_weight.1}}</li>
+                    <li><span class="rip-head">{% trans "Mash Efficiency" %}:</span> {{recipe.mash_efficiency|floatformat}}%</li>
+                    <li><span class="rip-head">{% trans "Liquor-to-Grist Ratio" %}:</span> {{recipe.liquor_to_grist_ratio|floatformat}} {{volume.1}}/{{big_weight.1}}</li>
                 </ul>
             <h5>Steps</h5>
             <table class="table table-sm table-bordered">
@@ -100,12 +100,12 @@
                 <table class="table table-sm">
                     <thead>
                         <tr>
-                            <th class="text-left" scope="col">Name</th>
-                            <th class="text-left" scope="col">Type</th>
-                            <th class="text-left" scope="col">Use</th>
-                            <th class="text-left" scope="col">Color</th>
-                            <th class="text-left" scope="col">Extraction</th>
-                            <th class="text-left" scope="col">Amount</th>
+                            <th class="text-left" scope="col">{% trans "Name" %}</th>
+                            <th class="text-left" scope="col">{% trans "Type" %}</th>
+                            <th class="text-left" scope="col">{% trans "Use" %}</th>
+                            <th class="text-left" scope="col">{% trans "Color" %}</th>
+                            <th class="text-left" scope="col">{% trans "Extraction" %}</th>
+                            <th class="text-left" scope="col">{% trans "Amount" %}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,15 +123,15 @@
                 </table>
             </div>
             <div class="ingredients">
-                <h5>Hops</h5>
+                <h5>{% trans "Hops" %}</h5>
                 <table class="table table-sm">
                     <thead>
                         <tr >
-                            <th class="text-left" scope="col">Name</th>
-                            <th class="text-left" scope="col">Use</th>
-                            <th class="text-left" scope="col">Alpha Acids</th>
-                            <th class="text-left" scope="col">Amount</th>
-                            <th class="text-left" scope="col">Time</th>
+                            <th class="text-left" scope="col">{% trans "Name" %}</th>
+                            <th class="text-left" scope="col">{% trans "Use" %}</th>
+                            <th class="text-left" scope="col">{% trans "Alpha Acids" %}</th>
+                            <th class="text-left" scope="col">{% trans "Amount" %}</th>
+                            <th class="text-left" scope="col">{% trans "Time" %}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,16 +148,16 @@
                 </table>
             </div>
             <div class="ingredients">
-                <h5>Yeasts</h5>
+                <h5>{% trans "Yeasts" %}</h5>
                 <table class="table table-sm">
                     <thead>
                         <tr >
-                            <th class="text-left" scope="col">Name</th>
-                            <th class="text-left" scope="col">Lab</th>
-                            <th class="text-left" scope="col">Type</th>
-                            <th class="text-left" scope="col">Attenuation</th>
-                            <th class="text-left" scope="col">Form</th>
-                            <th class="text-left" scope="col">Amount</th>
+                            <th class="text-left" scope="col">{% trans "Name" %}</th>
+                            <th class="text-left" scope="col">{% trans "Lab" %}</th>
+                            <th class="text-left" scope="col">{% trans "Type" %}</th>
+                            <th class="text-left" scope="col">{% trans "Attenuation" %}</th>
+                            <th class="text-left" scope="col">{% trans "Form" %}</th>
+                            <th class="text-left" scope="col">{% trans "Amount" %}</th>
                         </tr>
                     </thead>
                     <tbody>

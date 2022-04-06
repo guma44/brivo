@@ -1,18 +1,18 @@
 {% load crispy_forms_tags %}
 {% load static %}
-
+{% load i18n %}
 
 <table class="table">
 {{ formset.management_form|crispy }}
     <thead>
         <tr >
-            <th class="text-center" scope="col">Name</th>
-            <th class="text-center" scope="col">Lab</th>
-            <th class="text-center" scope="col">Type</th>
-            <th class="text-center" scope="col">Attenuation</th>
-            <th class="text-center" scope="col">Form</th>
-            <th class="text-center" scope="col">Amount</th>
-            <th class="text-center" scope="col">Action</th>
+            <th class="text-center" scope="col">{% trans "Name" %}</th>
+            <th class="text-center" scope="col">{% trans "Lab" %}</th>
+            <th class="text-center" scope="col">{% trans "Type" %}</th>
+            <th class="text-center" scope="col">{% trans "Attenuation" %}</th>
+            <th class="text-center" scope="col">{% trans "Form" %}</th>
+            <th class="text-center" scope="col">{% trans "Amount" %}</th>
+            <th class="text-center" scope="col">{% trans "Action" %}</th>
         </tr>
     </thead>
     <tbody>
@@ -52,7 +52,7 @@ $(function() {
         added: function(row) {
             let row_index = row.find("input[id$=name]").prop("id").split("-")[1];
             $('#id_yeasts-' + row_index + '-name').autocomplete({
-                serviceUrl: '/brewery/yeast/autocomplete',
+                serviceUrl: '{% url "brewery:yeast-autocomplete" %}',
                 noCache: false,
                 minChars: 3,
                 paramName: "q",
@@ -69,7 +69,7 @@ $(function() {
     });
 
     $('#id_yeasts-0-name').autocomplete({
-        serviceUrl: '/brewery/yeast/autocomplete',
+        serviceUrl: '{% url "brewery:yeast-autocomplete" %}',
         noCache: false,
         minChars: 3,
         paramName: "q",

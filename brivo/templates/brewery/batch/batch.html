@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% load brew_tags %}
+{% load i18n %}
 
 {% block title %}{{ batch.name }}{% endblock %}
 
@@ -14,11 +15,11 @@
   <div class="row mb-5">
         <!-- Breadcrumbs-->
         <ol id="breadcrumb">
-            <li id="step-{{stages.1|lower}}"><a href="#">1. Mashing</a></li>
-            <li id="step-{{stages.2|lower}}" class=""><a href="#">2. Boiling</a></li>
-            <li id="step-{{stages.3|lower}}" class=""><a href="#">3. Primary</a></li>
-            <li id="step-{{stages.4|lower}}" class=""><a href="#">4. Secondary</a></li>
-            <li id="step-{{stages.5|lower}}"><a href="#">5. Packaging</a></li>
+            <li id="step-{{stages.1|lower}}"><a href="#">1. {% trans "Mashing" %}</a></li>
+            <li id="step-{{stages.2|lower}}" class=""><a href="#">2. {% trans "Boiling" %}</a></li>
+            <li id="step-{{stages.3|lower}}" class=""><a href="#">3. {% trans "Primary Fermentation" %}</a></li>
+            <li id="step-{{stages.4|lower}}" class=""><a href="#">4. {% trans "Secondary Fermentation" %}</a></li>
+            <li id="step-{{stages.5|lower}}"><a href="#">5. {% trans "Packaging" %}</a></li>
         </ol>
   </div>
 {% endif %}
@@ -30,7 +31,9 @@
       <button type="button" class="mr-1 bs-modal read-recipe btn btn-sm btn-default btn-dark" data-form-url="{% url 'brewery:recipe-detail' batch.recipe.pk %}">
         <span class="fa fa-eye"></span>
     </button>
-    Batch "{{batch.name}}" no. {{batch.batch_number}} based on "{{batch.recipe.name}}" recipe
+    {% blocktrans with name=batch.name number=batch.batch_number recipe_name=batch.recipe.name %}
+      Batch "{{name}}" no. {{number}} based on "{{recipe_name}}" recipe
+    {% endblocktrans %}
   </h2>
   </div>
 {% endif %}

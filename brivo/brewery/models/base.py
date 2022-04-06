@@ -19,12 +19,12 @@ VOLUME_UNITS = (
     ('us_oz', 'us_oz'), ('us_g', 'us_g'))
 
 TIME_CHOICE = [
- ('MINUTE', 'minute'),
- ('HOUR', 'hour'),
- ('DAY', 'day'),
- ('WEEK', 'week'),
- ('MONTH', 'month'),
- ('YEAR', 'year')
+ ('MINUTE', _('minute')),
+ ('HOUR', _('hour')),
+ ('DAY', _('day')),
+ ('WEEK', _('week')),
+ ('MONTH', _('month')),
+ ('YEAR', _('year'))
  ]
 
 

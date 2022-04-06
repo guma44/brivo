@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db.models.fields import CharField
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ugettext, pgettext, gettext
 from django.forms import HiddenInput, ModelChoiceField
 from django.forms.fields import ChoiceField, FileField, IntegerField
 from django.forms.models import ModelForm, inlineformset_factory
@@ -19,7 +20,8 @@ from crispy_forms.layout import (
     ButtonHolder,
     Submit,
     MultiField,
-    Column)
+    Column,
+)
 
 from measurement.measures import Volume, Weight, Temperature
 from brivo.utils.measures import BeerColor, BeerGravity
@@ -27,16 +29,15 @@ from brivo.brewery.measurement_forms import MeasurementField
 from brivo.brewery import layouts
 from brivo.brewery import models
 
-class PopRequestMixin:
 
+class PopRequestMixin:
     def get_form_kwargs(self):
         kwargs = super(PopRequestMixin, self).get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
 
 class BaseFormSet(BaseInlineFormSet):
-
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(BaseFormSet, self).__init__(*args, **kwargs)
@@ -48,265 +49,273 @@ class BaseFormSet(BaseInlineFormSet):
 
 
 mash_info_for_batch = """
-{% load brew_tags %}
+{{% load brew_tags %}}
+{{% load i18n %}}
 <div class="mashing mt-5 mb-5">
-    <h5>Mash information</h5>
+    <h5>{}</h5>
     <table class="table table-sm">
     <tbody>
         <tr>
-        <th>Boil size</th>
-        <td>{{batch.recipe.get_boil_volume|get_obj_attr:volume.0|floatformat}} {{volume.1}}</td>
+        <th>{}</th>
+        <td>{{{{batch.recipe.get_boil_volume|get_obj_attr:volume.0|floatformat}}}} {{{{volume.1}}}}</td>
         <tr>
         <tr>
-        <th>Mash Efficiency</th>
-        <td>{{batch.recipe.mash_efficiency|floatformat}}%</td>
+        <th>{}</th>
+        <td>{{{{batch.recipe.mash_efficiency|floatformat}}}}%</td>
         <tr>
         <tr>
-        <th>Liquor-to-Grist Ratio</th>
-        <td>{{batch.recipe.liquor_to_grist_ratio|floatformat}} {{volume.1}}/{{big_weight.1}}</td>
+        <th>{}</th>
+        <td>{{{{batch.recipe.liquor_to_grist_ratio|floatformat}}}} {{{{volume.1}}}}/{{{{big_weight.1}}}}</td>
         <tr>
     </tbody>
     </table>
 </div>
 <div class="ingredients mt-5 mb-5">
-    <h5>Fermentables</h5>
+    <h5>{}</h5>
     <table class="table table-sm">
         <thead>
             <tr>
-                <th class="text-left" scope="col">Name</th>
-                <th class="text-left" scope="col">Type</th>
-                <th class="text-left" scope="col">Use</th>
-                <th class="text-left" scope="col">Color</th>
-                <th class="text-left" scope="col">Extraction</th>
-                <th class="text-left" scope="col">Amount</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
             </tr>
         </thead>
         <tbody>
-            {% for fermentable in batch.recipe.fermentables.all %}
+            {{% for fermentable in batch.recipe.fermentables.all %}}
                 <tr class="">
-                    <td class="text-left">{{ fermentable.name }}</td>
-                    <td class="text-left">{{ fermentable.type|title }}</td>
-                    <td class="text-left">{{ fermentable.use|title|default:"---" }}</td>
-                    <td class="text-left">{{ fermentable.color|get_obj_attr:color_units.0|floatformat }} {{color_units.1}}</td>
-                    <td class="text-left">{{ fermentable.extraction }}%</td>
-                    <td class="text-left">{{ fermentable.amount|get_obj_attr:big_weight.0|floatformat }} {{big_weight.1}}</td>
+                    <td class="text-left">{{{{ fermentable.name }}}}</td>
+                    <td class="text-left">{{{{ fermentable.get_type_display }}}}</td>
+                    <td class="text-left">{{{{ fermentable.get_use_displayf|default:"---" }}}}</td>
+                    <td class="text-left">{{{{ fermentable.color|get_obj_attr:color_units.0|floatformat }}}} {{{{color_units.1}}}}</td>
+                    <td class="text-left">{{{{ fermentable.extraction }}}}%</td>
+                    <td class="text-left">{{{{ fermentable.amount|get_obj_attr:big_weight.0|floatformat }}}} {{{{big_weight.1}}}}</td>
                 </tr>
-            {% endfor %}
+            {{% endfor %}}
         </tbody>
     </table>
 </div>
 """
 
 boil_info_for_batch = """
-{% load brew_tags %}
+{{% load brew_tags %}}
+{{% load i18n %}}
 <div class="ingredients mt-5 mb-5">
-    <h5>Hops</h5>
+    <h5>{}</h5>
     <table class="table table-sm">
         <thead>
             <tr >
-                <th class="text-left" scope="col">Name</th>
-                <th class="text-left" scope="col">Use</th>
-                <th class="text-left" scope="col">Alpha Acids</th>
-                <th class="text-left" scope="col">Amount</th>
-                <th class="text-left" scope="col">Time</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
             </tr>
         </thead>
         <tbody>
-            {% for hop in batch.recipe.hops.all %}
-                {% if hop.use != "DRY HOP" %}
+            {{% for hop in batch.recipe.hops.all %}}
+                {{% if hop.use != "DRY HOP" %}}
                 <tr>
-                    <td class="text-left">{{ hop.name }}</td>
-                    <td class="text-left">{{ hop.use|title }}</td>
-                    <td class="text-left">{{ hop.alpha_acids }}%</td>
-                    <td class="text-left">{{ hop.amount|get_obj_attr:small_weight.0 }} {{small_weight.1}}</td>
-                    <td class="text-left">{{ hop.time|floatformat }} {{hop.time_unit|lower}}(s)</td>
+                    <td class="text-left">{{{{ hop.name }}}}</td>
+                    <td class="text-left">{{{{ hop.use|title }}}}</td>
+                    <td class="text-left">{{{{ hop.alpha_acids }}}}%</td>
+                    <td class="text-left">{{{{ hop.amount|get_obj_attr:small_weight.0 }}}} {{{{small_weight.1}}}}</td>
+                    <td class="text-left">{{{{ hop.time|floatformat }}}} {{{{hop.time_unit|lower}}}}</td>
                 </tr>
-                {% endif %}
-            {% endfor %}
+                {{% endif %}}
+            {{% endfor %}}
         </tbody>
     </table>
 </div>
 """
 
 boil_stats_for_batch = """
-{% load brew_tags %}
+{{% load brew_tags %}}
+{{% load i18n %}}
 </br>
 <table class="table" style="background:#dedede">
    <tr>
-      <td>Expected Boil Volume:</td>
-      <td class: "text-left" id="expected_boil_volume_info">{{ batch.recipe.get_boil_volume|get_obj_attr:volume.0|floatformat }}  {{volume.1}}</td>
+      <td>{}:</td>
+      <td class: "text-left" id="expected_boil_volume_info">{{{{ batch.recipe.get_boil_volume|get_obj_attr:volume.0|floatformat }}}}  {{{{volume.1}}}}</td>
    <tr>
    <tr>
-      <td>Expected Pre-Boil Gravity:</td>
-      <td class: "text-left" id="expected_preboil_gravity_info">{{ batch.recipe.get_preboil_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
+      <td>{}:</td>
+      <td class: "text-left" id="expected_preboil_gravity_info">{{{{ batch.recipe.get_preboil_gravity|get_obj_attr:gravity_units.0|floatformat}}}} {{{{gravity_units.1}}}}</td>
    <tr>
    <tr>
-      <td>Boil Time:</td>
-      <td class: "text-left" id="primary_volume_info">{{ batch.recipe.boil_time }} Min</td>
+      <td>{}:</td>
+      <td class: "text-left" id="primary_volume_info">{{{{ batch.recipe.boil_time }}}} Min</td>
    <tr>
 </table>
 """
 
 primary_info_for_batch = """
-{% load brew_tags %}
+{{% load brew_tags %}}
+{{% load i18n %}}
 <div class="ingredients mt-5 mb-5">
-    <h5>Yeasts</h5>
+    <h5>{}</h5>
     <table class="table table-sm">
         <thead>
             <tr >
-                <th class="text-left" scope="col">Name</th>
-                <th class="text-left" scope="col">Lab</th>
-                <th class="text-left" scope="col">Type</th>
-                <th class="text-left" scope="col">Attenuation</th>
-                <th class="text-left" scope="col">Form</th>
-                <th class="text-left" scope="col">Amount</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
             </tr>
         </thead>
         <tbody>
-            {% for yeast in batch.recipe.yeasts.all %}
+            {{% for yeast in batch.recipe.yeasts.all %}}
                 <tr>
-                    <td class="text-left">{{ yeast.name }}</td>
-                    <td class="text-left">{{ yeast.lab }}</td>
-                    <td class="text-left">{{ yeast.type|title }}</td>
-                    <td class="text-left">{{ yeast.attenuation|floatformat }}%</td>
-                    <td class="text-left">{{ yeast.form|title }}</td>
-                    <td class="text-left">{{ yeast.amount|get_obj_attr:small_weight.0|floatformat }} {{small_weight.1}}</td>
+                    <td class="text-left">{{{{ yeast.name }}}}</td>
+                    <td class="text-left">{{{{ yeast.lab }}}}</td>
+                    <td class="text-left">{{{{ yeast.type|title }}}}</td>
+                    <td class="text-left">{{{{ yeast.attenuation|floatformat }}}}%</td>
+                    <td class="text-left">{{{{ yeast.form|title }}}}</td>
+                    <td class="text-left">{{{{ yeast.amount|get_obj_attr:small_weight.0|floatformat }}}} {{{{small_weight.1}}}}</td>
                 </tr>
-            {% endfor %}
+            {{% endfor %}}
     </table>
 </div>
 <div class="checks mt-5 mb-5">
-    <h5>Fermentation Checks</h5>
-    <button type="button" class="mr-1 bs-modal read-recipe btn btn-sm btn-primary" data-form-url="{% url 'brewery:batch-fermentation_check-create' batch.pk %}">
-        <span class="fa fa-plus"></span> Add Fermentation Check
+    <h5>{}</h5>
+    <button type="button" class="mr-1 bs-modal read-recipe btn btn-sm btn-primary" data-form-url="{{% url 'brewery:batch-fermentation_check-create' batch.pk %}}">
+        <span class="fa fa-plus"></span> {}
     </button>
-    {% if batch.fermentation_checks.all.count > 0 %}
+    {{% if batch.fermentation_checks.all.count > 0 %}}
     <table class="table table-sm mt-2">
         <thead>
             <tr >
-                <th class="text-left" scope="col">Sample Day</th>
-                <th class="text-left" scope="col">Gravity</th>
-                <th class="text-left" scope="col">Beer Temperature</th>
-                <th class="text-left" scope="col">Ambient Temperature</th>
-                <th class="text-left" scope="col">Comment</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
             </tr>
         </thead>
         <tbody>
-            {% for check in batch.fermentation_checks.all|dictsort:"sample_day" %}
+            {{% for check in batch.fermentation_checks.all|dictsort:"sample_day" %}}
                 <tr>
-                    <td class="text-left">{{ check.sample_day }} ({{check.sample_day|timesince}})</td>
-                    <td class="text-left">{{ check.gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
-                    <td class="text-left">{% if check.beer_temperature %}{{ check.beer_temperature|get_obj_attr:temp_units.0|floatformat}}{% else %}---{% endif %} {% if check.beer_temperature %}{{temp_units.1}}{% endif %}</td>
-                    <td class="text-left">{% if check.ambient_temperature %}{{ check.ambient_temperature|get_obj_attr:temp_units.0|floatformat}}{% else %}---{% endif %} {% if check.ambient_temperature %}{{temp_units.1}}{% endif %}</td>
-                    <td class="text-left">{% if check.comment %}{{ check.comment }}{% else %}---{% endif %}</td>
+                    <td class="text-left">{{{{ check.sample_day }}}} ({{{{check.sample_day|timesince}}}})</td>
+                    <td class="text-left">{{{{ check.gravity|get_obj_attr:gravity_units.0|floatformat}}}} {{{{gravity_units.1}}}}</td>
+                    <td class="text-left">{{% if check.beer_temperature %}}{{{{ check.beer_temperature|get_obj_attr:temp_units.0|floatformat}}}}{{% else %}}---{{% endif %}} {{% if check.beer_temperature %}} {{{{ temp_units.1 }}}} {{% endif %}}</td>
+                    <td class="text-left">{{% if check.ambient_temperature %}}{{{{ check.ambient_temperature|get_obj_attr:temp_units.0|floatformat}}}}{{% else %}}---{{% endif %}} {{% if check.ambient_temperature %}} {{{{ temp_units.1 }}}} {{% endif %}}</td>
+                    <td class="text-left">{{% if check.comment %}}{{{{ check.comment }}}}{{% else %}}---{{% endif %}}</td>
                     <td class="text-center">
-                        {% if user.is_authenticated %}
-                        <button type="button" class="bs-modal update-ferm-check btn btn-sm btn-primary" data-form-url="{% url 'brewery:batch-fermentation_check-update' batch.pk check.pk %}">
+                        {{% if user.is_authenticated %}}
+                        <button type="button" class="bs-modal update-ferm-check btn btn-sm btn-primary" data-form-url="{{% url 'brewery:batch-fermentation_check-update' batch.pk check.pk %}}">
                         <span class="fa fa-edit"></span>
                         </button>
-                        <button type="button" class="bs-modal delete-ferm-check btn btn-sm btn-danger" data-form-url="{% url 'brewery:batch-fermentation_check-delete' batch.pk check.pk %}">
+                        <button type="button" class="bs-modal delete-ferm-check btn btn-sm btn-danger" data-form-url="{{% url 'brewery:batch-fermentation_check-delete' batch.pk check.pk %}}">
                         <span class="fa fa-trash"></span>
                         </button>
-                        {% endif %}
+                        {{% endif %}}
                     </td>
                 </tr>
-            {% endfor %}
+            {{% endfor %}}
         </tbody>
     </table>
-    {% endif %}
+    {{% endif %}}
 </div>
 """
 
 primary_stats_for_batch = """
-{% load brew_tags %}
+{{% load brew_tags %}}
+{{% load i18n %}}
 </br>
 <table class="table" style="background:#dedede">
    <tr>
-      <td>Expected Gravity:</td>
-      <td class: "text-left" id="expected_gravity_info">{{ batch.recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}} {{gravity_units.1}}</td>
+      <td>{}:</td>
+      <td class: "text-left" id="expected_gravity_info">{{{{ batch.recipe.get_gravity|get_obj_attr:gravity_units.0|floatformat}}}} {{{{gravity_units.1}}}}</td>
    <tr>
    <tr>
-      <td>Expected Volume With Trub Loss:</td>
-      <td class: "text-left" id="expected_boil_volume_with_trub_loss_info">{{ batch.recipe.get_primary_volume|get_obj_attr:volume.0|floatformat }}  {{volume.1}}</td>
+      <td>{}:</td>
+      <td class: "text-left" id="expected_boil_volume_with_trub_loss_info">{{{{ batch.recipe.get_primary_volume|get_obj_attr:volume.0|floatformat }}}}  {{{{volume.1}}}}</td>
    <tr>
    <tr>
-      <td>Expected Boil Loss:</td>
-      <td class: "text-left" id="expected_boil_loss_info">{{ batch.recipe.get_boil_loss_volume|get_obj_attr:volume.0|floatformat }}  {{volume.1}}</td>
+      <td>{}:</td>
+      <td class: "text-left" id="expected_boil_loss_info">{{{{ batch.recipe.get_boil_loss_volume|get_obj_attr:volume.0|floatformat }}}}  {{{{volume.1}}}}</td>
    <tr>
    <tr>
-      <td>Batch IBU:</td>
-      <td class: "text-left" id="primary_volume_info">{{ batch.get_ibu|floatformat|default:"---" }}</td>
+      <td>{}:</td>
+      <td class: "text-left" id="primary_volume_info">{{{{ batch.get_ibu|floatformat|default:"---" }}}}</td>
    <tr>
    <tr>
-      <td>Actual Mash Efficiency:</td>
-      <td class: "text-left" id="actual_mash_efficiency_info">{{ batch.get_actuall_mash_efficiency|floatformat|default:"---" }}%</td>
+      <td>{}:</td>
+      <td class: "text-left" id="actual_mash_efficiency_info">{{{{ batch.get_actuall_mash_efficiency|floatformat|default:"---" }}}}%</td>
    <tr>
 </table>
 """
 
+
 secondary_info_for_batch = """
-{% load brew_tags %}
+{{% load brew_tags %}}
+{{% load i18n %}}
 <div class="ingredients mt-5 mb-5">
-    {% if batch.recipe.hops.all|count_dry_hops > 0 %}
-    <h5>Hops</h5>
+    {{% if batch.recipe.hops.all|count_dry_hops > 0 %}}
+    <h5>{}</h5>
     <table class="table table-sm">
         <thead>
             <tr >
-                <th class="text-left" scope="col">Name</th>
-                <th class="text-left" scope="col">Use</th>
-                <th class="text-left" scope="col">Alpha Acids</th>
-                <th class="text-left" scope="col">Amount</th>
-                <th class="text-left" scope="col">Time</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
+                <th class="text-left" scope="col">{}</th>
             </tr>
         </thead>
         <tbody>
-            {% for hop in batch.recipe.hops.all %}
-                {% if hop.use == "DRY HOP" %}
+            {{% for hop in batch.recipe.hops.all %}}
+                {{% if hop.use == "DRY HOP" %}}
                 <tr>
-                    <td class="text-left">{{ hop.name }}</td>
-                    <td class="text-left">{{ hop.use|title }}</td>
-                    <td class="text-left">{{ hop.alpha_acids }}%</td>
-                    <td class="text-left">{{ hop.amount|get_obj_attr:small_weight.0 }} {{small_weight.1}}</td>
-                    <td class="text-left">{{ hop.time|floatformat }} {{hop.time_unit|lower}}(s)</td>
+                    <td class="text-left">{{{{ hop.name }}}}</td>
+                    <td class="text-left">{{{{ hop.use|title }}}}</td>
+                    <td class="text-left">{{{{ hop.alpha_acids }}}}%</td>
+                    <td class="text-left">{{{{ hop.amount|get_obj_attr:small_weight.0 }}}} {{{{small_weight.1}}}}</td>
+                    <td class="text-left">{{{{ hop.time|floatformat }}}} {{{{hop.time_unit|lower}}}}</td>
                 </tr>
-                {% endif %}
-            {% endfor %}
+                {{% endif %}}
+            {{% endfor %}}
         </tbody>
     </table>
-    {% endif %}
+    {{% endif %}}
 </div>
 """
 
 packaging_info_for_batch = """
+{{% load i18n %}}
 <div class="mt-5 mb-5">
-    <h5>Carbonation Guidline</h5>
+    <h5>{}</h5>
     <table class="table table-sm">
         <tr>
-        <th>British-style ales</th>
+        <th>{}</th>
         <td>1.7 - 2.3</th>
         </tr>
         <tr>
-        <th>Porter, stout</th>
+        <th>{}</th>
         <td>1.9 - 2.4</th>
         </tr>
         <tr>
-        <th>Belgian ales</th>
+        <th>{}</th>
         <td>2.2 - 2.7</th>
         </tr>
         <tr>
-        <th>European lagers</th>
+        <th>{}</th>
         <td>2.2 - 2.7</th>
         </tr>
         <tr>
-        <th>American ales and lagers</th>
+        <th>{}</th>
         <td>2.4 - 2.8</th>
         </tr>
         <tr>
-        <th>Lambic</th>
+        <th>{}</th>
         <td>3.0 - 4.5</th>
         </tr>
         <tr>
-        <th>Fruit lambic</th>
+        <th>{}</th>
         <td>3.3 - 4.5 </th>
         </tr>
     </table>
@@ -314,42 +323,44 @@ packaging_info_for_batch = """
 """
 
 packaging_stats_for_batch = """
-{% load brew_tags %}
+{{% load brew_tags %}}
+{{% load i18n %}}
 </br>
 <table class="table" style="background:#dedede">
    <tr>
-      <td>ABV:</td>
-      <td class: "text-left" id="abv_batch_stats">{{ batch.get_abv|floatformat }} %</td>
+      <td>{}:</td>
+      <td class: "text-left" id="abv_batch_stats">{{{{ batch.get_abv|floatformat }}}} %</td>
    <tr>
    <tr>
-      <td>Attenuation:</td>
-      <td class: "text-left" id="attenuation_batch_stats">{{ batch.get_attenuation|floatformat }} %</td>
+      <td>{}:</td>
+      <td class: "text-left" id="attenuation_batch_stats">{{{{ batch.get_attenuation|floatformat }}}} %</td>
    <tr>
    <tr>
-      <td>Calories:</td>
-      <td class: "text-left" id="calories_batch_stats">{{ batch.get_calories|floatformat }} kcal/500ml</td>
+      <td>{}:</td>
+      <td class: "text-left" id="calories_batch_stats">{{{{ batch.get_calories|floatformat }}}} kcal/500ml</td>
    <tr>
 </table>
 """
-
 
 priming_info_for_batch = """
-{% load brew_tags %}
+{{% load brew_tags %}}
+{{% load i18n %}}
 </br>
 <table class="table" style="background:#dedede">
    <tr>
-      <td>Priming sugar:</td>
-      <td class: "text-left" id="priming_sugar_info"><span id="priming_sugar_info_span"></span> {{small_weight.1}}</td>
+      <td>{}:</td>
+      <td class: "text-left" id="priming_sugar_info"><span id="priming_sugar_info_span"></span> {{{{small_weight.1}}}}</td>
    <tr>
    <tr>
-      <td>Amount of water:</td>
-      <td class: "text-left" id="priming_water_info"><span id="priming_water_info_span"></span> {{volume.1}}</td>
+      <td>{}:</td>
+      <td class: "text-left" id="priming_water_info"><span id="priming_water_info_span"></span> {{{{volume.1}}}}</td>
    <tr>
 </table>
 """
 
+
 def _get_unit_choices(profile):
-    # 
+    #
     if profile.general_units == "METRIC":
         volume_unit_choices = (("l", "l"),)
     elif profile.general_units == "IMPERIAL":
@@ -365,21 +376,19 @@ def _get_unit_choices(profile):
     else:
         raise ValueError(f"No unit choice {profile.temperature_units}")
     gravity_unit_choices = (
-        (
-            profile.gravity_units.lower(),
-            profile.gravity_units.lower()
-        ),
+        (profile.gravity_units.lower(), profile.gravity_units.lower()),
     )
     return (volume_unit_choices, temp_unit_choices, gravity_unit_choices)
 
 
 class BaseBatchForm(BSModalModelForm):
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        volume_unit_choices, temp_unit_choices, gravity_unit_choices = _get_unit_choices(
-            self.request.user.profile
-        )
+        (
+            volume_unit_choices,
+            temp_unit_choices,
+            gravity_unit_choices,
+        ) = _get_unit_choices(self.request.user.profile)
 
         if "recipe" in self.fields:
             grav_unit = self.request.user.profile.gravity_units.lower()
@@ -389,163 +398,297 @@ class BaseBatchForm(BSModalModelForm):
             else:
                 prec = 4
                 un = grav_unit.upper()
-            self.fields["recipe"].queryset = models.Recipe.objects.filter(user=self.request.user)
-            self.fields['recipe'].label_from_instance = lambda obj: "%s (%s, %s %s, %.0f IBU)" % (obj.name, obj.style, f"{round(getattr(obj.get_gravity(), grav_unit), prec)}", un, obj.get_ibu())
+            self.fields["recipe"].queryset = models.Recipe.objects.filter(
+                user=self.request.user
+            )
+            self.fields[
+                "recipe"
+            ].label_from_instance = lambda obj: "%s (%s, %s %s, %.0f IBU)" % (
+                obj.name,
+                obj.style,
+                f"{round(getattr(obj.get_gravity(), grav_unit), prec)}",
+                un,
+                obj.get_ibu(),
+            )
         self.helper = FormHelper()
         self.helper.form_tag = True
-        self.helper.form_method = 'POST'
-        #self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-6 create-label'
-        self.helper.field_class = 'col-md-6'
+        self.helper.form_method = "POST"
+        # self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = "col-md-6 create-label"
+        self.helper.field_class = "col-md-6"
         if self.instance.stage == "INIT":
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
-                    Fieldset("Base Recipe Selection",
+                    Fieldset(
+                        _("Base Recipe Selection"),
                         Field("recipe"),
                     ),
                 ),
-                Div(
-                    ButtonHolder(
-                        Submit("next_stage", "Brew It!")
-                    )
-                )
+                Div(ButtonHolder(Submit("next_stage", _("Brew It!")))),
             )
         elif self.instance.stage == "MASHING":
-            self.fields.update({
-                "grain_temperature": MeasurementField(
-                    measurement=Temperature,
-                    unit_choices=temp_unit_choices),
-                "sparging_temperature": MeasurementField(
-                    measurement=Temperature,
-                    unit_choices=temp_unit_choices)})
+            self.fields.update(
+                {
+                    "grain_temperature": MeasurementField(
+                        label=_("Grain Temperature"),
+                        measurement=Temperature,
+                        unit_choices=temp_unit_choices,
+                    ),
+                    "sparging_temperature": MeasurementField(
+                        label=_("Sparging Temperature"),
+                        measurement=Temperature,
+                        unit_choices=temp_unit_choices,
+                    ),
+                }
+            )
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
-                    Fieldset("Mash",
+                    Fieldset(
+                        _("Mash"),
                         Field("name"),
                         Field("batch_number"),
                         Field("brewing_day"),
                         Field("grain_temperature"),
-                        Field("sparging_temperature")
+                        Field("sparging_temperature"),
                     ),
                     Row(
-                        Column(HTML(mash_info_for_batch), css_class='form-group mb-0'),
-                        css_class='form-row'
-                    )
+                        Column(
+                            HTML(
+                                mash_info_for_batch.format(
+                                    _("Mash Information"),
+                                    _("Boil Size"),
+                                    _("Mash Efficiency"),
+                                    _("Liquor-to-Grist Ratio"),
+                                    _("Fermentables"),
+                                    _("Name"),
+                                    _("Type"),
+                                    _("Use"),
+                                    _("Color"),
+                                    _("Extraction"),
+                                    _("Amount"),
+                                )
+                            ),
+                            css_class="form-group mb-0",
+                        ),
+                        css_class="form-row",
+                    ),
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("save", "Save", css_class="btn-warning"),
-                        Submit("next_stage", "Boil >")
+                        Submit("save", ugettext("Save"), css_class="btn-warning"),
+                        Submit("next_stage", ugettext("Boil") + " >"),
                     )
-                )
+                ),
             )
         elif self.instance.stage == "BOIL":
-            self.fields.update({
-                "gravity_before_boil": MeasurementField(
-                    measurement=BeerGravity,
-                    unit_choices=gravity_unit_choices),
-            })
+            self.fields.update(
+                {
+                    "gravity_before_boil": MeasurementField(
+                        label=_("Gravity Before Boil"),
+                        measurement=BeerGravity,
+                        unit_choices=gravity_unit_choices,
+                    ),
+                }
+            )
 
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
-                    Fieldset("Boil",
+                    Fieldset(
+                        _("Boil"),
                         Field("gravity_before_boil"),
                         Row(
-                            Column(HTML(boil_stats_for_batch), css_class='form-group col-md-5 mb-0'),
-                            css_class='form-row'
+                            Column(
+                                HTML(
+                                    boil_stats_for_batch.format(
+                                        _("Expected Boil Volume"),
+                                        _("Expected Pre-Boil Gravity"),
+                                        _("Boil Time"),
+                                    )
+                                ),
+                                css_class="form-group col-md-5 mb-0",
+                            ),
+                            css_class="form-row",
                         ),
                     ),
                     Row(
-                        Column(HTML(boil_info_for_batch), css_class='form-group mb-0'),
-                        css_class='form-row'
-                    )
+                        Column(
+                            HTML(
+                                boil_info_for_batch.format(
+                                    _("Hops"),
+                                    _("Name"),
+                                    _("Use"),
+                                    _("Alpha Acids"),
+                                    _("Amount"),
+                                    _("Time"),
+                                )
+                            ),
+                            css_class="form-group mb-0",
+                        ),
+                        css_class="form-row",
+                    ),
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "< Mash", formnovalidate='formnovalidate'),
-                        Submit("save", "Save", css_class="btn-warning"),
-                        Submit("next_stage", "Primary >")
+                        Submit(
+                            "previous_stage",
+                            "< " + ugettext("Mash"),
+                            formnovalidate="formnovalidate",
+                        ),
+                        Submit("save", ugettext("Save"), css_class="btn-warning"),
+                        Submit(
+                            "next_stage",
+                            pgettext("fermentation stage", "Primary") + " >",
+                        ),
                     )
-                )
+                ),
             )
         elif self.instance.stage == "PRIMARY_FERMENTATION":
-            self.fields.update({
-                "primary_fermentation_temperature": MeasurementField(
-                    measurement=Temperature,
-                    required=False,
-                    unit_choices=temp_unit_choices),
-                "initial_gravity": MeasurementField(
-                    measurement=BeerGravity,
-                    unit_choices=gravity_unit_choices),
-                "wort_volume": MeasurementField(
-                    measurement=Volume,
-                    unit_choices=volume_unit_choices),
-                "boil_loss": MeasurementField(
-                    measurement=Volume,
-                    unit_choices=volume_unit_choices),
-            })
+            self.fields.update(
+                {
+                    "primary_fermentation_temperature": MeasurementField(
+                        label=_("Primary Fermentation Temperature"),
+                        measurement=Temperature,
+                        required=False,
+                        unit_choices=temp_unit_choices,
+                    ),
+                    "initial_gravity": MeasurementField(
+                        label=_("Initial Gravity"),
+                        measurement=BeerGravity,
+                        unit_choices=gravity_unit_choices,
+                    ),
+                    "wort_volume": MeasurementField(
+                        label=_("Wort Volume"),
+                        measurement=Volume,
+                        unit_choices=volume_unit_choices,
+                    ),
+                    "boil_loss": MeasurementField(
+                        label=_("Boil Loss"),
+                        measurement=Volume,
+                        unit_choices=volume_unit_choices,
+                    ),
+                }
+            )
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
-                    Fieldset("Primary Fermentation",
+                    Fieldset(
+                        _("Primary Fermentation"),
                         Field("initial_gravity"),
                         Field("wort_volume"),
                         Field("boil_loss"),
                         Field("primary_fermentation_temperature"),
                         Field("primary_fermentation_start_day"),
                         Row(
-                            Column(HTML(primary_stats_for_batch), css_class='form-group col-md-5 mb-0'),
-                            css_class='form-row'
+                            Column(
+                                HTML(
+                                    primary_stats_for_batch.format(
+                                        _("Expected Gravity"),
+                                        _("Expected Volume With Trub Loss"),
+                                        _("Expected Boil Loss"),
+                                        _("Batch IBU"),
+                                        _("Actual Mash Efficiency"),
+                                    )
+                                ),
+                                css_class="form-group col-md-5 mb-0",
+                            ),
+                            css_class="form-row",
                         ),
                     ),
                     Row(
-                        Column(HTML(primary_info_for_batch), css_class='form-group mb-0'),
-                        css_class='form-row'
-                    )
+                        Column(
+                            HTML(
+                                primary_info_for_batch.format(
+                                    _("Yeasts"),
+                                    _("Name"),
+                                    _("Lab"),
+                                    _("Type"),
+                                    _("Attenuation"),
+                                    _("Form"),
+                                    _("Amount"),
+                                    _("Fermentation Checks"),
+                                    _("Add Fermentation Check"),
+                                    _("Sample Day"),
+                                    _("Gravity"),
+                                    _("Beer Temperature"),
+                                    _("Ambient Temperature"),
+                                    _("Comment"),
+                                )
+                            ),
+                            css_class="form-group mb-0",
+                        ),
+                        css_class="form-row",
+                    ),
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "< Boil", formnovalidate='formnovalidate'),
-                        Submit("save", "Save", css_class="btn-warning"),
-                        Submit("next_stage", "Secondary >")
+                        Submit(
+                            "previous_stage",
+                            "< " + ugettext("Boil"),
+                            formnovalidate="formnovalidate",
+                        ),
+                        Submit("save", ugettext("Save"), css_class="btn-warning"),
+                        Submit("next_stage", ugettext("Secondary") + " >"),
                     )
-                )
+                ),
             )
         elif self.instance.stage == "SECONDARY_FERMENTATION":
-            self.fields.update({
-                "secondary_fermentation_temperature": MeasurementField(
-                    measurement=Temperature,
-                    required=False,
-                    unit_choices=temp_unit_choices),
-                "post_primary_gravity": MeasurementField(
-                    measurement=BeerGravity,
-                    required=False,
-                    unit_choices=gravity_unit_choices),
-            })
+            self.fields.update(
+                {
+                    "secondary_fermentation_temperature": MeasurementField(
+                        label=_("Secondary Fermentation Temperature"),
+                        measurement=Temperature,
+                        required=False,
+                        unit_choices=temp_unit_choices,
+                    ),
+                    "post_primary_gravity": MeasurementField(
+                        label=_("Post-primary Gravity"),
+                        measurement=BeerGravity,
+                        required=False,
+                        unit_choices=gravity_unit_choices,
+                    ),
+                }
+            )
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
-                    Fieldset("Secondary Fermentation",
+                    Fieldset(
+                        _("Secondary Fermentation"),
                         Field("post_primary_gravity"),
                         Field("secondary_fermentation_temperature"),
                         Field("secondary_fermentation_start_day"),
                         Field("dry_hops_start_day"),
                     ),
                     Row(
-                        Column(HTML(secondary_info_for_batch), css_class='form-group mb-0'),
-                        css_class='form-row'
-                    )
+                        Column(
+                            HTML(
+                                secondary_info_for_batch.format(
+                                    _("Hops"),
+                                    _("Name"),
+                                    _("Use"),
+                                    _("Alpha Acids"),
+                                    _("Amount"),
+                                    _("Time"),
+                                )
+                            ),
+                            css_class="form-group mb-0",
+                        ),
+                        css_class="form-row",
+                    ),
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "< Primary", formnovalidate='formnovalidate'),
-                        Submit("save", "Save", css_class="btn-warning"),
-                        Submit("next_stage", "Packaging >")
+                        Submit(
+                            "previous_stage",
+                            "< " + pgettext("fermentation stage", "Primary"),
+                            formnovalidate="formnovalidate",
+                        ),
+                        Submit("save", ugettext("Save"), css_class="btn-warning"),
+                        Submit("next_stage", ugettext("Packaging") + " >"),
                     )
-                )
+                ),
             )
         elif self.instance.stage == "PACKAGING":
             style = ""
@@ -554,22 +697,31 @@ class BaseBatchForm(BSModalModelForm):
                     style = "display:none"
             else:
                 style = "display:none"
-            self.fields.update({
-                "end_gravity": MeasurementField(
-                    measurement=BeerGravity,
-                    unit_choices=gravity_unit_choices),
-                "beer_volume": MeasurementField(
-                    measurement=Volume,
-                    unit_choices=volume_unit_choices),
-                "priming_temperature": MeasurementField(
-                    measurement=Temperature,
-                    required=False,
-                    unit_choices=temp_unit_choices),
-            })
+            self.fields.update(
+                {
+                    "end_gravity": MeasurementField(
+                        label=_("End Gravity"),
+                        measurement=BeerGravity,
+                        unit_choices=gravity_unit_choices,
+                    ),
+                    "beer_volume": MeasurementField(
+                        label=_("Beer Volume"),
+                        measurement=Volume,
+                        unit_choices=volume_unit_choices,
+                    ),
+                    "priming_temperature": MeasurementField(
+                        label=_("Priming Temperature"),
+                        measurement=Temperature,
+                        required=False,
+                        unit_choices=temp_unit_choices,
+                    ),
+                }
+            )
             self.helper.layout = Layout(
                 Div(
                     Hidden("stage", self.instance.stage),
-                    Fieldset("Packaging",
+                    Fieldset(
+                        _("Packaging"),
                         Field("packaging_date"),
                         Field("end_gravity"),
                         Field("beer_volume"),
@@ -579,68 +731,125 @@ class BaseBatchForm(BSModalModelForm):
                             Column(
                                 Field("sugar_type"),
                                 Field("priming_temperature"),
-                                css_class="col-md-12"
+                                css_class="col-md-12",
                             ),
-                            Column(HTML(priming_info_for_batch), css_class="col-md-3"),
+                            Column(
+                                HTML(
+                                    priming_info_for_batch.format(
+                                        _("Priming Sugar"),
+                                        _("Amount of Water"),
+                                    )
+                                ),
+                                css_class="col-md-3",
+                            ),
                             css_class="refermentation-fields",
-                            style=style
+                            style=style,
                         ),
                         Row(
-                            Column(HTML(packaging_stats_for_batch), css_class='form-group col-md-3 mb-0'),
-                            css_class='form-row'
+                            Column(
+                                HTML(
+                                    packaging_stats_for_batch.format(
+                                        _("ABV"),
+                                        _("Attenuation"),
+                                        _("Calories"),
+                                    )
+                                ),
+                                css_class="form-group col-md-3 mb-0",
+                            ),
+                            css_class="form-row",
                         ),
                     ),
                     Row(
-                        Column(HTML(packaging_info_for_batch), css_class='form-group mb-0'),
-                        css_class='form-row col-md-4 mb-0'
-                    )
+                        Column(
+                            HTML(
+                                packaging_info_for_batch.format(
+                                    _("Carbonation Guidline"),
+                                    _("British-Style Ales"),
+                                    _("Porter, Stout"),
+                                    _("Belgian Ales"),
+                                    _("European Lagers"),
+                                    _("American Ales and Lagers"),
+                                    _("Lambic"),
+                                    _("Fruit Lambic"),
+                                )
+                            ),
+                            css_class="form-group mb-0",
+                        ),
+                        css_class="form-row col-md-4 mb-0",
+                    ),
                 ),
                 Div(
                     ButtonHolder(
-                        Submit("previous_stage", "< Secondary", formnovalidate='formnovalidate'),
-                        Submit("save", "Save", css_class="btn-warning"),
-                        Submit("finish", "Finish", css_class="btn-success")
+                        Submit(
+                            "previous_stage",
+                            "< " + ugettext("Secondary"),
+                            formnovalidate="formnovalidate",
+                        ),
+                        Submit("save", ugettext("Save"), css_class="btn-warning"),
+                        Submit("finish", ugettext("Finish"), css_class="btn-success"),
                     )
-                )
+                ),
             )
 
 
 class FermentationCheckModelForm(BSModalModelForm):
-
     def __init__(self, *args, **kwargs):
         super(FermentationCheckModelForm, self).__init__(*args, **kwargs)
-        volume_unit_choices, temp_unit_choices, gravity_unit_choices = _get_unit_choices(
-            self.request.user.profile
+        (
+            volume_unit_choices,
+            temp_unit_choices,
+            gravity_unit_choices,
+        ) = _get_unit_choices(self.request.user.profile)
+        self.fields.update(
+            {
+                "beer_temperature": MeasurementField(
+                    label=_("Beer Temperature"),
+                    measurement=Temperature,
+                    unit_choices=temp_unit_choices,
+                    required=False,
+                ),
+                "ambient_temperature": MeasurementField(
+                    label=_("Ambient Temperature"),
+                    measurement=Temperature,
+                    unit_choices=temp_unit_choices,
+                    required=False,
+                ),
+                "gravity": MeasurementField(
+                    label=_("Gravity"),
+                    measurement=BeerGravity,
+                    unit_choices=gravity_unit_choices,
+                ),
+            }
         )
-        self.fields.update({
-            "beer_temperature": MeasurementField(
-                measurement=Temperature,
-                unit_choices=temp_unit_choices,
-                required=False),
-            "ambient_temperature": MeasurementField(
-                measurement=Temperature,
-                unit_choices=temp_unit_choices,
-                required=False),
-            "gravity": MeasurementField(
-                measurement=BeerGravity,
-                unit_choices=gravity_unit_choices),
-        })
 
     class Meta:
         model = models.FermentationCheck
-        fields = ["gravity", "beer_temperature", "ambient_temperature", "sample_day", "comment"]
+        fields = [
+            "gravity",
+            "beer_temperature",
+            "ambient_temperature",
+            "sample_day",
+            "comment",
+        ]
 
 
 class FermentableModelForm(BSModalModelForm):
-
     def __init__(self, *args, **kwargs):
         super(FermentableModelForm, self).__init__(*args, **kwargs)
-        self.fields.update({
-            "color": MeasurementField(
-                measurement=BeerColor,
-                unit_choices=(
-                    (self.request.user.profile.color_units.lower(),
-                    self.request.user.profile.color_units.lower()),))})
+        self.fields.update(
+            {
+                "color": MeasurementField(
+                    label=_("Color"),
+                    measurement=BeerColor,
+                    unit_choices=(
+                        (
+                            self.request.user.profile.color_units.lower(),
+                            self.request.user.profile.color_units.lower(),
+                        ),
+                    ),
+                )
+            }
+        )
 
     class Meta:
         model = models.Fermentable
@@ -648,14 +857,12 @@ class FermentableModelForm(BSModalModelForm):
 
 
 class HopModelForm(BSModalModelForm):
-
     class Meta:
         model = models.Hop
         fields = "__all__"
 
 
 class YeastModelForm(BSModalModelForm):
-
     def __init__(self, *args, **kwargs):
         super(YeastModelForm, self).__init__(*args, **kwargs)
         if self.request.user.profile.general_units == "METRIC":
@@ -663,14 +870,23 @@ class YeastModelForm(BSModalModelForm):
         elif self.request.user.profile.general_units == "IMPERIAL":
             unit_choices = (("f", "f"),)
         else:
-            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
-        self.fields.update({
-            "temp_min": MeasurementField(
-                measurement=Temperature,
-                unit_choices=unit_choices),
-            "temp_max": MeasurementField(
-                measurement=Temperature,
-                unit_choices=unit_choices)})
+            raise ValueError(
+                f"No unit choice {self.request.user.profile.general_units}"
+            )
+        self.fields.update(
+            {
+                "temp_min": MeasurementField(
+                    label=_("Min Temperature"),
+                    measurement=Temperature,
+                    unit_choices=unit_choices,
+                ),
+                "temp_max": MeasurementField(
+                    label=_("Max Temperature"),
+                    measurement=Temperature,
+                    unit_choices=unit_choices,
+                ),
+            }
+        )
 
     class Meta:
         model = models.Yeast
@@ -678,50 +894,50 @@ class YeastModelForm(BSModalModelForm):
 
 
 class ExtraModelForm(BSModalModelForm):
-
     class Meta:
         model = models.Extra
         fields = "__all__"
 
 
 class StyleModelForm(BSModalModelForm):
-
     def __init__(self, *args, **kwargs):
         super(StyleModelForm, self).__init__(*args, **kwargs)
         user_color_unit = self.request.user.profile.color_units.lower()
         user_gravity_unit = self.request.user.profile.gravity_units.lower()
-        self.fields.update({
-            "color_min": MeasurementField(
-                measurement=BeerColor,
-                unit_choices=(
-                    (user_color_unit,
-                     user_color_unit),)),
-            "color_max": MeasurementField(
-                measurement=BeerColor,
-                unit_choices=(
-                    (user_color_unit,
-                     user_color_unit),)),
-            "og_min": MeasurementField(
-                measurement=BeerGravity,
-                unit_choices=(
-                    (user_gravity_unit,
-                     user_gravity_unit),)),
-            "og_max": MeasurementField(
-                measurement=BeerGravity,
-                unit_choices=(
-                    (user_gravity_unit,
-                     user_gravity_unit),)),
-            "fg_min": MeasurementField(
-                measurement=BeerGravity,
-                unit_choices=(
-                    (user_gravity_unit,
-                     user_gravity_unit),)),
-            "fg_max": MeasurementField(
-                measurement=BeerGravity,
-                unit_choices=(
-                    (user_gravity_unit,
-                     user_gravity_unit),)),
-        })
+        self.fields.update(
+            {
+                "color_min": MeasurementField(
+                    label=_("Color Min"),
+                    measurement=BeerColor,
+                    unit_choices=((user_color_unit, user_color_unit),),
+                ),
+                "color_max": MeasurementField(
+                    label=_("Color Max"),
+                    measurement=BeerColor,
+                    unit_choices=((user_color_unit, user_color_unit),),
+                ),
+                "og_min": MeasurementField(
+                    label=_("OG Min"),
+                    measurement=BeerGravity,
+                    unit_choices=((user_gravity_unit, user_gravity_unit),),
+                ),
+                "og_max": MeasurementField(
+                    label=_("OG Max"),
+                    measurement=BeerGravity,
+                    unit_choices=((user_gravity_unit, user_gravity_unit),),
+                ),
+                "fg_min": MeasurementField(
+                    label=_("FG Min"),
+                    measurement=BeerGravity,
+                    unit_choices=((user_gravity_unit, user_gravity_unit),),
+                ),
+                "fg_max": MeasurementField(
+                    label=_("FG Max"),
+                    measurement=BeerGravity,
+                    unit_choices=((user_gravity_unit, user_gravity_unit),),
+                ),
+            }
+        )
 
     class Meta:
         model = models.Style
@@ -729,7 +945,6 @@ class StyleModelForm(BSModalModelForm):
 
 
 class IngredientFermentableForm(PopRequestMixin, ModelForm):
-
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
             unit_choices = (("kg", "kg"),)
@@ -739,29 +954,34 @@ class IngredientFermentableForm(PopRequestMixin, ModelForm):
             raise ValueError(f"No unit choice {request.user.profile.general_units}")
         user_color_unit = request.user.profile.color_units.lower()
         color_choices = ((user_color_unit, user_color_unit),)
-        self.fields.update({
-            "amount": MeasurementField(
-                measurement=Weight,
-                unit_choices=unit_choices),
-            "color": MeasurementField(
-                measurement=BeerColor,
-                unit_choices=color_choices)
-        })
+        self.fields.update(
+            {
+                "amount": MeasurementField(
+                    label=_("Amount"), measurement=Weight, unit_choices=unit_choices
+                ),
+                "color": MeasurementField(
+                    label=_("Color"), measurement=BeerColor, unit_choices=color_choices
+                ),
+            }
+        )
 
     class Meta:
         model = models.IngredientFermentable
         exclude = ()
 
+
 IngredientFermentableFormSet = inlineformset_factory(
-    models.Recipe, models.IngredientFermentable, form=IngredientFermentableForm,
-    fields=['name', 'type', 'use', 'color', 'extraction', 'amount'],
+    models.Recipe,
+    models.IngredientFermentable,
+    form=IngredientFermentableForm,
+    fields=["name", "type", "use", "color", "extraction", "amount"],
     extra=1,
     can_delete=True,
-    formset=BaseFormSet
+    formset=BaseFormSet,
 )
 
-class IngredientHopForm(PopRequestMixin, ModelForm):
 
+class IngredientHopForm(PopRequestMixin, ModelForm):
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
             unit_choices = (("g", "g"),)
@@ -770,24 +990,32 @@ class IngredientHopForm(PopRequestMixin, ModelForm):
         else:
             raise ValueError(f"No unit choice {request.user.profile.general_units}")
         time_choices = (("MINUTE", "minute"), ("DAY", "day"))
-        self.fields.update({
-            "amount": MeasurementField(
-                measurement=Weight,
-                unit_choices=unit_choices),
-            "time_unit": ChoiceField(choices=time_choices)
-        })
+        self.fields.update(
+            {
+                "amount": MeasurementField(
+                    label=_("Amount"), measurement=Weight, unit_choices=unit_choices
+                ),
+                "time_unit": ChoiceField(label=_("Time Unit"), choices=time_choices),
+            }
+        )
 
     class Meta:
         model = models.IngredientHop
         exclude = ()
 
+
 IngredientHopFormSet = inlineformset_factory(
-    models.Recipe, models.IngredientHop, form=IngredientHopForm,
-    fields=['name', 'use', 'alpha_acids', 'amount', 'time', 'time_unit'], extra=1, can_delete=True, formset=BaseFormSet
+    models.Recipe,
+    models.IngredientHop,
+    form=IngredientHopForm,
+    fields=["name", "use", "alpha_acids", "amount", "time", "time_unit"],
+    extra=1,
+    can_delete=True,
+    formset=BaseFormSet,
 )
 
-class IngredientYeastForm(PopRequestMixin, ModelForm):
 
+class IngredientYeastForm(PopRequestMixin, ModelForm):
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
             unit_choices = (("g", "g"),)
@@ -795,23 +1023,31 @@ class IngredientYeastForm(PopRequestMixin, ModelForm):
             unit_choices = (("oz", "oz"),)
         else:
             raise ValueError(f"No unit choice {request.user.profile.general_units}")
-        self.fields.update({
-            "amount": MeasurementField(
-                measurement=Weight,
-                unit_choices=unit_choices),
-        })
+        self.fields.update(
+            {
+                "amount": MeasurementField(
+                    label=_("Amount"), measurement=Weight, unit_choices=unit_choices
+                ),
+            }
+        )
 
     class Meta:
         model = models.IngredientYeast
         exclude = ()
 
+
 IngredientYeastFormSet = inlineformset_factory(
-    models.Recipe, models.IngredientYeast, form=IngredientYeastForm,
-    fields=['name', 'type', 'form', 'attenuation', 'amount', 'lab'], extra=1, can_delete=True, formset=BaseFormSet
+    models.Recipe,
+    models.IngredientYeast,
+    form=IngredientYeastForm,
+    fields=["name", "type", "form", "attenuation", "amount", "lab"],
+    extra=1,
+    can_delete=True,
+    formset=BaseFormSet,
 )
 
-class IngredientExtraForm(PopRequestMixin, ModelForm):
 
+class IngredientExtraForm(PopRequestMixin, ModelForm):
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
             unit_choices = (("g", "g"),)
@@ -819,23 +1055,31 @@ class IngredientExtraForm(PopRequestMixin, ModelForm):
             unit_choices = (("oz", "oz"),)
         else:
             raise ValueError(f"No unit choice {request.user.profile.general_units}")
-        self.fields.update({
-            "amount": MeasurementField(
-                measurement=Weight,
-                unit_choices=unit_choices)
-        })
+        self.fields.update(
+            {
+                "amount": MeasurementField(
+                    label=_("Amount"), measurement=Weight, unit_choices=unit_choices
+                )
+            }
+        )
 
     class Meta:
         model = models.IngredientExtra
         exclude = ()
 
+
 IngredientExtraFormSet = inlineformset_factory(
-    models.Recipe, models.IngredientExtra, form=IngredientExtraForm,
-    fields=['name', 'type', 'use', 'amount', 'time', 'time_unit'], extra=1, can_delete=True, formset=BaseFormSet
+    models.Recipe,
+    models.IngredientExtra,
+    form=IngredientExtraForm,
+    fields=["name", "type", "use", "amount", "time", "time_unit"],
+    extra=1,
+    can_delete=True,
+    formset=BaseFormSet,
 )
 
-class MashStepForm(PopRequestMixin, ModelForm):
 
+class MashStepForm(PopRequestMixin, ModelForm):
     def add_user_restrictions_to_field(self, request):
         if request.user.profile.general_units == "METRIC":
             unit_choices = (("c", "c"),)
@@ -843,49 +1087,61 @@ class MashStepForm(PopRequestMixin, ModelForm):
             unit_choices = (("f", "f"),)
         else:
             raise ValueError(f"No unit choice {request.user.profile.general_units}")
-        self.fields.update({
-            "temperature": MeasurementField(
-                measurement=Temperature,
-                unit_choices=unit_choices),
-        })
+        self.fields.update(
+            {
+                "temperature": MeasurementField(
+                    label=_("Temperature"),
+                    measurement=Temperature,
+                    unit_choices=unit_choices,
+                ),
+            }
+        )
 
     class Meta:
         model = models.MashStep
         exclude = ()
 
+
 MashStepFormSet = inlineformset_factory(
-    models.Recipe, models.MashStep, form=MashStepForm,
-    fields=['temperature', 'time'], extra=1, can_delete=True, formset=BaseFormSet
+    models.Recipe,
+    models.MashStep,
+    form=MashStepForm,
+    fields=["temperature", "time"],
+    extra=1,
+    can_delete=True,
+    formset=BaseFormSet,
 )
 
-BatchInfoStatsHtml = """
+batch_info_stats = """
+{{% load i18n %}}
 </br>
 <table class="table" style="background:#dedede">
    <tr>
-      <td>Boil Volume:</td>
+      <td>{}:</td>
       <td class: "text-left" id="boil_volume_info">---</td>
    <tr>
    <tr>
-      <td>Pre-boil Gravity:</td>
+      <td>{}:</td>
       <td class: "text-left" id="preboil_gravity_info">---</td>
    <tr>
    <tr>
-      <td>Primary Volume:</td>
+      <td>{}:</td>
       <td class: "text-left" id="primary_volume_info">---</td>
    <tr>
    <tr>
-      <td>Secondary Volume:</td>
+      <td>{}:</td>
       <td class: "text-left" id="secondary_volume_info">---</td>
    <tr>
 </table>
 """
 
-FermentableInfoStatsHtml = """
+fermentable_info_stats = """
+{{% load i18n %}}
 <div>
 </br>
 <table class="table" style="background:#dedede">
    <tr>
-      <td>Gravity</td>
+      <td>{}</td>
       <td class: "text-left" id="gravity_info">---</td>
       <td class: "text-left" id="gravity_styleinfo">---</td>
    <tr>
@@ -895,25 +1151,25 @@ FermentableInfoStatsHtml = """
       <td class: "text-left" id="abv_styleinfo">---</td>
    <tr>
    <tr>
-      <td>Color</td>
+      <td>{}</td>
       <td class: "text-left" id="color_info">---</td>
       <td class: "text-left" id="color_styleinfo">---</td>
    <tr>
 </table>
 </div>
 """
-
-HopInfoStatsHtml = """
+hop_info_stats = """
+{{% load i18n %}}
 <div>
 </br>
 <table class="table" style="background:#dedede">
    <tr>
-      <td>Bitterness</td>
+      <td>{}</td>
       <td class: "text-left" id="ibu_info">---</td>
       <td class: "text-left" id="ibu_styleinfo">---</td>
    <tr>
    <tr>
-      <td>Bitterness Ratio</td>
+      <td>{}</td>
       <td class: "text-left" id="bitterness_ratio_info">---</td>
       <td class: "text-left" id="bitterness_ratio_name_info">---</td>
    <tr>
@@ -921,8 +1177,8 @@ HopInfoStatsHtml = """
 </div>
 """
 
-class RecipeModelForm(BSModalModelForm):
 
+class RecipeModelForm(BSModalModelForm):
     def __init__(self, *args, **kwargs):
         super(RecipeModelForm, self).__init__(*args, **kwargs)
         if self.request.user.profile.general_units == "METRIC":
@@ -930,86 +1186,170 @@ class RecipeModelForm(BSModalModelForm):
         elif self.request.user.profile.general_units == "IMPERIAL":
             unit_choices = (("us_g", "us_g"),)
         else:
-            raise ValueError(f"No unit choice {self.request.user.profile.general_units}")
-        self.fields.update({
-            "expected_beer_volume": MeasurementField(
-                measurement=Volume,
-                unit_choices=unit_choices, initial=Volume(l=20)),
-        })
+            raise ValueError(
+                f"No unit choice {self.request.user.profile.general_units}"
+            )
+        self.fields.update(
+            {
+                "expected_beer_volume": MeasurementField(
+                    label=_("Expected Beer Volume"),
+                    measurement=Volume,
+                    unit_choices=unit_choices,
+                    initial=Volume(l=20),
+                ),
+            }
+        )
 
         self.helper = FormHelper()
         self.helper.form_tag = True
-        self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
-        self.helper.form_method = 'POST'
-        #self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-6 create-label'
-        self.helper.field_class = 'col-md-6'
+        self.helper.add_input(Submit("submit", _("Submit"), css_class="btn-primary"))
+        self.helper.form_method = "POST"
+        # self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = "col-md-6 create-label"
+        self.helper.field_class = "col-md-6"
         self.helper.layout = Layout(
             Div(
-                Fieldset("Recipe Information", Field("type"), Field("name"), Field("style"), Field('is_public')),
-                Fieldset("Batch Information",
-                    Row(
-                        Column(Field("expected_beer_volume"), css_class='form-group col-md-6 mb-0'),
-                        css_class="form-row"),
-                    Row(
-                        Column(AppendedText("boil_time", "min"), css_class='form-group col-md-4 mb-0'),
-                        Column(AppendedText("evaporation_rate", "%/h"), css_class='form-group col-md-4 mb-0'),
-                        css_class='form-row'
-                    ),
-                    Row(
-                        Column(AppendedText("boil_loss", "%"), css_class='form-group col-md-4 mb-0'),
-                        Column(AppendedText("trub_loss", "%"), css_class='form-group col-md-4 mb-0'),
-                        Column(AppendedText("dry_hopping_loss", "%"), css_class='form-group col-md-4 mb-0'),
-                        css_class='form-row'
-                    ),
-                    Row(
-                        Column(HTML(BatchInfoStatsHtml), css_class='form-group col-md-3 mb-0'),
-                        css_class='form-row'
-                    )
+                Fieldset(
+                    _("Recipe Information"),
+                    Field("type"),
+                    Field("name"),
+                    Field("style"),
+                    Field("is_public"),
                 ),
-                Fieldset('Fermentables',
+                Fieldset(
+                    _("Batch Information"),
                     Row(
-                        Column(HTML(FermentableInfoStatsHtml), css_class='form-group col-md-4 mb-0'),
-                        css_class='form-row'
+                        Column(
+                            Field("expected_beer_volume"),
+                            css_class="form-group col-md-6 mb-0",
+                        ),
+                        css_class="form-row",
                     ),
                     Row(
-                        layouts.RecipeFormsetLayout('fermentables', "brewery/recipe/fermentable_formset.html"),
-                        css_class="form-row"
+                        Column(
+                            AppendedText("boil_time", "min"),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        Column(
+                            AppendedText("evaporation_rate", "%/h"),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        css_class="form-row",
+                    ),
+                    Row(
+                        Column(
+                            AppendedText("boil_loss", "%"),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        Column(
+                            AppendedText("trub_loss", "%"),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        Column(
+                            AppendedText("dry_hopping_loss", "%"),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        css_class="form-row",
+                    ),
+                    Row(
+                        Column(
+                            HTML(
+                                batch_info_stats.format(
+                                    _("Boil Volume"),
+                                    _("Pre-boil Gravity"),
+                                    _("Primary Volume"),
+                                    _("Secondary Volume"),
+                                )
+                            ),
+                            css_class="form-group col-md-3 mb-0",
+                        ),
+                        css_class="form-row",
                     ),
                 ),
                 Fieldset(
-                    "Mash",
+                    _("Fermentables"),
                     Row(
-                        Column(AppendedText("mash_efficiency", "%"), css_class='form-group col-md-4 mb-0'),
-                        Column(AppendedText("liquor_to_grist_ratio", "?"), css_class='form-group col-md-4 mb-0'),
-                        css_class="form-row"
+                        Column(
+                            HTML(
+                                fermentable_info_stats.format(
+                                    _("Gravity"),
+                                    _("Color"),
+                                )
+                            ),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        css_class="form-row",
                     ),
                     Row(
-                        layouts.RecipeFormsetLayout('mash_steps', "brewery/recipe/mash_formset.html"),
-                        css_class="form-row"
-                    )
+                        layouts.RecipeFormsetLayout(
+                            "fermentables", "brewery/recipe/fermentable_formset.html"
+                        ),
+                        css_class="form-row",
+                    ),
                 ),
-                Fieldset("Hops",
+                Fieldset(
+                    _("Mash"),
                     Row(
-                        Column(HTML(HopInfoStatsHtml), css_class='form-group col-md-4 mb-0'),
-                        css_class='form-row'
+                        Column(
+                            AppendedText("mash_efficiency", "%"),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        Column(
+                            AppendedText("liquor_to_grist_ratio", "?"),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        css_class="form-row",
                     ),
                     Row(
-                        layouts.RecipeFormsetLayout('hops', "brewery/recipe/hop_formset.html"),
-                        css_class="form-row"
+                        layouts.RecipeFormsetLayout(
+                            "mash_steps", "brewery/recipe/mash_formset.html"
+                        ),
+                        css_class="form-row",
                     ),
                 ),
-                Fieldset("Yeasts", layouts.RecipeFormsetLayout('yeasts', "brewery/recipe/yeast_formset.html")),
-                Fieldset("Extras", layouts.RecipeFormsetLayout('extras', "brewery/recipe/extra_formset.html")),
-                Field('note'),
-                HTML("<br>")
+                Fieldset(
+                    _("Hops"),
+                    Row(
+                        Column(
+                            HTML(
+                                hop_info_stats.format(
+                                    _("Bitterness"),
+                                    _("Bitterness Ratio"),
+                                )
+                            ),
+                            css_class="form-group col-md-4 mb-0",
+                        ),
+                        css_class="form-row",
+                    ),
+                    Row(
+                        layouts.RecipeFormsetLayout(
+                            "hops", "brewery/recipe/hop_formset.html"
+                        ),
+                        css_class="form-row",
+                    ),
+                ),
+                Fieldset(
+                    _("Yeasts"),
+                    layouts.RecipeFormsetLayout(
+                        "yeasts", "brewery/recipe/yeast_formset.html"
+                    ),
+                ),
+                Fieldset(
+                    _("Extras"),
+                    layouts.RecipeFormsetLayout(
+                        "extras", "brewery/recipe/extra_formset.html"
+                    ),
+                ),
+                Field("note"),
+                HTML("<br>"),
             ),
         )
 
-
     class Meta:
         model = models.Recipe
-        exclude = ['user', ]
+        exclude = [
+            "user",
+        ]
 
 
 class RecipeImportForm(Form):

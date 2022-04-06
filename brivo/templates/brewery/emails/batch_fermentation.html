@@ -1,8 +1,8 @@
 {% load i18n %}{% autoescape off %}
 
-{% blocktrans %}Hello {{username}}! {% endblocktrans %}
+{% blocktrans with username=username%}Hello {{username}}! {% endblocktrans %}
 
-{% blocktrans %}
+{% blocktrans with batch_number=batch_number name=name ndays=ndays%}
 Your batch #{{batch_number}} - {{name}} is fermenting for {{ndays}} days. Go to your Brivo to adjust status or measure a density. 
 {% endblocktrans %}
 

@@ -1,5 +1,6 @@
 {% load static %}
 {% load widget_tweaks %}
+{% load i18n %}
 
 {% block content %}
 
@@ -7,19 +8,20 @@
   {% csrf_token %}
 
   <div class="modal-header">
-    <h3 class="modal-title">Delete Batch</h3>
+    <h3 class="modal-title">{% trans "Delete Batch" %}</h3>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
   <div class="modal-body">
-    <p class="delete-text">Are you sure you want to delete batch with name
+    <p class="delete-text">
+    {% trans "Are you sure you want to delete batch with name" %}
       <strong>{{ batch.name }}</strong>?</p>
   </div>
 
   <div class="modal-footer">
-    <button type="submit" id="delete-btn" class="btn btn-danger">Delete</button>
+    <button type="submit" id="delete-btn" class="btn btn-danger">{% trans "Delete" %}</button>
   </div>
 
 </form>

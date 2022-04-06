@@ -12,25 +12,25 @@ __all__ = ("Hop", "IngredientHop", "InventoryHop")
 
 
 HOP_USE = [
-    ("BOIL", "Boil"),
-    ("DRY HOP", "Dry hop"),
-    ("MASH", "Mash"),
-    ("AROMA", "Aroma"),
-    ("FIRST WORT", "First wort"),
-    ("WHIRPOOL", "Whirpool"),
+    ("BOIL", _("Boil")),
+    ("DRY HOP", _("Dry hop")),
+    ("MASH", _("Mash")),
+    ("AROMA", _("Aroma")),
+    ("FIRST WORT", _("First wort")),
+    ("WHIRPOOL", _("Whirpool")),
 ]
 
 
 HOP_FORM = [
-    ("HOP PELLETS", "Hop pellets"),
-    ("WHOLE HOPS", "Whole hops"),
-    ("EXTRACT", "Extract"),
+    ("HOP PELLETS", _("Hop pellets")),
+    ("WHOLE HOPS", _("Whole hops")),
+    ("EXTRACT", _("Extract")),
 ]
 
 HOP_TYPE = [
-    ("DUAL PURPOSE", "Dual Purpose"),
-    ("AROMA", "Aroma"),
-    ("BITTERING", "Bittering"),
+    ("DUAL PURPOSE", _("Dual Purpose")),
+    ("AROMA", _("Aroma")),
+    ("BITTERING", _("Bittering")),
 ]
 
 

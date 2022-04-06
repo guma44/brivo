@@ -10,23 +10,23 @@ __all__ = ("Extra", "IngredientExtra", "InventoryExtra")
 
 
 EXTRA_TYPE = [
-    ("ANY", "Any"),
-    ("SPICE", "Spice"),
-    ("FLAVOR", "Flavor"),
-    ("FINING", "Fining"),
-    ("HERB", "Herb"),
-    ("WATER AGENT", "Water agent"),
-    ("OTHER", "Other"),
+    ("ANY", _("Any")),
+    ("SPICE", _("Spice")),
+    ("FLAVOR", _("Flavor")),
+    ("FINING", _("Fining")),
+    ("HERB", _("Herb")),
+    ("WATER AGENT", _("Water agent")),
+    ("OTHER", _("Other")),
 ]
 
 EXTRA_USE = [
-    ("BOIL", "Boil"),
-    ("MASH", "Mash"),
-    ("PRIMARY", "Primary"),
-    ("SECONDARY", "Secondary"),
-    ("KEGING", "Keging"),
-    ("BOTTLING", "Bottling"),
-    ("OTHER", "Other"),
+    ("BOIL", _("Boil")),
+    ("MASH", _("Mash")),
+    ("PRIMARY", _("Primary")),
+    ("SECONDARY", _("Secondary")),
+    ("KEGING", _("Keging")),
+    ("BOTTLING", _("Bottling")),
+    ("OTHER", _("Other")),
 ]
 
 

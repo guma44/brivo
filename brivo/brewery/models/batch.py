@@ -16,22 +16,22 @@ __all__ = ("Batch", "FermentationCheck", "BATCH_STAGE_ORDER", "BATCH_STAGES", "S
 
 
 BATCH_STAGES = (
-    ("INIT", "Init"),
-    ("MASHING", "Mashing"),
-    ("BOIL", "Boil"),
-    ("PRIMARY_FERMENTATION", "Primary Fermentation"),
-    ("SECONDARY_FERMENTATION", "Secondary Fermentation"),
-    ("PACKAGING", "Packaging"),
-    ("FINISHED", "Finished"),
+    ("INIT", _("Init")),
+    ("MASHING", _("Mashing")),
+    ("BOIL", _("Boil")),
+    ("PRIMARY_FERMENTATION", _("Primary Fermentation")),
+    ("SECONDARY_FERMENTATION", _("Secondary Fermentation")),
+    ("PACKAGING", _("Packaging")),
+    ("FINISHED", _("Finished")),
 )
 
 BATCH_STAGE_ORDER = [bs[0] for bs in BATCH_STAGES]
 
-CARBONATION_TYPE = (("FORCED", "Forced"), ("REFERMENTATION", "Refermentation"))
+CARBONATION_TYPE = (("FORCED", _("Forced")), ("REFERMENTATION", _("Refermentation")))
 SUGAR_TYPE = (
-    ("CORN_SUGAR", "Corn Sugar"),
-    ("TABLE_SUGAR", "Table Sugar"),
-    ("DRY_EXTRACT", "Dry Extract")
+    ("CORN_SUGAR", _("Corn Sugar")),
+    ("TABLE_SUGAR", _("Table Sugar")),
+    ("DRY_EXTRACT", _("Dry Extract"))
 )
 
 class FermentationCheck(BaseModel):

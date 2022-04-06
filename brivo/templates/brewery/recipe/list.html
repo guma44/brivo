@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% load brew_tags %}
+{% load i18n %}
 
-{% block title %}Recipes{% endblock title %}
+{% block title %}{% trans "Recipes" %}{% endblock title %}
 
 {% block content %}
-<h1 class="mt-3 mb-3">Recipes</h1>
+<h1 class="mt-3 mb-3">{% trans "Recipes" %}</h1>
 <hl>
 <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog mt-5 modal-lg">
@@ -23,14 +24,14 @@
     <div class="col-12 mb-3">
     {% if user.is_authenticated %}
     <a href="{% url 'brewery:recipe-create' %}"><button id="create-recipe" class="btn btn-success" type="button" name="button">
-        <span class="fa fa-plus mr-2"></span>Create Recipe
+        <span class="fa fa-plus mr-2"></span>{% trans "Create Recipe" %}
     </button></a>
     <button id="import-recipe" class="bs-modal delete-recipe btn btn-primary" data-form-url="{% url 'brewery:recipe-import' %}" type="button" name="button">
-        <span class="fa fa-file-import mr-2"></span>Import Recipe
+        <span class="fa fa-file-import mr-2"></span>{% trans "Import Recipe" %}
     </button>
     {% endif %}
     <button id="toggle-filters" class="btn btn-primary" type="button" name="button" data-toggle="collapse" data-target="#filter-row" aria-expanded="false" aria-controls="collapseExample">
-        Toggle Filters
+    {% trans "Toggle Filters" %}
     </button>
     </div>
     <div id="filter-row" class="row collapse">
@@ -38,7 +39,7 @@
             <div class="card card-body">
                 <form method="get">
                     {{filter.form.as_p}}
-                    <button class="btn btn-primary" name="button" type="submit"><span class="fa fa-filter mr-2"></span>Filter</button>
+                    <button class="btn btn-primary" name="button" type="submit"><span class="fa fa-filter mr-2"></span>{% trans "Filter" %}</button>
                 </form>
             </div>
         </div>
@@ -51,14 +52,14 @@
 <table id="recipes-table" class="table">
     <thead>
         <tr >
-            <th class="text-center" scope="col">Name</th>
-            <th class="text-center" scope="col">Gravity [{{user.profile.gravity_units}}]</th>
-            <th class="text-center" scope="col">ABV</th>
-            <th class="text-center" scope="col">Size</th>
-            <th class="text-center" scope="col">Style</th>
-            <th class="text-center" scope="col">IBU</th>
-            <th class="text-center" scope="col">Color [{{user.profile.color_units}}]</th>
-            <th class="text-center" scope="col">Action</th>
+            <th class="text-center" scope="col">{% trans "Name" %}</th>
+            <th class="text-center" scope="col">{% trans "Gravity" %} [{{user.profile.gravity_units}}]</th>
+            <th class="text-center" scope="col">{% trans "ABV" %}</th>
+            <th class="text-center" scope="col">{% trans "Size" %}</th>
+            <th class="text-center" scope="col">{% trans "Style" %}</th>
+            <th class="text-center" scope="col">{% trans "IBU" %}</th>
+            <th class="text-center" scope="col">{% trans "Color" %} [{{user.profile.color_units}}]</th>
+            <th class="text-center" scope="col">{% trans "Action" %}</th>
         </tr>
     </thead>
     <tbody>

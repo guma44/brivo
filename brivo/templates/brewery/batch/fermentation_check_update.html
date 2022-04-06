@@ -1,6 +1,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
+{% load i18n %}
 
 {% block content %}
 
@@ -8,7 +9,7 @@
   {% csrf_token %}
 
   <div class="modal-header">
-    <h3 class="modal-title">Update Fermentation Check</h3>
+    <h3 class="modal-title">{% trans "Update Fermentation Check" %}</h3>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -23,7 +24,7 @@
   </div>
 
   <div class="modal-footer">
-    <button type="submit" id="delete-btn" class="btn btn-primary">Update</button>
+    <button type="submit" id="delete-btn" class="btn btn-primary">{% trans "Update" %}</button>
   </div>
 
 </form>

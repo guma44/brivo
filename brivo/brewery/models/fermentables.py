@@ -13,18 +13,18 @@ __all__ = ("Fermentable", "IngredientFermentable", "InventoryFermentable")
 
 
 FERMENTABLE_TYPE = (
-    ("ADJUNCT", "Adjunct"),
-    ("GRAIN", "Grain"),
-    ("DRY EXTRACT", "Dry extract"),
-    ("LIQUID EXTRACT", "Liquid extract"),
-    ("SUGAR", "Sugar"),
+    ("ADJUNCT", _("Adjunct")),
+    ("GRAIN", _("Grain")),
+    ("DRY EXTRACT", _("Dry extract")),
+    ("LIQUID EXTRACT", _("Liquid extract")),
+    ("SUGAR", _("Sugar")),
 )
 
 FERMENTABLE_USE = [
-    ("MASHING", "Mashing"),
-    ("BOIL", "Boil"),
-    ("LATE BOIL", "Late boil"),
-    ("STEEP", "Steep"),
+    ("MASHING", _("Mashing")),
+    ("BOIL", _("Boil")),
+    ("LATE BOIL", _("Late boil")),
+    ("STEEP", _("Steep")),
 ]
 
 
@@ -73,9 +73,9 @@ class Fermentable(BaseFermentable):
         decimal_places=2,
         blank=True,
         null=True,
-        help_text="""The recommended 
+        help_text=_("""The recommended 
             maximum percentage (by weight) this ingredient should represent in a 
-            batch of beer.""",
+            batch of beer."""),
     )
     description = models.TextField(
         _("Description"), max_length=1000, blank=True, null=True
@@ -108,7 +108,7 @@ class IngredientFermentable(BaseFermentable):
     amount = MassField(
         verbose_name=_("Amount"),
         unit_choices=MASS_UNITS,
-        help_text="Weight of the fermentable, extract or sugar.",
+        help_text=_("Weight of the fermentable, extract or sugar."),
     )
     use = models.CharField(
         _("Fermentable Use"), max_length=1000, choices=FERMENTABLE_USE

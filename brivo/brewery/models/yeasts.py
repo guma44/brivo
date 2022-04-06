@@ -11,21 +11,21 @@ __all__ = ("Yeast", "IngredientYeast", "InventoryYeast")
 
 
 YEAST_TYPE = [
-    ("ALE", "Ale"),
-    ("LAGER", "Lager"),
-    ("WHEAT", "Wheat"),
-    ("WILD", "Wild"),
-    ("CHAMPAGNE", "Champagne"),
-    ("BACTERIA", "Bacteria"),
-    ("MIX", "Mix"),
+    ("ALE", _("Ale")),
+    ("LAGER", _("Lager")),
+    ("WHEAT", _("Wheat")),
+    ("WILD", _("Wild")),
+    ("CHAMPAGNE", _("Champagne")),
+    ("BACTERIA", _("Bacteria")),
+    ("MIX", _("Mix")),
 ]
 
 
 YEAST_FORM = [
-    ("DRY", "Dry"),
-    ("LIQUID", "Liquid"),
-    ("SLURRY", "Slurry"),
-    ("CULTURE", "Culture"),
+    ("DRY", _("Dry")),
+    ("LIQUID", _("Liquid")),
+    ("SLURRY", _("Slurry")),
+    ("CULTURE", _("Culture")),
 ]
 
 

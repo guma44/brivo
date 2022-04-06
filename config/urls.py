@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.shortcuts import redirect
+from django.utils import translation
 from django.urls import include, path, re_path
+from django.conf.urls.i18n import i18n_patterns
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
@@ -9,18 +12,16 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 
 from brivo.users.api.views import CustomLogoutView
 
+def set_language_from_url(request, user_language):
+    translation.activate(user_language)
+    request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+    return redirect(request.META.get('HTTP_REFERER'))
+
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-    path(
-        "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
-    ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path("users/", include("brivo.users.urls", namespace="users")),
-    path("brewery/", include("brivo.brewery.urls", namespace="brewery")),
-    path("accounts/email/", default_views.page_not_found, name="account_email", kwargs={"exception": Exception("Page not Found")},),
-    path("accounts/", include("allauth.urls")),
+
     re_path(r'^celery-progress/', include('celery_progress.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
@@ -37,7 +38,20 @@ urlpatterns += [
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
     # DRF auth token
     path("auth-token/", obtain_auth_token),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
+
+urlpatterns += i18n_patterns(
+        path(r'/set_language/(?P<user_language>\w+)/$', set_language_from_url, name="set_language_from_url"),
+        path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+        path(
+            "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
+        ),
+        path("users/", include("brivo.users.urls", namespace="users")),
+        path("brewery/", include("brivo.brewery.urls", namespace="brewery")),
+        path("accounts/email/", default_views.page_not_found, name="account_email", kwargs={"exception": Exception("Page not Found")},),
+        path("accounts/", include("allauth.urls")),
+    )
 
 
 if settings.DEBUG:

@@ -16,9 +16,9 @@ __all__ = ("Recipe",)
 
 
 RECIPE_TYPE = [
-    ("ALL GRAIN", "All Grain"),
-    ("EXTRACT", "Extract"),
-    ("PARTIAL MASH", "Partial Mash"),
+    ("ALL GRAIN", _("All Grain")),
+    ("EXTRACT", _("Extract")),
+    ("PARTIAL MASH", _("Partial Mash")),
 ]
 
 
